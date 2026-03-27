@@ -9,5 +9,11 @@ import { AuthService } from './auth.service';
 })
 export class HttpService {
   public serverName=environment.apiUrl;
-  //todo: complete missing code..
+  
+  constructor(private http:HttpClient){}
+
+  public registerUser(details:any):Observable<any>{
+
+    return this.http.post(`${this.serverName}/api/user/register`,details);
+  }
 }
