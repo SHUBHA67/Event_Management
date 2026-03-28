@@ -49,7 +49,7 @@ public class EventPlannerController {
     @PostMapping("/api/planner/resource")
     public ResponseEntity<?> addResource(@RequestBody Resource resource) {
         try {
-            resourceService.createEvent(resource);
+            resourceService.addResource(resource);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Resource added successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
