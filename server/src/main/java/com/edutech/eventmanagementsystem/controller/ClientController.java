@@ -1,5 +1,8 @@
 package com.edutech.eventmanagementsystem.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,20 @@ import com.edutech.eventmanagementsystem.service.EventService;
 
 
 public class ClientController {
+    
+    private final EventService eventService;
+
+    public ClientController(EventService eventService) {
+        this.eventService = eventService;
+    }
+
+    @GetMapping("/api/client/booking-details/{eventId}")
+    public ResponseEntity<List<Event>> getBookingDetails(@PathVariable Long eventId) {
+        Event event = eventService.getEventDetails(eventId);
+        List<Event> result = new ArrayList<>();
+        if (event != null) result.add(event);
+        return ResponseEntity.ok(result);
+    }
 
 
 }
