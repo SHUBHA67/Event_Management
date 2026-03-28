@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,42 +26,46 @@ import com.edutech.eventmanagementsystem.service.UserService;
 @RequestMapping("/api/user")
 public class RegisterAndLoginController {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    //In built method -- of spring security;
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public RegisterAndLoginController(UserService userService,
+                                      AuthenticationManager authenticationManager,
+                                      JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user){
-
-        User saved=userService.registerUser(user);
-        return new ResponseEntity<User>(saved,HttpStatus.OK);
+    public ResponseEntity<?> register(@RequestBody User user) {
+        try {
+            User savedUser = userService.registerUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Registration failed: " + e.getMessage());
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse>login(@RequestBody LoginRequest loginRequest){
-        // Login request and login request are dto files;
-
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            
-
             authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-            );
-
-        } catch (AuthenticationException e) {
-            // TODO: handle exception
-
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid credentials");
-        
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(), loginRequest.getPassword()));
+            UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
+            String token = jwtUtil.generateToken(userDetails.getUsername());
+            User user = userService.getUserByUsername(loginRequest.getUsername());
+            return ResponseEntity.ok(
+                    new LoginResponse(token, user.getUsername(), user.getEmail(), user.getRole()));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Login failed: " + e.getMessage());
         }
-        UserDetails userDetails=userService.loadUserByUsername(loginRequest.getUsername());
-        String token = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new LoginResponse(token));
     }
+
 }

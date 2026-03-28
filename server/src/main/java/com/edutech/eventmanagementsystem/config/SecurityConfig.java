@@ -40,8 +40,11 @@ package com.edutech.eventmanagementsystem.config;
 
 // }
 import com.edutech.eventmanagementsystem.jwt.JwtRequestFilter;
+import com.edutech.eventmanagementsystem.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -51,40 +54,59 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-        @Autowired
-        private UserDetailsService userDetailsService;
-        @Autowired
-        private JwtRequestFilter jwtRequestFilter;
-        @Autowired
-        private PasswordEncoder passwordEncoder;
+    private final UserService userDetailsService;
+    private final JwtRequestFilter jwtRequestFilter;
+    private final PasswordEncoder passwordEncoder;
 
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-                auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-        }
+    public SecurityConfig(UserService userDetailsService,
+                          JwtRequestFilter jwtRequestFilter,
+                          PasswordEncoder passwordEncoder) {
+        this.userDetailsService = userDetailsService;
+        this.jwtRequestFilter = jwtRequestFilter;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-        @Bean
-        @Override
-        public AuthenticationManager authenticationManagerBean() throws Exception {
-                return super.authenticationManagerBean();
-        }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    }
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-                http.cors().and().csrf().disable()
-                                .authorizeRequests()
-                                .antMatchers("/api/user/register", "/api/user/login").permitAll()
-                                .antMatchers("/api/planner/**").hasAuthority("PLANNER")
-                                .antMatchers("/api/staff/**").hasAuthority("STAFF")
-                                .antMatchers("/api/client/**").hasAuthority("CLIENT")
-                                .anyRequest().authenticated()
-                                .and()
-                                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+            .authorizeRequests()
+            .antMatchers(HttpMethod.POST, "/api/user/register", "/api/user/login").permitAll()
+            .antMatchers("/h2-console/**").permitAll()
+            .antMatchers(HttpMethod.POST,
+                "/api/planner/resource",
+                "/api/planner/event",
+                "/api/planner/allocate-resources").hasAuthority("PLANNER")
+            .antMatchers(HttpMethod.GET,
+                "/api/planner/events",
+                "/api/planner/resources").hasAuthority("PLANNER")
+            .antMatchers(HttpMethod.GET,
+                "/api/staff/event-details/{eventId}").hasAuthority("STAFF")
+            .antMatchers(HttpMethod.GET,
+                "/api/client/booking-details/{eventId}").hasAuthority("CLIENT")
+            .antMatchers(HttpMethod.PUT,
+                "/api/staff/update-setup/{eventId}").hasAuthority("STAFF")
+            .anyRequest().authenticated()
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-                http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-        }
+        http.headers().frameOptions().disable();
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edutech.eventmanagementsystem.entity.Event;
 import com.edutech.eventmanagementsystem.service.EventService;
 
-
+@RestController
 public class ClientController {
     
     private final EventService eventService;

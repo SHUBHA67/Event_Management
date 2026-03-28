@@ -13,6 +13,7 @@ import com.edutech.eventmanagementsystem.entity.Event;
 import com.edutech.eventmanagementsystem.service.EventService;
 
 
+@RestController
 public class StaffController {
 
     private final EventService eventService;

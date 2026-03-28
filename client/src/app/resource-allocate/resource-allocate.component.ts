@@ -8,5 +8,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './resource-allocate.component.html',
   styleUrls: ['./resource-allocate.component.scss']
 })
-export class ResourceAllocateComponent 
+export class ResourceAllocateComponent{
+  
+}
 //todo: complete missing code..

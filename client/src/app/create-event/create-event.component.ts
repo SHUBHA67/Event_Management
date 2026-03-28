@@ -10,5 +10,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './create-event.component.html',
   styleUrls: ['./create-event.component.scss']
 })
-export class CreateEventComponent 
+export class CreateEventComponent {
+  
+}
 //doto: complete missing code..
