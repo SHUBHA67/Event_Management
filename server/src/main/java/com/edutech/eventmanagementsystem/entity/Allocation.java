@@ -22,6 +22,23 @@ public class Allocation {
 
     private int quantity;
 
+    
+    public void setAllocationID(Long allocationID) {
+        this.allocationID = allocationID;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Long getAllocationID() {
         return allocationID;
     }
