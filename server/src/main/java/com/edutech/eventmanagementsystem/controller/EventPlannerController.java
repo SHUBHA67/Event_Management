@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.text.html.parser.Entity;
+
 @RestController
 public class EventPlannerController {
 
@@ -29,10 +31,8 @@ public class EventPlannerController {
     @PostMapping("/api/planner/event")
     public ResponseEntity<?> createEvent(@RequestBody Event event) {
         try {
-            eventService.createEvent(event);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Event created successfully");
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+           Event saved = eventService.createEvent(event);
+           return new ResponseEntity<>(saved , HttpStatus.OK);
         } catch (Exception e) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Failed to create event");
@@ -49,10 +49,8 @@ public class EventPlannerController {
     @PostMapping("/api/planner/resource")
     public ResponseEntity<?> addResource(@RequestBody Resource resource) {
         try {
-            resourceService.addResource(resource);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Resource added successfully");
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            Resource result = resourceService.addResource(resource);
+            return ResponseEntity.status(HttpStatus.CREATED).body(result);
         } catch (Exception e) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Failed to add resource");

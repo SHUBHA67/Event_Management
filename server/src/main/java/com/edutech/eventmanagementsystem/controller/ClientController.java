@@ -23,11 +23,9 @@ public class ClientController {
     }
 
     @GetMapping("/api/client/booking-details/{eventId}")
-    public ResponseEntity<List<Event>> getBookingDetails(@PathVariable Long eventId) {
+    public ResponseEntity<Event> getBookingDetails(@PathVariable Long eventId) {
         Event event = eventService.getEventDetails(eventId);
-        List<Event> result = new ArrayList<>();
-        if (event != null) result.add(event);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(event);
     }
 
 
