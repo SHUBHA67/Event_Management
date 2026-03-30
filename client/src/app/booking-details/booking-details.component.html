@@ -1,1 +1,56 @@
-//todo: complete missing code.
+<div class="page-container">
+  <div class="card">
+    <h2>📋 Booking Details</h2>
+    <div class="search-row">
+      <input type="number" [(ngModel)]="formModel.eventID" placeholder="Enter Event ID" />
+      <button class="btn-search" (click)="searchEvent()">Search</button>
+    </div>
+    <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+    <div *ngFor="let event of eventObj" class="booking-card">
+      <div class="booking-header">
+        <h3>{{ event.title }}</h3>
+        <span class="badge">{{ event.status }}</span>
+      </div>
+      <p class="description">{{ event.description }}</p>
+      <div class="booking-meta">
+        <div class="meta-item"><span class="meta-label">📍 Location</span><span>{{ event.location }}</span></div>
+        <div class="meta-item"><span class="meta-label">📅 Date</span><span>{{ event.dateTime | date:'medium' }}</span></div>
+      </div>
+      <div *ngIf="event.allocations && event.allocations.length > 0" class="resources-section">
+        <h4>🔧 Allocated Resources</h4>
+        <table class="data-table">
+          <thead><tr><th>Resource</th><th>Type</th><th>Quantity</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let alloc of event.allocations">
+              <td>{{ alloc.resource?.name }}</td>
+              <td>{{ alloc.resource?.type }}</td>
+              <td>{{ alloc.quantity }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .page-container { padding:24px; max-width:800px; margin:0 auto; }
+  .card { background:#fff; border-radius:12px; padding:28px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+  h2 { color:#333; margin-bottom:20px; }
+  .search-row { display:flex; gap:12px; margin-bottom:20px; }
+  .search-row input { flex:1; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:14px; }
+  .btn-search { padding:10px 24px; background:#6c63ff; color:#fff; border:none; border-radius:8px; cursor:pointer; }
+  .booking-card { border:1px solid #e8ecf0; border-radius:12px; padding:20px; }
+  .booking-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .booking-header h3 { margin:0; color:#333; }
+  .badge { padding:4px 12px; background:#e8f4ff; color:#2980b9; border-radius:20px; font-size:12px; }
+  .description { color:#666; margin-bottom:16px; }
+  .booking-meta { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+  .meta-item { background:#f8f9fa; padding:12px; border-radius:8px; }
+  .meta-label { display:block; font-weight:600; color:#888; font-size:12px; margin-bottom:4px; }
+  .resources-section { margin-top:16px; }
+  .resources-section h4 { color:#444; margin-bottom:12px; }
+  .data-table { width:100%; border-collapse:collapse; }
+  .data-table th, .data-table td { padding:10px 12px; text-align:left; border-bottom:1px solid #f0f0f0; }
+  .data-table th { background:#f8f9fa; color:#666; font-size:13px; }
+  .error-msg { background:#ffeaea; color:#c0392b; padding:10px; border-radius:8px; margin-bottom:16px; }
+</style>

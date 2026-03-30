@@ -1,3 +1,97 @@
-<div class="row text-center">
-<h1 class="text-capitalize">Event Management System</h1>
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="brand">
+            <span class="brand-icon">:date:</span>
+            <h2>EventPro</h2>
+        </div>
+
+        <div class="user-info">
+            <div class="avatar">{{ username?.charAt(0)?.toUpperCase() }}</div>
+            <p class="user-name">{{ username }}</p>
+            <span class="role-badge">{{ roleName }}</span>
+        </div>
+
+        <nav class="nav-menu">
+
+            <!-- PLANNER Menu -->
+            <ng-container *ngIf="roleName === 'PLANNER'">
+                <button class="nav-item" (click)="navigateTo('/create-event')">
+                    <span class="nav-icon">:heavy_plus_sign:</span> Create Event
+                </button>
+                <button class="nav-item" (click)="navigateTo('/add-resource')">
+                    <span class="nav-icon">:package:</span> Add Resource
+                </button>
+                <button class="nav-item" (click)="navigateTo('/allocate-resource')">
+                    <span class="nav-icon">:link:</span> Allocate Resources
+                </button>
+            </ng-container>
+
+            <!-- STAFF Menu -->
+            <ng-container *ngIf="roleName === 'STAFF'">
+                <button class="nav-item" (click)="navigateTo('/view-events')">
+                    <span class="nav-icon">:clipboard:</span> View & Update Events
+                </button>
+            </ng-container>
+
+            <!-- CLIENT Menu -->
+            <ng-container *ngIf="roleName === 'CLIENT'">
+                <button class="nav-item" (click)="navigateTo('/booking-details')">
+                    <span class="nav-icon">:admission_tickets:</span> Booking Details
+                </button>
+            </ng-container>
+
+        </nav>
+
+        <button class="logout-btn" (click)="logout()">
+            <span>:door:</span> Logout
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="welcome-card">
+            <h1>Welcome back, <span class="highlight">{{ username }}</span>! :wave:</h1>
+            <p>You are logged in as <strong>{{ roleName }}</strong>. Use the sidebar to navigate.</p>
+        </div>
+
+        <!-- PLANNER Cards -->
+        <div class="cards-grid" *ngIf="roleName === 'PLANNER'">
+            <div class="card" (click)="navigateTo('/create-event')">
+                <div class="card-icon">:tada:</div>
+                <h3>Create Event</h3>
+                <p>Plan and schedule new events with all details.</p>
+            </div>
+            <div class="card" (click)="navigateTo('/add-resource')">
+                <div class="card-icon">:package:</div>
+                <h3>Add Resource</h3>
+                <p>Register new resources available for allocation.</p>
+            </div>
+            <div class="card" (click)="navigateTo('/allocate-resource')">
+                <div class="card-icon">:link:</div>
+                <h3>Allocate Resources</h3>
+                <p>Assign resources to specific events efficiently.</p>
+            </div>
+        </div>
+
+        <!-- STAFF Cards -->
+        <div class="cards-grid" *ngIf="roleName === 'STAFF'">
+            <div class="card" (click)="navigateTo('/view-events')">
+                <div class="card-icon">:clipboard:</div>
+                <h3>View & Update Events</h3>
+                <p>Search and update event setup details.</p>
+            </div>
+        </div>
+
+        <!-- CLIENT Cards -->
+        <div class="cards-grid" *ngIf="roleName === 'CLIENT'">
+            <div class="card" (click)="navigateTo('/booking-details')">
+                <div class="card-icon">:admission_tickets:</div>
+                <h3>Booking Details</h3>
+                <p>View your event booking information.</p>
+            </div>
+        </div>
+
+    </div>
 </div>

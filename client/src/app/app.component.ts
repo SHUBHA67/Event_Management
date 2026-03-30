@@ -8,23 +8,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  IsLoggin:any=false;
+ IsLoggin: any = false;
   roleName: string | null;
-  constructor(private authService: AuthService, private router:Router)
-  {
-   
-    this.IsLoggin=authService.getLoginStatus;
-    this.roleName=authService.getRole;
-    if(this.IsLoggin==false)
-    {
-      this.router.navigateByUrl('/login'); 
-    
+
+  constructor(private authService: AuthService, private router: Router) {
+    this.IsLoggin = authService.getLoginStatus;
+    this.roleName = authService.getRole;
+    if (this.IsLoggin == false) {
+      this.router.navigateByUrl('/login');
     }
   }
-  logout()
-{
-  this.authService.logout();
-  window.location.reload();
-}
+
+  logout() {
+    this.authService.logout();
+    window.location.reload();
+  }
 
 }

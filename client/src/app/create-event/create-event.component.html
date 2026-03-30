@@ -1,1 +1,75 @@
-//todo: complete missing code.
+<div class="page-container">
+  <div class="card">
+    <h2>🗓️ Create New Event</h2>
+    <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
+    <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Title *</label>
+          <input type="text" formControlName="title" placeholder="Event title" />
+          <div class="error-text" *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">Title is required.</div>
+        </div>
+        <div class="form-group">
+          <label>Location *</label>
+          <input type="text" formControlName="location" placeholder="Event location" />
+          <div class="error-text" *ngIf="itemForm.get('location')?.invalid && itemForm.get('location')?.touched">Location is required.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description *</label>
+        <textarea formControlName="description" placeholder="Event description" rows="3"></textarea>
+        <div class="error-text" *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">Description is required.</div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date & Time *</label>
+          <input type="datetime-local" formControlName="dateTime" />
+          <div class="error-text" *ngIf="itemForm.get('dateTime')?.invalid && itemForm.get('dateTime')?.touched">Date & Time is required.</div>
+        </div>
+        <div class="form-group">
+          <label>Status *</label>
+          <select formControlName="status">
+            <option value="">-- Select Status --</option>
+            <option value="PLANNED">Planned</option>
+            <option value="ONGOING">Ongoing</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="CANCELLED">Cancelled</option>
+          </select>
+          <div class="error-text" *ngIf="itemForm.get('status')?.invalid && itemForm.get('status')?.touched">Status is required.</div>
+        </div>
+      </div>
+      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Create Event</button>
+    </form>
+  </div>
+  <div class="card" *ngIf="eventList.length > 0">
+    <h3>📋 All Events</h3>
+    <table class="data-table">
+      <thead><tr><th>ID</th><th>Title</th><th>Location</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let event of eventList">
+          <td>{{ event.eventID }}</td><td>{{ event.title }}</td>
+          <td>{{ event.location }}</td><td><span class="badge">{{ event.status }}</span></td>
+          <td>{{ event.dateTime | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<style>
+  .page-container { padding:24px; max-width:900px; margin:0 auto; }
+  .card { background:#fff; border-radius:12px; padding:28px; margin-bottom:24px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+  h2,h3 { color:#333; margin-bottom:20px; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-group { margin-bottom:16px; }
+  .form-group label { display:block; color:#555; font-weight:600; margin-bottom:6px; }
+  .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:14px; box-sizing:border-box; }
+  .error-text { color:#e74c3c; font-size:12px; margin-top:4px; }
+  .success-msg { background:#eaffea; color:#27ae60; padding:10px; border-radius:8px; margin-bottom:16px; }
+  .error-msg { background:#ffeaea; color:#c0392b; padding:10px; border-radius:8px; margin-bottom:16px; }
+  .btn-primary { padding:12px 28px; background:#6c63ff; color:#fff; border:none; border-radius:8px; font-size:15px; font-weight:600; cursor:pointer; }
+  .data-table { width:100%; border-collapse:collapse; }
+  .data-table th, .data-table td { padding:12px; text-align:left; border-bottom:1px solid #f0f0f0; font-size:14px; }
+  .data-table th { background:#f8f9fa; font-weight:600; color:#666; }
+  .badge { padding:4px 10px; border-radius:20px; background:#e8f4ff; color:#2980b9; font-size:12px; }
+</style>

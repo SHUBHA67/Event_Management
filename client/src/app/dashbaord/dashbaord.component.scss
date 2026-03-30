@@ -1,0 +1,206 @@
+
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-container {
+display: flex;
+height: 100vh;
+background: #f0f2f5;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+width: 260px;
+background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+display: flex;
+flex-direction: column;
+padding: 24px 16px;
+box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+}
+
+.brand {
+display: flex;
+align-items: center;
+gap: 10px;
+padding-bottom: 24px;
+border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.brand h2 {
+color: #e94560;
+font-size: 22px;
+font-weight: 700;
+letter-spacing: 1px;
+}
+
+.brand-icon {
+font-size: 26px;
+}
+
+.user-info {
+text-align: center;
+padding: 24px 0;
+border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.avatar {
+width: 56px;
+height: 56px;
+background: linear-gradient(135deg, #e94560, #0f3460);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 24px;
+font-weight: 700;
+color: white;
+margin: 0 auto 10px;
+}
+
+.user-name {
+color: #ffffff;
+font-size: 15px;
+font-weight: 600;
+margin-bottom: 6px;
+}
+
+.role-badge {
+background: #e94560;
+color: white;
+font-size: 11px;
+padding: 3px 10px;
+border-radius: 12px;
+font-weight: 600;
+letter-spacing: 0.5px;
+}
+
+.nav-menu {
+flex: 1;
+padding: 20px 0;
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.nav-item {
+display: flex;
+align-items: center;
+gap: 12px;
+background: rgba(255,255,255,0.05);
+border: none;
+color: #cdd6f4;
+padding: 12px 16px;
+border-radius: 10px;
+cursor: pointer;
+font-size: 14px;
+font-weight: 500;
+text-align: left;
+width: 100%;
+transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+background: rgba(233, 69, 96, 0.25);
+color: #ffffff;
+transform: translateX(4px);
+}
+
+.nav-icon {
+font-size: 18px;
+}
+
+.logout-btn {
+display: flex;
+align-items: center;
+gap: 10px;
+justify-content: center;
+background: rgba(233, 69, 96, 0.15);
+border: 1px solid rgba(233, 69, 96, 0.4);
+color: #e94560;
+padding: 12px;
+border-radius: 10px;
+cursor: pointer;
+font-size: 14px;
+font-weight: 600;
+transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+background: #e94560;
+color: white;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+flex: 1;
+padding: 40px;
+overflow-y: auto;
+}
+
+.welcome-card {
+background: white;
+border-radius: 16px;
+padding: 32px 36px;
+margin-bottom: 32px;
+box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+border-left: 5px solid #e94560;
+}
+
+.welcome-card h1 {
+font-size: 26px;
+color: #1a1a2e;
+margin-bottom: 8px;
+}
+
+.welcome-card p {
+color: #666;
+font-size: 15px;
+}
+
+.highlight {
+color: #e94560;
+}
+
+.cards-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+gap: 24px;
+}
+
+.card {
+background: white;
+border-radius: 16px;
+padding: 30px 24px;
+cursor: pointer;
+box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+transition: all 0.3s ease;
+border-top: 4px solid #e94560;
+text-align: center;
+}
+
+.card:hover {
+transform: translateY(-6px);
+box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+}
+
+.card-icon {
+font-size: 42px;
+margin-bottom: 16px;
+}
+
+.card h3 {
+font-size: 17px;
+color: #1a1a2e;
+margin-bottom: 10px;
+font-weight: 700;
+}
+
+.card p {
+color: #888;
+font-size: 13px;
+line-height: 1.5;
+}

@@ -1,1 +1,30 @@
-//todo: complete missing code.
+<div class="row justify-content-center mt-5">
+  <div class="col-md-4">
+    <div class="card p-4 shadow-sm">
+      <h3 class="text-center mb-4">Login</h3>
+      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+      <form [formGroup]="itemForm" (ngSubmit)="onLogin()">
+        <div class="mb-3">
+          <input type="text" id="username" formControlName="username"
+            class="form-control" placeholder="Username" required>
+          <div *ngIf="itemForm.get('username')?.invalid && itemForm.get('username')?.touched"
+            class="text-danger small">
+            Username is required
+          </div>
+        </div>
+        <div class="mb-3">
+          <input type="password" id="password" formControlName="password"
+            class="form-control" placeholder="Password" required>
+          <div *ngIf="itemForm.get('password')?.invalid && itemForm.get('password')?.touched"
+            class="text-danger small">
+            Password is required
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100" [disabled]="itemForm.invalid">Login</button>
+      </form>
+      <p class="text-center mt-3">
+        Don't have an account? <a routerLink="/registration">Register</a>
+      </p>
+    </div>
+  </div>
+</div>

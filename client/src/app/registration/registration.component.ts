@@ -9,46 +9,40 @@ import { HttpService } from '../../services/http.service';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss']
 })
-export class RegistrationComponent  {
+export class RegistrationComponent implements OnInit {
+  itemForm!: FormGroup;
+  responseMessage: string = '';
+  showMessage: boolean = false;
 
-  // implements OnInit
-  // constructor(private httpService:HttpService,private fb:FormBuilder,private router:Router){}
+  constructor(
+    private httpService: HttpService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
-  // itemForm!:FormGroup;
+  ngOnInit(): void {
+    this.itemForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      role: ['', Validators.required]
+    });
+  }
 
-  // ngOnInit(): void {
-    
-  //   this.itemForm=this.fb.group({
-
-  //     username:["",[Validators.required]],
-  //     password:["",Validators.required],
-  //     email:["",[Validators.email,Validators.required]],
-  //     role:["",[Validators.required]]
-
-  //   })
-
-  // }
-  // responseMessage:string="";
-  // showMessage:boolean=false;
-
-  // onRegister():void{
-  //   if(this.itemForm.valid){
-
-  //     this.httpService.registerUser(this.itemForm.value).subscribe(()=>{
-
-  //       this.responseMessage="User Registered successfully";
-
-  //       this.router.navigateByUrl('/login');
-  //     })
-
-
-  //   }
-
-
-
-
-  // }
-
-
+  onRegister(): void {
+    if (this.itemForm.valid) {
+      this.httpService.registerUser(this.itemForm.value).subscribe({
+        next: () => {
+          this.responseMessage = 'User registered successfully';
+          this.showMessage = true;
+          this.router.navigateByUrl('/login');
+        },
+        error: () => {
+          this.responseMessage = 'Registration failed. Please try again.';
+          this.showMessage = true;
+        }
+      });
+    }
+  }
 
 }
