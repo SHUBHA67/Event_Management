@@ -23,23 +23,27 @@
 
 .brand {
     display: flex;
-    align-items: center;
+    flex-direction: row;        // left‑right layout
+    align-items: center;        // vertically centered
+    justify-content: center;    // center the whole group
     gap: 10px;
     padding-bottom: 24px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
 
-.brand h2 {
-    color: #e94560;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
+    .brand-icon {
+        font-size: 2rem;
+        color: white;
+    }
 
-.brand-icon {
-    font-size: 26px;
+    h2 {
+        color: #e94560;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin: 0;
+        text-align: center;
+    }
 }
-
 .user-info {
     text-align: center;
     padding: 24px 0;
@@ -109,7 +113,9 @@
 }
 
 .nav-icon {
-    font-size: 18px;
+    font-size: 1.2rem;
+    vertical-align: middle;
+    margin-right: 6px;
 }
 
 .logout-btn {
@@ -187,8 +193,9 @@
 }
 
 .card-icon {
-    font-size: 42px;
-    margin-bottom: 16px;
+    font-size: 2.8rem;
+    display: block;
+    margin-bottom: 12px;
 }
 
 .card h3 {
@@ -203,3 +210,11 @@
     font-size: 13px;
     line-height: 1.5;
 }
+
+.wave-icon {
+    display: inline-block;
+    animation: wave-animation 2.5s infinite;
+    transform-origin: 70% 70%;
+}
+
+

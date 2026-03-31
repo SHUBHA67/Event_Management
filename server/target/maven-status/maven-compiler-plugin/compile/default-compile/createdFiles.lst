@@ -1,8 +1,10 @@
+<<<<<<< HEAD
 com/edutech/eventmanagementsystem/EventManagementSystemApplication.class
 com/edutech/eventmanagementsystem/repository/ResourceRepository.class
 com/edutech/eventmanagementsystem/service/ResourceService.class
+=======
+>>>>>>> 90fa511359371d1101221aa4bdb247670c7efd7a
 com/edutech/eventmanagementsystem/jwt/JwtUtil.class
-com/edutech/eventmanagementsystem/service/UserService.class
 com/edutech/eventmanagementsystem/repository/UserRepository.class
 com/edutech/eventmanagementsystem/repository/AllocationRepository.class
 com/edutech/eventmanagementsystem/repository/EventRepository.class
