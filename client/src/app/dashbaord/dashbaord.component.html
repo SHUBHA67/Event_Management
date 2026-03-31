@@ -1,10 +1,15 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://jsdelivr.net">
+
+
+
 <div class="dashboard-container">
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="brand">
-            <span class="brand-icon">:date:</span>
-            <h2>EventPro</h2>
+        <div class="brand" >
+            <i class="bi bi-calendar-event brand-icon" style="color: white;"></i>
+            <h2 style="text-align: center;">EventPro</h2>
         </div>
 
         <div class="user-info">
@@ -18,58 +23,59 @@
             <!-- PLANNER Menu -->
             <ng-container *ngIf="roleName === 'PLANNER'">
                 <button class="nav-item" (click)="navigateTo('/create-event')">
-                    <span class="nav-icon">:heavy_plus_sign:</span> Create Event
+                    <i class="bi bi-plus-circle nav-icon"></i> Create Event
                 </button>
                 <button class="nav-item" (click)="navigateTo('/add-resource')">
-                    <span class="nav-icon">:package:</span> Add Resource
+                    <i class="bi bi-box-seam nav-icon"></i> Add Resource
                 </button>
                 <button class="nav-item" (click)="navigateTo('/resource-allocate')">
-                    <span class="nav-icon">:link:</span> Allocate Resources
+                    <i class="bi bi-link-45deg nav-icon" style="font-size: 1.5rem;"></i> Allocate Resources
                 </button>
             </ng-container>
 
             <!-- STAFF Menu -->
             <ng-container *ngIf="roleName === 'STAFF'">
                 <button class="nav-item" (click)="navigateTo('/view-events')">
-                    <span class="nav-icon">:clipboard:</span> View & Update Events
+                    <i class="bi bi-clipboard-check nav-icon"></i> View & Update Events
                 </button>
             </ng-container>
 
             <!-- CLIENT Menu -->
             <ng-container *ngIf="roleName === 'CLIENT'">
                 <button class="nav-item" (click)="navigateTo('/booking-details')">
-                    <span class="nav-icon">:admission_tickets:</span> Booking Details
+                    <i class="bi bi-ticket-perforated nav-icon"></i> Booking Details
                 </button>
             </ng-container>
 
         </nav>
 
         <button class="logout-btn" (click)="logout()">
-            <span>:door:</span> Logout
+            <i class="bi bi-box-arrow-right nav-icon"></i> Logout
         </button>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
         <div class="welcome-card">
-            <h1>Welcome back, <span class="highlight">{{ username }}</span>! :wave:</h1>
+            <h1>Welcome back, <span class="highlight">{{ username }}</span>!
+            </h1>
             <p>You are logged in as <strong>{{ roleName }}</strong>. Use the sidebar to navigate.</p>
         </div>
 
         <!-- PLANNER Cards -->
         <div class="cards-grid" *ngIf="roleName === 'PLANNER'">
             <div class="card" (click)="navigateTo('/create-event')">
-                <div class="card-icon">:tada:</div>
+                <i class="bi bi-calendar-plus card-icon"></i>
                 <h3>Create Event</h3>
                 <p>Plan and schedule new events with all details.</p>
             </div>
             <div class="card" (click)="navigateTo('/add-resource')">
-                <div class="card-icon">:package:</div>
+                <i class="bi bi-box-seam card-icon"></i>
                 <h3>Add Resource</h3>
                 <p>Register new resources available for allocation.</p>
             </div>
             <div class="card" (click)="navigateTo('/resource-allocate')">
-                <div class="card-icon">:link:</div>
+                <i class="bi bi-link-45deg card-icon"></i>
                 <h3>Allocate Resources</h3>
                 <p>Assign resources to specific events efficiently.</p>
             </div>
@@ -78,7 +84,7 @@
         <!-- STAFF Cards -->
         <div class="cards-grid" *ngIf="roleName === 'STAFF'">
             <div class="card" (click)="navigateTo('/view-events')">
-                <div class="card-icon">:clipboard:</div>
+                <i class="bi bi-clipboard-check card-icon"></i>
                 <h3>View & Update Events</h3>
                 <p>Search and update event setup details.</p>
             </div>
@@ -87,11 +93,12 @@
         <!-- CLIENT Cards -->
         <div class="cards-grid" *ngIf="roleName === 'CLIENT'">
             <div class="card" (click)="navigateTo('/booking-details')">
-                <div class="card-icon">:admission_tickets:</div>
+                <i class="bi bi-ticket-perforated card-icon"></i>
                 <h3>Booking Details</h3>
                 <p>View your event booking information.</p>
             </div>
         </div>
 
     </div>
+
 </div>
