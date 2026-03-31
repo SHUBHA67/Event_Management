@@ -1,6 +1,8 @@
 package com.edutech.eventmanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ResourceCondition;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,15 +49,25 @@ public class EventPlannerController {
     }
 
     @PostMapping("/api/planner/resource")
-    public ResponseEntity<?> addResource(@RequestBody Resource resource) {
+    public ResponseEntity<?> addResource(@RequestBody Resource resource) throws Exception {
+ 
+        
         try {
+
+            //added if condition here
+
+            
             Resource result = resourceService.addResource(resource);
             return ResponseEntity.status(HttpStatus.CREATED).body(result);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             Map<String, String> response = new HashMap<>();
+
+
             response.put("message", "Failed to add resource");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+       
     }
 
     @GetMapping("/api/planner/resources")

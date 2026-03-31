@@ -57,6 +57,17 @@ public class ResourceService {
   }
 
 
+  //new added today
+  // public boolean checkResource(String name)
+  // {
+  //    Resource existing = resourceRepository.findByName(name);
+
+  //    if(existing.getName().equals(name)) return true;
+
+  //    return false;
+  // }
+
+
 
   
 }

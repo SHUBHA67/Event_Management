@@ -3,10 +3,11 @@ package com.edutech.eventmanagementsystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edutech.eventmanagementsystem.entity.Allocation;
 import com.edutech.eventmanagementsystem.entity.Event;
 import com.edutech.eventmanagementsystem.repository.EventRepository;
 
-import javax.persistence.EntityNotFoundException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,18 @@ public class EventService {
             existing.setDescription(updatedEvent.getDescription());
             existing.setDateTime(updatedEvent.getDateTime());
             existing.setLocation(updatedEvent.getLocation());
+            
+
+            // if(existing.getStatus().equals("COMPLETED")){
+            //     for (Allocation a  : existing.getAllocations()) {
+
+            //         a.getResource().setAvailability(true);
+                    
+            //     } 
+            // }
+            
             existing.setStatus(updatedEvent.getStatus());
+        
             return eventRepository.save(existing);
         }
         return null;
