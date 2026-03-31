@@ -1,50 +1,26 @@
-<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-  <a class="navbar-brand" href="#">Angular Event Management System</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav me-auto" *ngIf="IsLoggin">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-      </li>
-      <li class="nav-item" *ngIf="roleName === 'PLANNER'">
-        <a class="nav-link" routerLink="/create-event" routerLinkActive="active">Create Event</a>
-      </li>
-      <li class="nav-item" *ngIf="roleName === 'PLANNER'">
-        <a class="nav-link" routerLink="/add-resource" routerLinkActive="active">Add Resource</a>
-      </li>
-      <li class="nav-item" *ngIf="roleName === 'PLANNER'">
-        <a class="nav-link" routerLink="/resource-allocate" routerLinkActive="active">Allocate Resources</a>
-      </li>
-      <li class="nav-item" *ngIf="roleName === 'PLANNER'">
-        <a class="nav-link" routerLink="/view-events" routerLinkActive="active">View Events</a>
-      </li>
-      <li class="nav-item" *ngIf="roleName === 'STAFF'">
-        <a class="nav-link" routerLink="/view-events" routerLinkActive="active">View Events</a>
-      </li>
-      <li class="nav-item" *ngIf="roleName === 'CLIENT'">
-        <a class="nav-link" routerLink="/booking-details" routerLinkActive="active">Booking Details</a>
-      </li>
-    </ul>
-
-    <ul class="navbar-nav ms-auto">
-      <li class="nav-item" *ngIf="!IsLoggin">
-        <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
-      </li>
-      <li class="nav-item" *ngIf="!IsLoggin">
-        <a class="nav-link" routerLink="/registration" routerLinkActive="active">Register</a>
-      </li>
-      <li class="nav-item" *ngIf="IsLoggin">
-        <a class="nav-link" style="cursor:pointer" (click)="logout()">Logout</a>
-      </li>
-    </ul>
+<div *ngIf="IsLoggin" class="navbar">
+  <div class="nav-brand">🎯 Event Manager</div>
+  <div class="nav-links">
+    <ng-container *ngIf="roleName === 'PLANNER'">
+      <a routerLink="/create-event" routerLinkActive="active">Create Event</a>
+      <a routerLink="/add-resource" routerLinkActive="active">Add Resource</a>
+      <a routerLink="/resource-allocate" routerLinkActive="active">Allocate Resource</a>
+    </ng-container>
+    <ng-container *ngIf="roleName === 'STAFF'">
+      <a routerLink="/view-events" routerLinkActive="active">View Events</a>
+    </ng-container>
+    <ng-container *ngIf="roleName === 'CLIENT'">
+      <a routerLink="/booking-details" routerLinkActive="active">Booking Details</a>
+    </ng-container>
+    <button class="btn-logout" (click)="logout()">Logout</button>
   </div>
-</nav>
-
-<body>
-  <div class="container mt-4 mx-5">
-    <router-outlet></router-outlet>
-  </div>
-</body> -->
+</div>
+<router-outlet></router-outlet>
+<style>
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:14px 28px; background:#2c3e50; color:#fff; }
+  .nav-brand { font-size:18px; font-weight:700; }
+  .nav-links { display:flex; gap:16px; align-items:center; }
+  .nav-links a { color:#bdc3c7; text-decoration:none; font-size:14px; padding:6px 12px; border-radius:6px; }
+  .nav-links a:hover, .nav-links a.active { background:#3d5166; color:#fff; }
+  .btn-logout { padding:7px 16px; background:#e74c3c; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:13px; }
+</style>

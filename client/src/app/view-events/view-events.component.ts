@@ -32,34 +32,34 @@ export class ViewEventsComponent{
     });
   }
 
-//   ngOnInit(): void {}
+  ngOnInit(): void {}
 
-//   searchEvent(): void {
-//     // if (this.formModel.eventID) {
-//     //   this.httpService.GetEventdetails(this.formModel.eventID).subscribe(
-//     //     (res: any) => { this.eventObj = [res]; this.showError = false; },
-//     //     (err: any) => { this.showError = true; this.errorMessage = 'Event not found.'; }
-//     //   );
-//     // }
-//   }
+  searchEvent(): void {
+    if (this.formModel.eventID) {
+      this.httpService.GetEventdetails(this.formModel.eventID).subscribe(
+        (res: any) => { this.eventObj = [res]; this.showError = false; },
+        (err: any) => { this.showError = true; this.errorMessage = 'Event not found.'; }
+      );
+    }
+  }
 
-//   edit(val: any): void {
-//   //   this.isUpdate = true;
-//   //   const dateTime = val.dateTime ? new Date(val.dateTime).toISOString().slice(0, 16) : '';
-//   //   this.itemForm.patchValue({ title: val.title, description: val.description, dateTime, location: val.location, status: val.status });
-//   // }
-//   }
+  edit(val: any): void {
+    this.isUpdate = true;
+    const dateTime = val.dateTime ? new Date(val.dateTime).toISOString().slice(0, 16) : '';
+    this.itemForm.patchValue({ title: val.title, description: val.description, dateTime, location: val.location, status: val.status });
+  }
+  
 
-//   onSubmit(): void {
-//   //   if (this.itemForm.valid) {
-//   //     this.httpService.updateEvent(this.itemForm.value, this.formModel.eventID).subscribe(
-//   //       (res: any) => { this.showMessage = true; this.responseMessage = 'Event updated successfully'; console.log(this.responseMessage); this.itemForm.reset(); this.isUpdate = false; },
-//   //       (err: any) => { this.showError = true; this.errorMessage = 'Failed to update event.'; }
-//   //     );
-//   //   }
-//   // }
-// }
+  onSubmit(): void {
+    if (this.itemForm.valid) {
+      this.httpService.updateEvent(this.itemForm.value, this.formModel.eventID).subscribe(
+        (res: any) => { this.showMessage = true; this.responseMessage = 'Event updated successfully'; console.log(this.responseMessage); this.itemForm.reset(); this.isUpdate = false; },
+        (err: any) => { this.showError = true; this.errorMessage = 'Failed to update event.'; }
+      );
+    }
+  }
 }
+
 
   
 //todo: complete missing code..

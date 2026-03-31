@@ -12,38 +12,35 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  itemForm!: FormGroup;
-  errorMessage: string = '';
+  itemForm: FormGroup;
+  formModel: any = {};
+  showError: boolean = false;
+  errorMessage: any;
 
-  constructor(
-    private fb: FormBuilder,
-    private httpService: HttpService,
-    private authService: AuthService,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
-    this.itemForm = this.fb.group({
+  constructor(public router: Router, public httpService: HttpService,
+    private formBuilder: FormBuilder, private authService: AuthService) {
+    this.itemForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
+  ngOnInit(): void {}
+
   onLogin(): void {
     if (this.itemForm.valid) {
-      this.httpService.Login(this.itemForm.value).subscribe({
-        next: (response: any) => {
-          this.authService.setToken(response.token);
-          this.authService.setRole(response.role);
-          this.authService.setUsername(response.username);
-          this.router.navigateByUrl('/dashboard');
-          window.location.reload();
+      this.httpService.Login(this.itemForm.value).subscribe(
+        (res: any) => {
+          this.authService.setToken(res.token);
+          this.authService.setRole(res.role);
+          this.authService.setUsername(res.username)
+          this.router.navigate(['/dashboard']);
+          setTimeout(() => window.location.reload(), 1000);
         },
-        error: () => {
-          this.errorMessage = 'Invalid username or password';
-        }
-      });
+        (err: any) => { this.showError = true; this.errorMessage = 'Invalid username or password'; }
+      );
     }
   }
 
+  registration(): void { this.router.navigate(['/registration']); }
 }

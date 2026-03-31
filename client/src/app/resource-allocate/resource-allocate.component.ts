@@ -31,29 +31,29 @@ export class ResourceAllocateComponent implements OnInit {
   ngOnInit(): void { this.getResources(); this.getEvent(); }
 
   getEvent(): void {
-    // this.httpService.GetAllevents().subscribe(
-    //   (res: any) => { this.eventList = res; },
-    //   (err: any) => { console.error('Failed to load events', err); }
-    // );
+    this.httpService.GetAllevents().subscribe(
+      (res: any) => { this.eventList = res; },
+      (err: any) => { console.error('Failed to load events', err); }
+    );
   }
 
   getResources(): void {
-    // this.httpService.GetAllResources().subscribe(
-    //   (res: any) => { this.resourceList = res; },
-    //   (err: any) => { console.error('Failed to load resources', err); }
-    // );
+    this.httpService.GetAllResources().subscribe(
+      (res: any) => { this.resourceList = res; },
+      (err: any) => { console.error('Failed to load resources', err); }
+    );
   }
 
   onSubmit(): void {
-  //   if (this.itemForm.valid) {
-  //     const { eventId, resourceId, quantity } = this.itemForm.value;
-  //     this.httpService.allocateResources(eventId, resourceId, { quantity }).subscribe(
-  //       (res: any) => { this.showMessage = true; this.responseMessage = res.message || 'Resource allocated successfully'; console.log(this.responseMessage); this.itemForm.reset(); },
-  //       (err: any) => { this.showError = true; this.errorMessage = 'Failed to allocate resource.'; }
-  //     );
-  //   }
-  // }
+    if (this.itemForm.valid) {
+      const { eventId, resourceId, quantity } = this.itemForm.value;
+      this.httpService.allocateResources(eventId, resourceId, { quantity }).subscribe(
+        (res: any) => { this.showMessage = true; this.responseMessage = res.message || 'Resource allocated successfully'; console.log(this.responseMessage); this.itemForm.reset(); },
+        (err: any) => { this.showError = true; this.errorMessage = 'Failed to allocate resource.'; }
+      );
+    }
   }
+  
 }
 
 //todo: complete missing code

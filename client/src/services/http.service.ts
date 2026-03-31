@@ -57,29 +57,29 @@ export class HttpService {
     });
   }
 
-  // public allocateResources(eventId: any, resourceId: any, details: any): Observable<any> {
-  //   return this.http.post(
-  //     `${this.serverName}/api/planner/allocate-resources?eventId=${eventId}&resourceId=${resourceId}`,
-  //     details,
-  //     { headers: this.getHeaders() }
-  //   );
-  // }
+  public allocateResources(eventId: any, resourceId: any, details: any): Observable<any> {
+    return this.http.post(
+      `${this.serverName}/api/planner/allocate-resources?eventId=${eventId}&resourceId=${resourceId}`,
+      details,
+      { headers: this.getHeaders() }
+    );
+  }
 
-  // public GetEventdetails(eventId: any): Observable<any> {
-  //   return this.http.get(`${this.serverName}/api/staff/event-details/${eventId}`, {
-  //     headers: this.getHeaders()
-  //   });
-  // }
+  public GetEventdetails(eventId: any): Observable<any> {
+    return this.http.get(`${this.serverName}/api/staff/event-details/${eventId}`, {
+      headers: this.getHeaders()
+    });
+  }
 
-  // public updateEvent(details: any, eventId: any): Observable<any> {
-  //   return this.http.put(`${this.serverName}/api/staff/update-setup/${eventId}`, details, {
-  //     headers: this.getHeaders()
-  //   });
-  // }
+  public updateEvent(details: any, eventId: any): Observable<any> {
+    return this.http.put(`${this.serverName}/api/staff/update-setup/${eventId}`, details, {
+      headers: this.getHeaders()
+    });
+  }
 
-  // public getBookingDetails(eventId: any): Observable<any> {
-  //   return this.http.get(`${this.serverName}/api/client/booking-details/${eventId}`, {
-  //     headers: this.getHeaders()
-  //   });
-  // }
+  public getBookingDetails(eventId: any): Observable<any> {
+    return this.http.get(`${this.serverName}/api/client/booking-details/${eventId}`, {
+      headers: this.getHeaders()
+    });
+  }
 }

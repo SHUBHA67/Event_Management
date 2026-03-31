@@ -27,7 +27,7 @@ export class BookingDetailsComponent implements OnInit {
   searchEvent(): void {
     if (this.formModel.eventID) {
       this.httpService.getBookingDetails(this.formModel.eventID).subscribe(
-        (res: any) => { this.eventObj = res; this.showError = false; },
+        (res: any) => { this.eventObj = Array.isArray(res) ? res : [res]; this.showError = false; }, // 
         (err: any) => { this.showError = true; this.errorMessage = 'Booking not found.'; }
       );
     }
