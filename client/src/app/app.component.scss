@@ -1,0 +1,105 @@
+/* ========== NAVBAR BASE ========== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+  background: #2c3e50;
+  color: #fff;
+  position: relative;
+  z-index: 1000;
+}
+
+.nav-brand {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+
+  a {
+    color: #bdc3c7;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 6px;
+
+    &:hover,
+    &.active {
+      background: #3d5166;
+      color: #fff;
+    }
+  }
+}
+
+.btn-logout {
+  padding: 7px 16px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+/* ========== HAMBURGER BUTTON ========== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  width: 26px;
+
+  span {
+    display: block;
+    height: 3px;
+    background: #fff;
+    border-radius: 3px;
+    transition: 0.3s ease;
+  }
+
+  &.open {
+    span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+  }
+}
+
+/* ========== MOBILE MENU ========== */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #2c3e50;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 220px;
+    padding: 20px;
+    gap: 14px;
+    transform: translateX(100%);
+    transition: 0.3s ease;
+    box-shadow: -2px 0 6px rgba(0, 0, 0, 0.2);
+
+    &.open {
+      transform: translateX(0%);
+    }
+  }
+}

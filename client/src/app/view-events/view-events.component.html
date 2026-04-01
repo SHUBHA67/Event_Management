@@ -1,48 +1,67 @@
 <div class="page-container">
   <div class="card">
     <h2>🔍 Search Event Details</h2>
+
     <div class="search-row">
       <input type="number" [(ngModel)]="formModel.eventID" placeholder="Enter Event ID" />
       <button class="btn-search" (click)="searchEvent()">Search</button>
     </div>
+
     <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
     <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
+
     <div *ngFor="let event of eventObj" class="event-detail-card">
       <div class="event-detail-header">
         <h3>{{ event.title }}</h3>
         <span class="badge">{{ event.status }}</span>
       </div>
+
       <p>{{ event.description }}</p>
+
       <div class="event-meta">
         <span>📍 {{ event.location }}</span>
         <span>📅 {{ event.dateTime | date:'medium' }}</span>
       </div>
+
       <button class="btn-edit" (click)="edit(event)">✏️ Edit Event</button>
     </div>
   </div>
+
   <div class="card" *ngIf="isUpdate">
     <h3>✏️ Update Event</h3>
+
     <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
       <div class="form-group">
         <label>Title *</label>
         <input type="text" formControlName="title" />
-        <div class="error-text" *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">Title is required.</div>
+        <div class="error-text"
+             *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">
+          Title is required.
+        </div>
       </div>
+
       <div class="form-group">
         <label>Description *</label>
         <textarea formControlName="description" rows="3"></textarea>
-        <div class="error-text" *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">Description is required.</div>
+        <div class="error-text"
+             *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">
+          Description is required.
+        </div>
       </div>
+
       <div class="form-row">
         <div class="form-group">
           <label>Date & Time *</label>
           <input type="datetime-local" formControlName="dateTime" />
         </div>
+
         <div class="form-group">
           <label>Location *</label>
           <input type="text" formControlName="location" />
         </div>
       </div>
+
       <div class="form-group">
         <label>Status *</label>
         <select formControlName="status">
@@ -53,28 +72,11 @@
           <option value="CANCELLED">Cancelled</option>
         </select>
       </div>
-      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Update Event</button>
+
+      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">
+        Update Event
+      </button>
+
     </form>
   </div>
 </div>
-<style>
-  .page-container { padding:24px; max-width:800px; margin:0 auto; }
-  .card { background:#fff; border-radius:12px; padding:28px; margin-bottom:24px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
-  h2,h3 { color:#333; margin-bottom:20px; }
-  .search-row { display:flex; gap:12px; margin-bottom:16px; }
-  .search-row input { flex:1; padding:10px 14px; border:1px solid #ddd; border-radius:8px; font-size:14px; }
-  .btn-search { padding:10px 24px; background:#3498db; color:#fff; border:none; border-radius:8px; cursor:pointer; }
-  .event-detail-card { border:1px solid #e0e0e0; border-radius:10px; padding:20px; margin-top:16px; }
-  .event-detail-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-  .event-meta { display:flex; gap:20px; color:#888; font-size:13px; margin:10px 0; }
-  .badge { padding:4px 12px; background:#e8f4ff; color:#2980b9; border-radius:20px; font-size:12px; }
-  .btn-edit { padding:8px 18px; background:#f39c12; color:#fff; border:none; border-radius:6px; cursor:pointer; margin-top:8px; }
-  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  .form-group { margin-bottom:16px; }
-  .form-group label { display:block; color:#555; font-weight:600; margin-bottom:6px; }
-  .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:14px; box-sizing:border-box; }
-  .error-text { color:#e74c3c; font-size:12px; margin-top:4px; }
-  .success-msg { background:#eaffea; color:#27ae60; padding:10px; border-radius:8px; margin-bottom:16px; }
-  .error-msg { background:#ffeaea; color:#c0392b; padding:10px; border-radius:8px; margin-bottom:16px; }
-  .btn-primary { padding:12px 28px; background:#6c63ff; color:#fff; border:none; border-radius:8px; font-size:15px; cursor:pointer; }
-</style>

@@ -1,19 +1,30 @@
 <div class="page-container">
   <div class="card">
     <h2>🔧 Add New Resource</h2>
+
     <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
     <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+
     <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
       <div class="form-group">
         <label>Resource Name *</label>
         <input type="text" formControlName="name" placeholder="Enter resource name" />
-        <div class="error-text" *ngIf="itemForm.get('name')?.invalid && itemForm.get('name')?.touched">Name is required.</div>
+        <div class="error-text"
+          *ngIf="itemForm.get('name')?.invalid && itemForm.get('name')?.touched">
+          Name is required.
+        </div>
       </div>
+
       <div class="form-group">
         <label>Resource Type *</label>
         <input type="text" formControlName="type" placeholder="Enter resource type" />
-        <div class="error-text" *ngIf="itemForm.get('type')?.invalid && itemForm.get('type')?.touched">Type is required.</div>
+        <div class="error-text"
+          *ngIf="itemForm.get('type')?.invalid && itemForm.get('type')?.touched">
+          Type is required.
+        </div>
       </div>
+
       <div class="form-group">
         <label>Availability *</label>
         <select formControlName="availability">
@@ -21,38 +32,50 @@
           <option value="true">Available</option>
           <option value="false">Not Available</option>
         </select>
-        <div class="error-text" *ngIf="itemForm.get('availability')?.invalid && itemForm.get('availability')?.touched">Availability is required.</div>
+        <div class="error-text"
+          *ngIf="itemForm.get('availability')?.invalid && itemForm.get('availability')?.touched">
+          Availability is required.
+        </div>
       </div>
-      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Add Resource</button>
+
+      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">
+        Add Resource
+      </button>
+
     </form>
   </div>
+
+  <!-- Resources Table -->
   <div class="card" *ngIf="resourceList.length > 0">
     <h3>📦 All Resources</h3>
-    <table class="data-table">
-      <thead><tr><th>ID</th><th>Name</th><th>Type</th><th>Availability</th></tr></thead>
-      <tbody>
-        <tr *ngFor="let res of resourceList">
-          <td>{{ res.resourceID }}</td><td>{{ res.name }}</td><td>{{ res.type }}</td>
-          <td><span [ngClass]="res.availability ? 'badge-green' : 'badge-red'">{{ res.availability ? 'Available' : 'Unavailable' }}</span></td>
-        </tr>
-      </tbody>
-    </table>
+
+    <!-- ⭐ TABLE RESPONSIVE WRAPPER ADDED -->
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Availability</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let res of resourceList">
+            <td>{{ res.resourceID }}</td>
+            <td>{{ res.name }}</td>
+            <td>{{ res.type }}</td>
+            <td>
+              <span [ngClass]="res.availability ? 'badge-green' : 'badge-red'">
+                {{ res.availability ? 'Available' : 'Unavailable' }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
   </div>
 </div>
-<style>
-  .page-container { padding:24px; max-width:800px; margin:0 auto; }
-  .card { background:#fff; border-radius:12px; padding:28px; margin-bottom:24px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
-  h2,h3 { color:#333; margin-bottom:20px; }
-  .form-group { margin-bottom:16px; }
-  .form-group label { display:block; color:#555; font-weight:600; margin-bottom:6px; }
-  .form-group input, .form-group select { width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:14px; box-sizing:border-box; }
-  .error-text { color:#e74c3c; font-size:12px; margin-top:4px; }
-  .success-msg { background:#eaffea; color:#27ae60; padding:10px; border-radius:8px; margin-bottom:16px; }
-  .error-msg { background:#ffeaea; color:#c0392b; padding:10px; border-radius:8px; margin-bottom:16px; }
-  .btn-primary { padding:12px 28px; background:#6c63ff; color:#fff; border:none; border-radius:8px; font-size:15px; cursor:pointer; }
-  .data-table { width:100%; border-collapse:collapse; }
-  .data-table th, .data-table td { padding:12px; text-align:left; border-bottom:1px solid #f0f0f0; }
-  .data-table th { background:#f8f9fa; color:#666; }
-  .badge-green { padding:4px 10px; border-radius:20px; background:#eaffea; color:#27ae60; font-size:12px; }
-  .badge-red { padding:4px 10px; border-radius:20px; background:#ffeaea; color:#c0392b; font-size:12px; }
-</style>
+

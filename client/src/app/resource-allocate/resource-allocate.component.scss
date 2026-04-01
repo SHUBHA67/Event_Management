@@ -1,0 +1,89 @@
+ .page-container {
+    padding: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    display: block;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .error-text {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  .success-msg {
+    background: #eaffea;
+    color: #27ae60;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .error-msg {
+    background: #ffeaea;
+    color: #c0392b;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .btn-primary {
+    padding: 12px 28px;
+    background: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  /* ⭐ MOBILE RESPONSIVE (≤480px) */
+  @media (max-width: 480px) {
+
+    .page-container {
+      padding: 16px;  /* Reduced padding */
+    }
+
+    .card {
+      padding: 20px;  /* Reduced card padding */
+    }
+
+    .btn-primary {
+      width: 100%;   /* Full-width button */
+      padding: 12px;
+      font-size: 16px;
+    }
+  }

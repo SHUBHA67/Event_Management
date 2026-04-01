@@ -12,6 +12,9 @@ export class DashbaordComponent implements OnInit {
   roleName: string | null = null;
   username: string | null = null;
 
+  // ✅ Added for mobile sidebar
+  sidebarOpen: boolean = false;
+
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
@@ -23,8 +26,20 @@ export class DashbaordComponent implements OnInit {
     }
   }
 
+  // ✅ Toggle sidebar (open/close)
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  // ✅ Close sidebar (used after navigation)
+  closeSidebar(): void {
+    this.sidebarOpen = false;
+  }
+
+  // Updated: Auto-close sidebar on mobile
   navigateTo(path: string): void {
     this.router.navigate([path]);
+    this.closeSidebar();
   }
 
   logout(): void {

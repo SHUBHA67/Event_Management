@@ -1,3 +1,140 @@
 a{
     cursor: pointer;
 }
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 16px; /* ✅ ADDED so the card doesn’t touch screen edges */
+  }
+
+  .login-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .login-header h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+
+  .login-header p {
+    color: #888;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  .form-group label {
+    display: block;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .form-group input:focus {
+    border-color: #6c63ff;
+    outline: none;
+  }
+
+  .error-text {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  .alert-error {
+    background: #ffeaea;
+    border: 1px solid #e74c3c;
+    color: #c0392b;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background: #574fd6;
+  }
+
+  .btn-primary:disabled {
+    background: #bbb;
+    cursor: not-allowed;
+  }
+
+  .register-link {
+    text-align: center;
+    margin-top: 16px;
+    color: #888;
+    font-size: 14px;
+  }
+
+  /* ===========================
+     MOBILE (≤480px)
+  =========================== */
+  @media (max-width: 480px) {
+    .login-card {
+      padding: 24px; /* smaller padding */
+      border-radius: 12px;
+    }
+
+    .login-header h2 {
+      font-size: 20px;
+    }
+
+    .login-header p {
+      font-size: 13px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+    }
+
+    .form-group input {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+
+    .btn-primary {
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    .register-link {
+      font-size: 13px;
+    }
+  }
