@@ -1,6 +1,9 @@
 package com.edutech.eventmanagementsystem.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users") // do not change table name
 public class User {
@@ -9,10 +12,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(nullable = false)
+    @JsonIgnore   // Never expose password in API responses
     private String password;
+
+    @Column(nullable = false)
     private String role;
+
     private String email;
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -53,5 +65,4 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }

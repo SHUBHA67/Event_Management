@@ -11,10 +11,14 @@ import { HttpService } from '../../services/http.service';
 export class RegistrationComponent implements OnInit {
 
   itemForm!: FormGroup;
+
   responseMessage: string = '';
   showMessage: boolean = false;
 
-  // 👇 Needed for eye icon show/hide feature
+  // 🔄 Loading state for submit button
+  isLoading: boolean = false;
+
+  // 👁️ Show / hide password
   showPassword: boolean = false;
 
   constructor(
@@ -24,6 +28,13 @@ export class RegistrationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    // 🚫 Redirect if already logged in
+    if (localStorage.getItem('token')) {
+      this.router.navigateByUrl('/');
+      return;
+    }
+
     this.itemForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, this.passwordValidator]],
@@ -33,7 +44,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   // 👁️ Toggle password visibility
-  togglePassword() {
+  togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
 
@@ -52,21 +63,31 @@ export class RegistrationComponent implements OnInit {
     return passwordValid ? null : { passwordStrength: true };
   }
 
+  // ✅ Register user
   onRegister(): void {
-    if (this.itemForm.valid) {
-      this.httpService.registerUser(this.itemForm.value).subscribe({
-        next: () => {
-          this.responseMessage = 'User registered successfully';
-          this.showMessage = true;
-
-          // Navigate to login
-          this.router.navigateByUrl('/login');
-        },
-        error: () => {
-          this.responseMessage = 'Registration failed. Please try again.';
-          this.showMessage = true;
-        }
-      });
+    if (this.itemForm.invalid) {
+      return;
     }
+
+    this.isLoading = true;
+    this.showMessage = false;
+
+    this.httpService.registerUser(this.itemForm.value).subscribe({
+      next: () => {
+        this.isLoading = false;
+
+        // ✅ Success toast/snackbar
+        this.responseMessage = 'Account created! Redirecting to login...';
+        this.showMessage = true;
+
+        // ⏳ Delay redirect so message is visib
+      },
+      error: () => {
+        this.isLoading = false;
+
+        this.responseMessage = 'Registration failed. Please try again.';
+        this.showMessage = true;
+      }
+    });
   }
 }

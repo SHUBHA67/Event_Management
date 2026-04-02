@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthService {
 
- private tokenKey = 'token';
+  private tokenKey = 'token';
   private roleKey = 'role';
   private usernameKey = 'username';
+
+  /* -------------------- Token -------------------- */
+
 
   setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
@@ -17,18 +19,35 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
+  
+
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.exp * 1000 < Date.now();
+    } catch {
+      return true;
+    }
+  }
+
+  get getLoginStatus(): boolean {
+    return !!this.getToken() && !this.isTokenExpired();
+  }
+
+  /* -------------------- Role -------------------- */
 
   setRole(role: string): void {
     localStorage.setItem(this.roleKey, role);
   }
 
-  get getRole(): string | null {
+  getRole(): string | null {
     return localStorage.getItem(this.roleKey);
   }
 
-  get getLoginStatus(): boolean {
-    return !!localStorage.getItem(this.tokenKey);
-  }
+  /* -------------------- Username -------------------- */
 
   setUsername(username: string): void {
     localStorage.setItem(this.usernameKey, username);
@@ -38,15 +57,25 @@ export class AuthService {
     return localStorage.getItem(this.usernameKey);
   }
 
+  /* -------------------- User Info from JWT -------------------- */
+
+  getUserId(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.userId || payload.id || null;
+    } catch {
+      return null;
+    }
+  }
+
+  /* -------------------- Logout -------------------- */
+
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.roleKey);
     localStorage.removeItem(this.usernameKey);
   }
 }
-
-
-
-
-
-

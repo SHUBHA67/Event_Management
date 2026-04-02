@@ -9,14 +9,17 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './add-resource.component.html',
   styleUrls: ['./add-resource.component.scss']
 })
-
 export class AddResourceComponent implements OnInit {
-itemForm: FormGroup;
+
+  itemForm: FormGroup;
   resourceList: any[] = [];
-  showMessage  = false;
-  showError    = false;
+
+  showMessage = false;
+  showError   = false;
   responseMessage = '';
   errorMessage    = '';
+
+  isLoading = false; // ✅ NEW: loading state for submit button
 
   constructor(
     public router: Router,
@@ -25,42 +28,70 @@ itemForm: FormGroup;
     private authService: AuthService
   ) {
     this.itemForm = this.formBuilder.group({
-      name:          ['', Validators.required],
-      type:          ['', Validators.required],
-      // totalQuantity replaces the old boolean availability toggle
+      name: ['', Validators.required],
+      type: ['', Validators.required],
       totalQuantity: ['', [Validators.required, Validators.min(1)]]
     });
   }
 
-  ngOnInit(): void { this.getResource(); }
+  ngOnInit(): void {
+    this.getResource();
+  }
 
   getResource(): void {
-    this.httpService.GetAllResources().subscribe({
-      next: (res: any) => { this.resourceList = res; },
-      error: ()        => { this.showError = true; this.errorMessage = 'Failed to load resources.'; }
+    this.httpService.getAllResources().subscribe({
+      next: (res: any) => {
+        this.resourceList = res;
+      },
+      error: () => {
+        this.showError = true;
+        this.errorMessage = 'Failed to load resources.';
+        this.autoClearMessages();
+      }
     });
   }
 
   onSubmit(): void {
-    if (this.itemForm.invalid) return;
+    if (this.itemForm.invalid || this.isLoading) return;
 
-    // Backend derives availability from totalQuantity automatically
+    this.isLoading = true;
+    this.showMessage = false;
+    this.showError = false;
+
     const payload = {
-      name:          this.itemForm.value.name,
-      type:          this.itemForm.value.type,
+      name: this.itemForm.value.name,
+      type: this.itemForm.value.type,
       totalQuantity: +this.itemForm.value.totalQuantity,
-      allocatedQuantity: 0  // always starts at 0
+      allocatedQuantity: 0
     };
 
     this.httpService.addResource(payload).subscribe({
-      next: (res: any) => {
-        this.showMessage     = true;
+      next: () => {
+        this.showMessage = true;
         this.responseMessage = 'Resource added successfully';
         this.itemForm.reset();
         this.getResource();
+        this.isLoading = false;
+        this.autoClearMessages();
       },
-      error: () => { this.showError = true; this.errorMessage = 'Failed to add resource.'; }
+      error: () => {
+        this.showError = true;
+        this.errorMessage = 'Failed to add resource.';
+        this.isLoading = false;
+        this.autoClearMessages();
+      }
     });
   }
-}
 
+  /**
+   * ✅ Clears success & error messages after 3 seconds
+   */
+  private autoClearMessages(): void {
+    setTimeout(() => {
+      this.showMessage = false;
+      this.showError = false;
+      this.responseMessage = '';
+      this.errorMessage = '';
+    }, 3000);
+  }
+}

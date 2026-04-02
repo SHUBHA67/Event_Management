@@ -9,7 +9,7 @@ import { HttpService } from '../../services/http.service';
 })
 export class BrowseEventsComponent implements OnInit {
 
-  allEvents:any[] = [];
+  allEvents: any[] = [];
   filteredEvents: any[] = [];
 
   activeFilter = 'ALL';
@@ -18,17 +18,26 @@ export class BrowseEventsComponent implements OnInit {
   showError    = false;
   errorMessage = '';
 
-  constructor(private httpService: HttpService, private router: Router) {}
+  isLoading = true;
+
+  constructor(
+    private httpService: HttpService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
+
     this.httpService.browseEvents().subscribe({
       next: (res: any) => {
         this.allEvents = res;
         this.applyFilter();
+        this.isLoading = false;
       },
       error: () => {
         this.showError    = true;
         this.errorMessage = 'Failed to load events.';
+        this.isLoading = false;
       }
     });
   }

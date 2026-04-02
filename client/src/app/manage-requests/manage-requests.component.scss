@@ -1,305 +1,329 @@
 .page-container {
-    padding: 24px;
-    max-width: 900px;
-    margin: 0 auto;
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 28px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 h2 {
-    color: #333;
-    margin-bottom: 20px;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-/* Filter tabs */
+
 .filter-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
 
-    button {
-        padding: 7px 16px;
-        border: 1px solid #ddd;
-        border-radius: 20px;
-        background: #f8f9fa;
-        color: #666;
-        cursor: pointer;
-        font-size: 13px;
+  button {
+    padding: 7px 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background: #f8f9fa;
+    color: #666;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s ease;
 
-        &.active {
-            background: #6c63ff;
-            color: #fff;
-            border-color: #6c63ff;
-        }
-
-        &:hover:not(.active) {
-            background: #eee;
-        }
+    &.active {
+      background: #6c63ff;
+      color: #fff;
+      border-color: #6c63ff;
     }
+
+    &:hover:not(.active) {
+      background: #eee;
+    }
+  }
 }
 
 .empty-state {
-    color: #aaa;
-    text-align: center;
-    padding: 40px 0;
+  color: #aaa;
+  text-align: center;
+  padding: 40px 0;
 }
 
-/* Request card */
+/* =====================================================
+   Request Card
+===================================================== */
+
 .request-card {
-    border: 1px solid #e8ecf0;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
+  border: 1px solid #e8ecf0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
 }
 
 .request-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
 
-    h3 {
-        margin: 0;
-        color: #333;
-    }
+  h3 {
+    margin: 0;
+    color: #333;
+  }
 
-    .client-name {
-        color: #888;
-        font-size: 13px;
-    }
+  .client-name {
+    color: #888;
+    font-size: 13px;
+  }
 }
 
 .req-desc {
-    color: #666;
-    margin-bottom: 12px;
-    font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+  font-size: 14px;
 }
 
 .req-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    color: #888;
-    font-size: 13px;
-    margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: #888;
+  font-size: 13px;
+  margin-bottom: 12px;
 }
 
 .req-resources {
-    background: #f8f9fa;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 13px;
-    margin-bottom: 12px;
-    color: #555;
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  color: #555;
 }
 
 .rejection-reason {
-    background: #ffeaea;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 13px;
-    color: #c0392b;
-    margin-bottom: 12px;
+  background: #ffeaea;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #c0392b;
+  margin-bottom: 12px;
 }
 
-/* Action buttons */
+/* =====================================================
+   Action Buttons
+===================================================== */
+
 .action-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
 }
 
 .btn-review {
-    padding: 8px 16px;
-    background: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+  padding: 8px 16px;
+  background: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .btn-approve {
-    padding: 8px 16px;
-    background: #27ae60;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+  padding: 8px 16px;
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 
-    &:disabled {
-        background: #bbb;
-        cursor: not-allowed;
-    }
+  &:disabled {
+    background: #bbb;
+    cursor: not-allowed;
+  }
 }
 
 .btn-reject {
-    padding: 8px 16px;
-    background: #e74c3c;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+  padding: 8px 16px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 
-    &:disabled {
-        background: #bbb;
-        cursor: not-allowed;
-    }
+  &:disabled {
+    background: #bbb;
+    cursor: not-allowed;
+  }
 }
 
 .btn-cancel {
-    padding: 8px 16px;
-    background: #95a5a6;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+  padding: 8px 16px;
+  background: #95a5a6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .btn-add-row {
-    padding: 6px 14px;
-    background: #f0f0f0;
-    border: 1px dashed #ccc;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 8px;
-    font-size: 13px;
+  padding: 6px 14px;
+  background: #f0f0f0;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-size: 13px;
 }
 
 .btn-remove {
-    padding: 6px 10px;
-    background: #ffeaea;
-    color: #c0392b;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+  padding: 6px 10px;
+  background: #ffeaea;
+  color: #c0392b;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-/* Approve / reject panels */
+/* =====================================================
+   Approve / Reject Panels (Expandable Inline Panels)
+===================================================== */
+
 .approve-panel,
 .reject-panel {
-    margin-top: 16px;
-    padding: 16px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
+  margin-top: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
 
-    h4 {
-        color: #333;
-        margin-bottom: 12px;
-    }
+  h4 {
+    color: #333;
+    margin-bottom: 12px;
+  }
 }
 
-.alloc-row {
-    display: grid;
-    grid-template-columns: 1fr 100px 40px;
-    gap: 8px;
-    margin-bottom: 8px;
-    align-items: center;
+/* =====================================================
+   Allocation Rows
+===================================================== */
 
-    select,
-    input {
-        padding: 8px 10px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 13px;
-        box-sizing: border-box;
-        width: 100%;
-    }
+.alloc-row {
+  display: grid;
+  grid-template-columns: 1fr 100px 40px;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+
+  select,
+  input {
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 .panel-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
 }
 
 .hint {
-    color: #aaa;
-    font-size: 12px;
-    margin-bottom: 10px;
-    display: block;
+  color: #aaa;
+  font-size: 12px;
+  margin-bottom: 10px;
+  display: block;
 }
 
-/* Badges */
+/* =====================================================
+   Badges
+===================================================== */
+
 .badge-yellow {
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: #fff8e1;
-    color: #f39c12;
-    font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: #fff8e1;
+  color: #f39c12;
+  font-size: 12px;
 }
 
 .badge-blue {
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: #e8f4ff;
-    color: #2980b9;
-    font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: #e8f4ff;
+  color: #2980b9;
+  font-size: 12px;
 }
 
 .badge-green {
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: #eaffea;
-    color: #27ae60;
-    font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: #eaffea;
+  color: #27ae60;
+  font-size: 12px;
 }
 
 .badge-red {
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: #ffeaea;
-    color: #c0392b;
-    font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: #ffeaea;
+  color: #c0392b;
+  font-size: 12px;
 }
 
-/* Messages */
+/* =====================================================
+   Messages
+===================================================== */
+
 .success-msg {
-    background: #eaffea;
-    color: #27ae60;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 16px;
+  background: #eaffea;
+  color: #27ae60;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
 }
 
 .error-msg {
-    background: #ffeaea;
-    color: #c0392b;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 16px;
+  background: #ffeaea;
+  color: #c0392b;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
 }
 
+/* =====================================================
+   Responsive
+===================================================== */
+
 @media (max-width: 480px) {
-    .alloc-row {
-        grid-template-columns: 1fr;
-    }
+  .alloc-row {
+    grid-template-columns: 1fr;
+  }
 
-    .action-row,
-    .panel-actions {
-        flex-direction: column;
-    }
+  .action-row,
+  .panel-actions {
+    flex-direction: column;
+  }
 
-    .btn-review,
-    .btn-approve,
-    .btn-reject,
-    .btn-cancel {
-        width: 100%;
-    }
+  .btn-review,
+  .btn-approve,
+  .btn-reject,
+  .btn-cancel {
+    width: 100%;
+  }
 }

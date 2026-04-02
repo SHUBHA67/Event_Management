@@ -1,26 +1,18 @@
 package com.edutech.eventmanagementsystem.controller;
 
-
 import java.util.List;
-
+import java.util.Map;
+import java.util.HashMap;
+import java.security.Principal;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.edutech.eventmanagementsystem.entity.Event;
-import com.edutech.eventmanagementsystem.service.EventService;
-
-import com.edutech.eventmanagementsystem.entity.EventRequest;
-import com.edutech.eventmanagementsystem.service.EventRequestService;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.HashMap;
-
-import java.util.Map;
+import com.edutech.eventmanagementsystem.entity.Event;
+import com.edutech.eventmanagementsystem.entity.EventRequest;
+import com.edutech.eventmanagementsystem.service.EventService;
+import com.edutech.eventmanagementsystem.service.EventRequestService;
 
 @RestController
 @RequestMapping("/api/client")
@@ -30,33 +22,42 @@ public class ClientController {
     private final EventRequestService eventRequestService;
 
     public ClientController(EventService eventService,
-            EventRequestService eventRequestService) {
+                            EventRequestService eventRequestService) {
         this.eventService = eventService;
         this.eventRequestService = eventRequestService;
     }
 
-    // ── Existing: view booking/event details by ID ──────────────────
+    // ── Existing: View booking / event details by ID ────────────────
     @GetMapping("/booking-details/{eventId}")
     public ResponseEntity<Event> getBookingDetails(@PathVariable Long eventId) {
         Event event = eventService.getEventDetails(eventId);
         return ResponseEntity.ok(event);
     }
 
-    // ── NEW: Browse all PLANNED / upcoming events ───────────────────
+    // ── Browse all planned / upcoming events ───────────────────────
     @GetMapping("/events")
     public ResponseEntity<List<Event>> browseEvents() {
         List<Event> events = eventService.getAllEvents();
         return ResponseEntity.ok(events);
     }
 
-    // ── NEW: Submit an event request ───────────────────────────────
-    // Principal gives us the logged-in client's username from JWT
+    // ── Submit an event request ────────────────────────────────────
+    // NOTE (future improvement): Accept a DTO instead of EventRequest entity
     @PostMapping("/event-request")
     public ResponseEntity<?> submitRequest(@RequestBody EventRequest request,
-            Principal principal) {
+                                           Principal principal) {
+
+        if (principal == null) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", "Unauthorized: user not authenticated");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
+        }
+
         try {
-            EventRequest saved = eventRequestService.submitRequest(request, principal.getName());
+            EventRequest saved =
+                    eventRequestService.submitRequest(request, principal.getName());
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+
         } catch (Exception e) {
             Map<String, String> err = new HashMap<>();
             err.put("message", "Failed to submit request: " + e.getMessage());
@@ -64,10 +65,18 @@ public class ClientController {
         }
     }
 
-    // ── NEW: Client views their own requests and statuses ──────────
+    // ── Client views their own requests and statuses ────────────────
     @GetMapping("/my-requests")
-    public ResponseEntity<List<EventRequest>> getMyRequests(Principal principal) {
-        List<EventRequest> requests = eventRequestService.getClientRequests(principal.getName());
+    public ResponseEntity<?> getMyRequests(Principal principal) {
+
+        if (principal == null) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", "Unauthorized: user not authenticated");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
+        }
+
+        List<EventRequest> requests =
+                eventRequestService.getClientRequests(principal.getName());
         return ResponseEntity.ok(requests);
     }
 }

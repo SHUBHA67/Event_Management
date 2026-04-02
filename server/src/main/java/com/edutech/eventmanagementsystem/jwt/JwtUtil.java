@@ -3,34 +3,42 @@ package com.edutech.eventmanagementsystem.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.jsonwebtoken.security.Keys;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.edutech.eventmanagementsystem.entity.User;
-import com.edutech.eventmanagementsystem.repository.UserRepository;
-
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-// public class JwtUtil {
-
-// }
-import io.jsonwebtoken.*;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 @Component
 public class JwtUtil {
 
-   private final String SECRET_KEY ="secretKey000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    // app.jwt.secret="secretKey000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    // app.jwt.expiration=86400000;
+
+
+    // @Value("${app.jwt.secret}")
+    // private String secretKey;
+
+    // @Value("${app.jwt.expiration}")
+    // private long jwtExpiration;
+
+
+    
+    @Value("${app.jwt.secret:secretKey00000000000000000000000000000000000000000000000000000000}")
+    private String secretKey;
+
+    @Value("${app.jwt.expiration:86400000}")
+    private long jwtExpiration;
+
+
+    // ===================== TOKEN EXTRACTION =====================
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -46,12 +54,18 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
+
+    // ===================== TOKEN CREATION =====================
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -63,14 +77,21 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 843000))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
+    // ===================== TOKEN VALIDATION =====================
+
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
+    // ===================== KEY HANDLING =====================
+
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    }
 }

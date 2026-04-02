@@ -5,7 +5,10 @@ import com.edutech.eventmanagementsystem.dto.RejectRequestDTO;
 import com.edutech.eventmanagementsystem.entity.*;
 import com.edutech.eventmanagementsystem.repository.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -19,10 +22,10 @@ public class EventRequestService {
     private final AllocationRepository allocationRepository;
 
     public EventRequestService(EventRequestRepository eventRequestRepository,
-            UserRepository userRepository,
-            EventRepository eventRepository,
-            ResourceRepository resourceRepository,
-            AllocationRepository allocationRepository) {
+                               UserRepository userRepository,
+                               EventRepository eventRepository,
+                               ResourceRepository resourceRepository,
+                               AllocationRepository allocationRepository) {
         this.eventRequestRepository = eventRequestRepository;
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
@@ -30,13 +33,23 @@ public class EventRequestService {
         this.allocationRepository = allocationRepository;
     }
 
+    // ── Utility: Convert LocalDateTime → java.util.Date ─────────────
+    private Date toDate(LocalDateTime ldt) {
+        return Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    // ── Utility: Convert java.util.Date → LocalDateTime ─────────────
+    private LocalDateTime toLocalDateTime(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
     // ── CLIENT: Submit a new event request ──────────────────────────
     public EventRequest submitRequest(EventRequest request, String clientUsername) {
         User client = userRepository.findByUsername(clientUsername);
         request.setClient(client);
         request.setStatus("PENDING");
-        request.setSubmittedAt(new Date());
-        request.setUpdatedAt(new Date());
+        request.setSubmittedAt(toDate(LocalDateTime.now()));   // :white_check_mark: Fix #1 & #2
+        request.setUpdatedAt(toDate(LocalDateTime.now()));     // :white_check_mark: Fix #2
         return eventRequestRepository.save(request);
     }
 
@@ -61,12 +74,12 @@ public class EventRequestService {
         EventRequest req = eventRequestRepository.findById(requestId)
                 .orElseThrow(() -> new RuntimeException("Request not found"));
         req.setStatus("UNDER_REVIEW");
-        req.setUpdatedAt(new Date());
+        req.setUpdatedAt(toDate(LocalDateTime.now()));         // :white_check_mark: Fix #2
         return eventRequestRepository.save(req);
     }
 
     // ── PLANNER: Approve request ────────────────────────────────────
-    // This creates the actual Event, allocates resources, links them back
+    @Transactional
     public EventRequest approveRequest(Long requestId, ApproveRequestDTO dto) {
 
         EventRequest req = eventRequestRepository.findById(requestId)
@@ -75,13 +88,15 @@ public class EventRequestService {
         // 1. Validate all requested allocations have enough available quantity
         for (ApproveRequestDTO.AllocationItem item : dto.getAllocations()) {
             Resource resource = resourceRepository.findById(item.getResourceId())
-                    .orElseThrow(() -> new RuntimeException("Resource not found: " + item.getResourceId()));
+                    .orElseThrow(() -> new RuntimeException(
+                            "Resource not found: " + item.getResourceId()));
 
             int available = resource.getAvailableQuantity();
             if (available < item.getQuantity()) {
                 throw new RuntimeException(
                         "Not enough quantity for resource: " + resource.getName() +
-                                ". Available: " + available + ", Requested: " + item.getQuantity());
+                                ". Available: " + available +
+                                ", Requested: " + item.getQuantity());
             }
         }
 
@@ -90,7 +105,7 @@ public class EventRequestService {
         event.setTitle(req.getEventTitle());
         event.setDescription(req.getEventDescription());
         event.setLocation(req.getEventLocation());
-        event.setDateTime(req.getEventDate());
+        event.setDateTime(toLocalDateTime(req.getEventDate())); // ✅ Fix #3
         event.setStatus("PLANNED");
         Event savedEvent = eventRepository.save(event);
 
@@ -99,12 +114,12 @@ public class EventRequestService {
             Resource resource = resourceRepository.findById(item.getResourceId())
                     .orElseThrow(() -> new RuntimeException("Resource not found"));
 
-            // Deduct from available pool
-            resource.setAllocatedQuantity(resource.getAllocatedQuantity() + item.getQuantity());
-            resource.recalculateAvailability(); // flip availability if pool hits 0
+            resource.setAllocatedQuantity(
+                    resource.getAllocatedQuantity() + item.getQuantity()
+            );
+            resource.recalculateAvailability();
             resourceRepository.save(resource);
 
-            // Save allocation record
             Allocation allocation = new Allocation();
             allocation.setEvent(savedEvent);
             allocation.setResource(resource);
@@ -115,7 +130,7 @@ public class EventRequestService {
         // 4. Update request status and link to event
         req.setStatus("APPROVED");
         req.setLinkedEvent(savedEvent);
-        req.setUpdatedAt(new Date());
+        req.setUpdatedAt(toDate(LocalDateTime.now()));         // :white_check_mark: Fix #2
         return eventRequestRepository.save(req);
     }
 
@@ -130,12 +145,11 @@ public class EventRequestService {
 
         req.setStatus("REJECTED");
         req.setRejectionReason(dto.getRejectionReason());
-        req.setUpdatedAt(new Date());
+        req.setUpdatedAt(toDate(LocalDateTime.now()));         // :white_check_mark: Fix #2
         return eventRequestRepository.save(req);
     }
 
     // ── Called when Event status becomes COMPLETED ──────────────────
-    // Releases all allocated resources back to the pool
     public void releaseResourcesOnCompletion(Long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
@@ -144,9 +158,8 @@ public class EventRequestService {
             Resource resource = allocation.getResource();
             int released = allocation.getQuantity();
 
-            // Return quantity to available pool
             int newAllocated = resource.getAllocatedQuantity() - released;
-            resource.setAllocatedQuantity(Math.max(newAllocated, 0)); // never go below 0
+            resource.setAllocatedQuantity(Math.max(newAllocated, 0));
             resource.recalculateAvailability();
             resourceRepository.save(resource);
         }

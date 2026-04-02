@@ -1,38 +1,65 @@
 <div class="page-container">
   <div class="card">
-    <h2>📋 Booking Details</h2>
+    <h2>📋 My Booking Requests</h2>
+    <p class="sub-title">
+      Showing all your <strong>approved</strong> event bookings
+    </p>
 
+    <!-- 🔍 Search by Event Title -->
     <div class="search-row">
-      <input type="number" [(ngModel)]="formModel.eventID" placeholder="Enter Event ID" />
-      <button class="btn-search" (click)="searchEvent()">Search</button>
+      <input
+        type="text"
+        [(ngModel)]="searchTitle"
+        placeholder="Search by event title"
+      />
+      <button class="btn-search" (click)="searchEvent()">
+        Search
+      </button>
     </div>
 
-    <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+    <!-- ❌ Error Message -->
+    <div class="error-msg" *ngIf="showError">
+      {{ errorMessage }}
+    </div>
 
+    <!-- 🧾 No Bookings -->
+    <div *ngIf="eventObj?.length === 0 && !showError" class="empty-state">
+      <p>😕 You don’t have any approved bookings yet.</p>
+    </div>
+
+    <!-- 📦 Booking Cards -->
     <div *ngFor="let event of eventObj" class="booking-card">
       <div class="booking-header">
         <h3>{{ event.title }}</h3>
-        <span class="badge">{{ event.status }}</span>
+        <span class="badge approved">
+          {{ event.status }}
+        </span>
       </div>
 
-      <p class="description">{{ event.description }}</p>
+      <p class="description">
+        {{ event.description }}
+      </p>
 
+      <!-- 📌 Event Meta -->
       <div class="booking-meta">
         <div class="meta-item">
           <span class="meta-label">📍 Location</span>
           <span>{{ event.location }}</span>
         </div>
+
         <div class="meta-item">
-          <span class="meta-label">📅 Date</span>
-          <span>{{ event.dateTime | date:'medium' }}</span>
+          <span class="meta-label">📅 Date & Time</span>
+          <span>{{ event.dateTime | date: 'medium' }}</span>
         </div>
       </div>
 
-      <!-- ⭐ Resources Section -->
-      <div *ngIf="event.allocations && event.allocations.length > 0" class="resources-section">
+      <!-- 🔧 Allocated Resources -->
+      <div
+        *ngIf="event.allocations && event.allocations.length > 0"
+        class="resources-section"
+      >
         <h4>🔧 Allocated Resources</h4>
 
-        <!-- ⭐ TABLE RESPONSIVE WRAPPER ADDED -->
         <div class="table-responsive">
           <table class="data-table">
             <thead>
@@ -51,9 +78,15 @@
             </tbody>
           </table>
         </div>
+      </div>
 
+      <!-- 💤 No Resources -->
+      <div
+        *ngIf="!event.allocations || event.allocations.length === 0"
+        class="no-resources"
+      >
+        <p>ℹ️ No resources allocated for this event.</p>
       </div>
     </div>
   </div>
 </div>
-

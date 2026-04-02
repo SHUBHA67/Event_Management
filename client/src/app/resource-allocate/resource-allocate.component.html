@@ -2,52 +2,73 @@
   <div class="card">
     <h2>🔗 Allocate Resources to Event</h2>
 
+    <!-- Messages -->
     <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
     <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
 
     <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
+      <!-- Select Event -->
       <div class="form-group">
-        <label>Select Event *</label>
-        <select formControlName="eventId">
+        <label>Select Event <span class="req">*</span></label>
+
+        <select formControlName="eventId" [disabled]="isLoadingEvents || isSubmitting">
           <option value="">-- Select Event --</option>
           <option *ngFor="let event of eventList" [value]="event.eventID">
             {{ event.title }}
           </option>
         </select>
+
+        <div class="hint" *ngIf="isLoadingEvents">Loading events...</div>
+
         <div class="error-text"
-             *ngIf="itemForm.get('eventId')?.invalid && itemForm.get('eventId')?.touched">
+             *ngIf="eventCtrl?.touched && eventCtrl?.invalid">
           Event is required.
         </div>
       </div>
 
+      <!-- Select Resource -->
       <div class="form-group">
-        <label>Select Resource *</label>
-        <select formControlName="resourceId">
+        <label>Select Resource <span class="req">*</span></label>
+
+        <select formControlName="resourceId" [disabled]="isLoadingResources || isSubmitting">
           <option value="">-- Select Resource --</option>
-          <option *ngFor="let res of resourceList" [value]="res.resourceID">
+
+          <option *ngFor="let res of resourceList"
+                  [value]="res.resourceID"
+                  [disabled]="(res.totalQuantity - res.allocatedQuantity) <= 0">
             {{ res.name }} ({{ res.type }})
+            — Available: {{ res.totalQuantity - res.allocatedQuantity }}
           </option>
         </select>
+
+        <div class="hint" *ngIf="isLoadingResources">Loading resources...</div>
+
         <div class="error-text"
-             *ngIf="itemForm.get('resourceId')?.invalid && itemForm.get('resourceId')?.touched">
+             *ngIf="resourceCtrl?.touched && resourceCtrl?.invalid">
           Resource is required.
         </div>
-      </div>
 
-      <div class="form-group">
-        <label>Quantity *</label>
-        <input type="number" formControlName="quantity" placeholder="Enter quantity" min="1" />
-        <div class="error-text"
-             *ngIf="itemForm.get('quantity')?.invalid && itemForm.get('quantity')?.touched">
-          Quantity is required.
+        <!-- Remaining Quantity Display -->
+        <div class="info-text" *ngIf="remainingQuantity !== null">
+          Remaining Quantity:
+          <b>{{ remainingQuantity }}</b>
         </div>
       </div>
 
-      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">
-        Allocate Resource
-      </button>
+      <!-- Quantity -->
+      <div class="form-group">
+        <label>Quantity <span class="req">*</span></label>
 
-    </form>
-  </div>
-</div>
+        <input type="number"
+               formControlName="quantity"
+               placeholder="Enter quantity"
+               min="1"
+               [max]="remainingQuantity ?? null"
+               [disabled]="isSubmitting"
+        />
+
+        <!-- Quantity validations -->
+        <div class="error-text"
+             *ngIf="quantityCtrl?.touched && quantityCtrl?.invalid">
+

@@ -12,7 +12,7 @@
           <label>Title *</label>
           <input type="text" formControlName="title" placeholder="Event title" />
           <div class="error-text"
-            *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">
+               *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">
             Title is required.
           </div>
         </div>
@@ -21,7 +21,7 @@
           <label>Location *</label>
           <input type="text" formControlName="location" placeholder="Event location" />
           <div class="error-text"
-            *ngIf="itemForm.get('location')?.invalid && itemForm.get('location')?.touched">
+               *ngIf="itemForm.get('location')?.invalid && itemForm.get('location')?.touched">
             Location is required.
           </div>
         </div>
@@ -29,9 +29,13 @@
 
       <div class="form-group">
         <label>Description *</label>
-        <textarea formControlName="description" placeholder="Event description" rows="3"></textarea>
+        <textarea
+          formControlName="description"
+          rows="3"
+          placeholder="Event description">
+        </textarea>
         <div class="error-text"
-          *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">
+             *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">
           Description is required.
         </div>
       </div>
@@ -41,7 +45,7 @@
           <label>Date & Time *</label>
           <input type="datetime-local" formControlName="dateTime" />
           <div class="error-text"
-            *ngIf="itemForm.get('dateTime')?.invalid && itemForm.get('dateTime')?.touched">
+               *ngIf="itemForm.get('dateTime')?.invalid && itemForm.get('dateTime')?.touched">
             Date & Time is required.
           </div>
         </div>
@@ -56,13 +60,23 @@
             <option value="CANCELLED">Cancelled</option>
           </select>
           <div class="error-text"
-            *ngIf="itemForm.get('status')?.invalid && itemForm.get('status')?.touched">
+               *ngIf="itemForm.get('status')?.invalid && itemForm.get('status')?.touched">
             Status is required.
           </div>
         </div>
       </div>
 
-      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Create Event</button>
+      <!-- ✅ SUBMIT BUTTON WITH LOADING SPINNER -->
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="itemForm.invalid || isLoading">
+
+        <span *ngIf="!isLoading">Create Event</span>
+        <span *ngIf="isLoading">
+          <span class="spinner"></span> Creating...
+        </span>
+      </button>
 
     </form>
   </div>
@@ -70,7 +84,6 @@
   <div class="card" *ngIf="eventList.length > 0">
     <h3>📋 All Events</h3>
 
-    <!-- ⭐ TABLE RESPONSIVE WRAPPER ADDED -->
     <div class="table-responsive">
       <table class="data-table">
         <thead>
@@ -88,7 +101,20 @@
             <td>{{ event.eventID }}</td>
             <td>{{ event.title }}</td>
             <td>{{ event.location }}</td>
-            <td><span class="badge">{{ event.status }}</span></td>
+
+            <!-- ✅ COLOR-CODED STATUS BADGE -->
+            <td>
+              <span
+                [ngClass]="{
+                  'badge-blue':  event.status === 'PLANNED',
+                  'badge-green': event.status === 'ONGOING',
+                  'badge-grey':  event.status === 'COMPLETED',
+                  'badge-red':   event.status === 'CANCELLED'
+                }">
+                {{ event.status }}
+              </span>
+            </td>
+
             <td>{{ event.dateTime | date:'short' }}</td>
           </tr>
         </tbody>

@@ -9,9 +9,12 @@ import java.util.List;
 @Repository
 public interface EventRequestRepository extends JpaRepository<EventRequest, Long> {
 
+    // Client sees their own requests
+    List<EventRequest> findByClientId(Long clientId);
+
     // Planner sees all requests by status
     List<EventRequest> findByStatus(String status);
 
-    // Client sees their own requests (by their user id)
-    List<EventRequest> findByClientId(Long clientId);
+    // Client sees their requests ordered by latest submission
+    List<EventRequest> findByClientIdOrderBySubmittedAtDesc(Long clientId);
 }

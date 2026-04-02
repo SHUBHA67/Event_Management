@@ -1,122 +1,220 @@
-.page-container { padding:24px; max-width:900px; margin:0 auto; }
+/* Page layout */
+.page-container {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Card */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings */
+h2,
+h3 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Form grid */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  color: #555;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Validation messages */
+.error-text {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Status messages */
+.success-msg {
+  background: #eaffea;
+  color: #27ae60;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.error-msg {
+  background: #ffeaea;
+  color: #c0392b;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+/* Primary button */
+.btn-primary {
+  padding: 12px 28px;
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:disabled {
+    background: #b8b5ff;
+    cursor: not-allowed;
+  }
+}
+
+/* =====================================
+   Badge styles
+===================================== */
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge-blue {
+  background: #e8f4ff;
+  color: #2980b9;
+}
+
+.badge-green {
+  background: #eaffea;
+  color: #27ae60;
+}
+
+.badge-grey {
+  background: #f1f1f1;
+  color: #7f8c8d;
+}
+
+.badge-red {
+  background: #ffeaea;
+  color: #c0392b;
+}
+
+/* =====================================
+   Table responsiveness
+===================================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+
+.data-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #666;
+}
+
+/* =====================================
+   Loading spinner (isLoading)
+===================================== */
+.isLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid #e0e0e0;
+  border-top-color: #6c63ff;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =====================================
+   Responsive Breakpoints
+===================================== */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 16px;
+  }
 
   .card {
-    background:#fff;
-    border-radius:12px;
-    padding:28px;
-    margin-bottom:24px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.08);
+    padding: 22px;
   }
-
-  h2, h3 { color:#333; margin-bottom:20px; }
 
   .form-row {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:16px;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .page-container {
+    padding: 12px;
   }
 
-  .form-group { margin-bottom:16px; }
-
-  .form-group label {
-    display:block;
-    color:#555;
-    font-weight:600;
-    margin-bottom:6px;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width:100%;
-    padding:10px 12px;
-    border:1px solid #ddd;
-    border-radius:8px;
-    font-size:14px;
-    box-sizing:border-box;
-  }
-
-  .error-text {
-    color:#e74c3c;
-    font-size:12px;
-    margin-top:4px;
-  }
-
-  .success-msg {
-    background:#eaffea;
-    color:#27ae60;
-    padding:10px;
-    border-radius:8px;
-    margin-bottom:16px;
-  }
-
-  .error-msg {
-    background:#ffeaea;
-    color:#c0392b;
-    padding:10px;
-    border-radius:8px;
-    margin-bottom:16px;
+  .card {
+    padding: 20px;
+    border-radius: 10px;
   }
 
   .btn-primary {
-    padding:12px 28px;
-    background:#6c63ff;
-    color:#fff;
-    border:none;
-    border-radius:8px;
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-  }
-
-  /* ⭐ Table responsiveness */
-  .table-responsive {
-    width:100%;
-    overflow-x:auto;
-  }
-
-  .data-table {
-    width:100%;
-    border-collapse:collapse;
-    min-width:600px;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px;
   }
 
   .data-table th,
   .data-table td {
-    padding:12px;
-    text-align:left;
-    border-bottom:1px solid #f0f0f0;
-    font-size:14px;
+    font-size: 13px;
+    padding: 10px;
   }
-
-  .data-table th {
-    background:#f8f9fa;
-    font-weight:600;
-    color:#666;
-  }
-
-  .badge {
-    padding:4px 10px;
-    border-radius:20px;
-    background:#e8f4ff;
-    color:#2980b9;
-    font-size:12px;
-  }
-
-  /* ⭐ Mobile adjustments (≤480px) */
-  @media (max-width: 480px) {
-
-    .form-row {
-      grid-template-columns:1fr; /* stack to 1-column */
-    }
-
-    .btn-primary {
-      width:100%; /* full width button */
-      padding:12px;
-      font-size:16px;
-    }
-
-    .card {
-      padding:20px;
-    }
-  }
+}

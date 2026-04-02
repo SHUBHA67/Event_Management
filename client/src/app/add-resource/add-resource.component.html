@@ -1,45 +1,77 @@
 <div class="page-container">
+  <!-- Add Resource Card -->
   <div class="card">
     <h2>🔧 Add New Resource</h2>
 
-    <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-    <div class="error-msg"   *ngIf="showError">{{ errorMessage }}</div>
+    <div class="success-msg" *ngIf="showMessage">
+      {{ responseMessage }}
+    </div>
+    <div class="error-msg" *ngIf="showError">
+      {{ errorMessage }}
+    </div>
 
     <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
+      <!-- Resource Name -->
       <div class="form-group">
         <label>Resource Name *</label>
-        <input type="text" formControlName="name" placeholder="Enter resource name" />
-        <div class="error-text"
-             *ngIf="itemForm.get('name')?.invalid && itemForm.get('name')?.touched">
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Enter resource name"
+        />
+        <div
+          class="error-text"
+          *ngIf="itemForm.get('name')?.invalid && itemForm.get('name')?.touched"
+        >
           Name is required.
         </div>
       </div>
 
+      <!-- Resource Type -->
       <div class="form-group">
         <label>Resource Type *</label>
-        <input type="text" formControlName="type" placeholder="e.g. Audio, Furniture, AV" />
-        <div class="error-text"
-             *ngIf="itemForm.get('type')?.invalid && itemForm.get('type')?.touched">
+        <input
+          type="text"
+          formControlName="type"
+          placeholder="e.g. Audio, Furniture, AV"
+        />
+        <div
+          class="error-text"
+          *ngIf="itemForm.get('type')?.invalid && itemForm.get('type')?.touched"
+        >
           Type is required.
         </div>
       </div>
 
-      <!-- NEW: Total Quantity -->
+      <!-- Total Quantity -->
       <div class="form-group">
         <label>Total Quantity *</label>
-        <input type="number" formControlName="totalQuantity" placeholder="e.g. 10" min="1" />
-        <small class="hint">How many units of this resource do you have in total?</small>
-        <div class="error-text"
-             *ngIf="itemForm.get('totalQuantity')?.invalid && itemForm.get('totalQuantity')?.touched">
+        <input
+          type="number"
+          formControlName="totalQuantity"
+          placeholder="e.g. 10"
+          min="1"
+        />
+        <small class="hint">
+          How many units of this resource do you have in total?
+        </small>
+
+        <div
+          class="error-text"
+          *ngIf="itemForm.get('totalQuantity')?.invalid && itemForm.get('totalQuantity')?.touched"
+        >
           Quantity must be at least 1.
         </div>
       </div>
 
-      <!-- Availability is now auto-derived; no manual toggle needed -->
-
-      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">
-        Add Resource
+      <!-- Submit Button with Spinner Text -->
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="itemForm.invalid || isLoading"
+      >
+        {{ isLoading ? 'Adding...' : 'Add Resource' }}
       </button>
 
     </form>
@@ -57,21 +89,42 @@
             <th>Name</th>
             <th>Type</th>
             <th>Total</th>
-            <th>Allocated</th>
+            <th>Allocation</th>
             <th>Available</th>
             <th>Status</th>
           </tr>
         </thead>
+
         <tbody>
           <tr *ngFor="let res of resourceList">
             <td>{{ res.resourceID }}</td>
             <td>{{ res.name }}</td>
             <td>{{ res.type }}</td>
             <td>{{ res.totalQuantity }}</td>
-            <td>{{ res.allocatedQuantity }}</td>
-            <td>{{ res.totalQuantity - res.allocatedQuantity }}</td>
+
+            <!-- Allocation Progress Bar -->
             <td>
-              <span [ngClass]="res.availability ? 'badge-green' : 'badge-red'">
+              <div class="progress-bar-wrapper">
+                <div
+                  class="progress-bar-fill"
+                  [style.width.%]="(res.allocatedQuantity / res.totalQuantity) * 100"
+                ></div>
+                <span>
+                  {{ res.allocatedQuantity }}/{{ res.totalQuantity }}
+                </span>
+              </div>
+            </td>
+
+            <!-- Available Quantity -->
+            <td>
+              {{ res.totalQuantity - res.allocatedQuantity }}
+            </td>
+
+            <!-- Status Badge -->
+            <td>
+              <span
+                [ngClass]="res.availability ? 'badge-green' : 'badge-red'"
+              >
                 {{ res.availability ? 'Available' : 'Unavailable' }}
               </span>
             </td>

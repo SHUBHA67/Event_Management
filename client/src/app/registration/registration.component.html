@@ -1,3 +1,9 @@
+<!-- Bootstrap Icons CDN -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+/>
+
 <div class="register-container">
   <div class="register-card">
 
@@ -15,13 +21,16 @@
       <!-- Username Field -->
       <div class="form-group">
         <label>Username</label>
-        <input type="text" formControlName="username" placeholder="Enter username" />
+        <input
+          type="text"
+          formControlName="username"
+          placeholder="Enter username"
+        />
 
         <div *ngIf="itemForm.controls['username'].touched && itemForm.controls['username'].errors">
           <small class="text-danger" *ngIf="itemForm.controls['username'].errors?.['required']">
             Username is required
           </small>
-
           <small class="text-danger" *ngIf="itemForm.controls['username'].errors?.['minlength']">
             Minimum 3 characters required
           </small>
@@ -31,7 +40,11 @@
       <!-- Email Field -->
       <div class="form-group">
         <label>Email</label>
-        <input type="email" formControlName="email" placeholder="Enter email" />
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Enter email"
+        />
         <div class="error-text" *ngIf="itemForm.get('email')?.invalid && itemForm.get('email')?.touched">
           Valid email is required.
         </div>
@@ -42,9 +55,18 @@
         <label>Password</label>
 
         <div class="password-wrapper">
-          <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Enter password" />
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Enter password"
+          />
 
-          <button type="button" class="show-btn" (click)="togglePassword()">
+          <button
+            type="button"
+            class="show-btn"
+            (click)="togglePassword()"
+            aria-label="Toggle password visibility"
+          >
             <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
           </button>
         </div>
@@ -53,7 +75,6 @@
           <small class="text-danger" *ngIf="itemForm.controls['password'].errors?.['required']">
             Password is required
           </small>
-
           <small class="text-danger" *ngIf="itemForm.controls['password'].errors?.['passwordStrength']">
             At least 1 capital character, 1 special symbol and 1 number required
           </small>
@@ -69,6 +90,7 @@
           <option value="STAFF">Staff</option>
           <option value="CLIENT">Client</option>
         </select>
+
         <div class="error-text" *ngIf="itemForm.get('role')?.invalid && itemForm.get('role')?.touched">
           Role is required.
         </div>
@@ -88,3 +110,35 @@
 
   </div>
 </div>
+
+<!-- Inline styling for password eye button -->
+<style>
+  .password-wrapper {
+    position: relative;
+  }
+
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+  }
+
+  .show-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+  }
+
+  .show-btn i {
+    font-size: 1.2rem;
+  }
+
+  .show-btn:hover i {
+    color: #6c63ff;
+  }
+</style>

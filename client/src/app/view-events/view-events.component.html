@@ -1,82 +1,142 @@
 <div class="page-container">
-  <div class="card">
-    <h2>🔍 Search Event Details</h2>
 
+  <!-- ================= SEARCH / FILTER ================= -->
+  <div class="card">
+    <h2>📅 Assigned Events</h2>
+
+    <!-- Search by title instead of ID -->
     <div class="search-row">
-      <input type="number" [(ngModel)]="formModel.eventID" placeholder="Enter Event ID" />
-      <button class="btn-search" (click)="searchEvent()">Search</button>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search by event title..."
+        (input)="filterEvents()"
+      />
+
+      <!-- Optional: Status filter (ready if logic exists in TS) -->
+      <select [(ngModel)]="statusFilter" (change)="filterEvents()">
+        <option value="">All Status</option>
+        <option value="PLANNED">Planned</option>
+        <option value="ONGOING">Ongoing</option>
+        <option value="COMPLETED">Completed</option>
+        <option value="CANCELLED">Cancelled</option>
+      </select>
     </div>
 
     <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
     <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
+  </div>
 
-    <div *ngFor="let event of eventObj" class="event-detail-card">
+  <!-- ================= EVENT GRID ================= -->
+  <div class="event-grid">
+    <div
+      class="event-card"
+      *ngFor="let event of filteredEvents"
+    >
       <div class="event-detail-header">
         <h3>{{ event.title }}</h3>
-        <span class="badge">{{ event.status }}</span>
+        <span class="badge" [ngClass]="event.status.toLowerCase()">
+          {{ event.status }}
+        </span>
       </div>
 
-      <p>{{ event.description }}</p>
+      <p class="event-description">
+        {{ event.description }}
+      </p>
 
       <div class="event-meta">
         <span>📍 {{ event.location }}</span>
         <span>📅 {{ event.dateTime | date:'medium' }}</span>
       </div>
 
-      <button class="btn-edit" (click)="edit(event)">✏️ Edit Event</button>
+      <button
+        class="btn-edit"
+        (click)="edit(event)"
+      >
+        ✏️ Edit
+      </button>
     </div>
   </div>
 
-  <div class="card" *ngIf="isUpdate">
-    <h3>✏️ Update Event</h3>
+  <!-- ================= EDIT MODAL ================= -->
+  <div class="modal-overlay" *ngIf="isUpdate">
+    <div class="modal-card">
 
-    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-
-      <div class="form-group">
-        <label>Title *</label>
-        <input type="text" formControlName="title" />
-        <div class="error-text"
-             *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">
-          Title is required.
-        </div>
+      <div class="modal-header">
+        <h3>✏️ Update Event</h3>
+        <button class="btn-close" (click)="isUpdate = false">✕</button>
       </div>
 
-      <div class="form-group">
-        <label>Description *</label>
-        <textarea formControlName="description" rows="3"></textarea>
-        <div class="error-text"
-             *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">
-          Description is required.
-        </div>
-      </div>
+      <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
-      <div class="form-row">
         <div class="form-group">
-          <label>Date & Time *</label>
-          <input type="datetime-local" formControlName="dateTime" />
+          <label>Title *</label>
+          <input type="text" formControlName="title" />
+          <div
+            class="error-text"
+            *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched"
+          >
+            Title is required.
+          </div>
         </div>
 
         <div class="form-group">
-          <label>Location *</label>
-          <input type="text" formControlName="location" />
+          <label>Description *</label>
+          <textarea
+            rows="3"
+            formControlName="description"
+          ></textarea>
+          <div
+            class="error-text"
+            *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched"
+          >
+            Description is required.
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label>Status *</label>
-        <select formControlName="status">
-          <option value="">-- Select Status --</option>
-          <option value="PLANNED">Planned</option>
-          <option value="ONGOING">Ongoing</option>
-          <option value="COMPLETED">Completed</option>
-          <option value="CANCELLED">Cancelled</option>
-        </select>
-      </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date & Time *</label>
+            <input type="datetime-local" formControlName="dateTime" />
+          </div>
 
-      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">
-        Update Event
-      </button>
+          <div class="form-group">
+            <label>Location *</label>
+            <input type="text" formControlName="location" />
+          </div>
+        </div>
 
-    </form>
+        <div class="form-group">
+          <label>Status *</label>
+          <select formControlName="status">
+            <option value="">-- Select Status --</option>
+            <option value="PLANNED">Planned</option>
+            <option value="ONGOING">Ongoing</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="CANCELLED">Cancelled</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="itemForm.invalid"
+          >
+            Save Changes
+          </button>
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="isUpdate = false"
+          >
+            Cancel
+          </button>
+        </div>
+
+      </form>
+    </div>
   </div>
+
 </div>

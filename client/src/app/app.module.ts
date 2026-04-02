@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
-import { HttpService } from '../services/http.service';
-import { DashbaordComponent } from './dashbaord/dashbaord.component';
+
+// ⚠️ Alias used to fix typo without breaking usage
+import { DashbaordComponent as DashboardComponent } from './dashbaord/dashbaord.component';
+
 import { CreateEventComponent } from './create-event/create-event.component';
 import { AddResourceComponent } from './add-resource/add-resource.component';
 import { ResourceAllocateComponent } from './resource-allocate/resource-allocate.component';
@@ -20,12 +23,16 @@ import { SubmitRequestComponent } from './submit-request/submit-request.componen
 import { ManageRequestsComponent } from './manage-requests/manage-requests.component';
 import { BrowseEventsComponent } from './browse-events/browse-events.component';
 
+// ── Services & Interceptors ──────────────────────────────────────
+import { HttpService } from '../services/http.service';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    DashbaordComponent,
+    DashboardComponent,
     CreateEventComponent,
     AddResourceComponent,
     ResourceAllocateComponent,
@@ -39,12 +46,20 @@ import { BrowseEventsComponent } from './browse-events/browse-events.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule, // ✅ REQUIRED for animations / Angular Material
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
+    HttpClientModule, // ✅ Correct place
   ],
-  providers: [HttpService, HttpClientModule],
+  providers: [
+    HttpService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

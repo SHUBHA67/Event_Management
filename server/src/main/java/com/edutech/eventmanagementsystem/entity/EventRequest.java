@@ -9,37 +9,34 @@ public class EventRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long requestId;
+    private Long id;
 
-    // Client who submitted the request
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private User client;
+    /* =========================
+       Event details
+       ========================= */
 
-    // Basic event info submitted by client
+    @Column(nullable = false)
     private String eventTitle;
+
+    @Column(length = 2000)
     private String eventDescription;
+
     private String eventLocation;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date eventDate;
 
-    private int expectedAttendees;
+    private Integer expectedAttendees;
 
-    // Resources the client says they need
-    private String resourceRequirements; // e.g. "2 projectors, 50 chairs, 1 mic"
+    /* =========================
+       Request metadata
+       ========================= */
 
-    // Request lifecycle status
-    // PENDING -> UNDER_REVIEW -> APPROVED / REJECTED
-    private String status; // PENDING, UNDER_REVIEW, APPROVED, REJECTED
+    @Column(nullable = false)
+    private String status;
 
-    // Planner fills this on rejection
+    @Column(length = 1000)
     private String rejectionReason;
-
-    // When approved, link to the actual created event
-    @OneToOne
-    @JoinColumn(name = "event_id")
-    private Event linkedEvent;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date submittedAt;
@@ -47,22 +44,43 @@ public class EventRequest {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    // ─── Getters & Setters ───────────────────────────────────────────
+    /* =========================
+       Relationships
+       ========================= */
 
-    public Long getRequestId() {
-        return requestId;
+    // Client / requester (e.g. User entity)
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private User client;
+
+    @OneToOne
+    @JoinColumn(name = "event_id")
+    private Event linkedEvent;
+
+    /* =========================
+       Lifecycle Hooks
+       ========================= */
+
+    @PrePersist
+    protected void onCreate() {
+        this.submittedAt = new Date();
+        this.updatedAt = new Date();
+        if (this.status == null) {
+            this.status = "PENDING";
+        }
     }
 
-    public void setRequestId(Long requestId) {
-        this.requestId = requestId;
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
     }
 
-    public User getClient() {
-        return client;
-    }
+    /* =========================
+       Getters & Setters
+       ========================= */
 
-    public void setClient(User client) {
-        this.client = client;
+    public Long getId() {
+        return id;
     }
 
     public String getEventTitle() {
@@ -97,20 +115,12 @@ public class EventRequest {
         this.eventDate = eventDate;
     }
 
-    public int getExpectedAttendees() {
+    public Integer getExpectedAttendees() {
         return expectedAttendees;
     }
 
-    public void setExpectedAttendees(int expectedAttendees) {
+    public void setExpectedAttendees(Integer expectedAttendees) {
         this.expectedAttendees = expectedAttendees;
-    }
-
-    public String getResourceRequirements() {
-        return resourceRequirements;
-    }
-
-    public void setResourceRequirements(String resourceRequirements) {
-        this.resourceRequirements = resourceRequirements;
     }
 
     public String getStatus() {
@@ -129,14 +139,6 @@ public class EventRequest {
         this.rejectionReason = rejectionReason;
     }
 
-    public Event getLinkedEvent() {
-        return linkedEvent;
-    }
-
-    public void setLinkedEvent(Event linkedEvent) {
-        this.linkedEvent = linkedEvent;
-    }
-
     public Date getSubmittedAt() {
         return submittedAt;
     }
@@ -152,5 +154,20 @@ public class EventRequest {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-}
 
+    public User getClient() {
+        return client;
+    }
+
+    public void setClient(User client) {
+        this.client = client;
+    }
+
+    public Event getLinkedEvent() {
+        return linkedEvent;
+    }
+
+    public void setLinkedEvent(Event linkedEvent) {
+        this.linkedEvent = linkedEvent;
+    }
+}

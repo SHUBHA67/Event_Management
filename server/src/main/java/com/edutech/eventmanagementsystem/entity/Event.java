@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -14,11 +14,21 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventID;
+
+    @Column(nullable = false)
     private String title;
+
     private String description;
-    private Date dateTime;
+
+    @Column(nullable = false)
+    private LocalDateTime dateTime;
+
+    @Column(nullable = false)
     private String location;
+
+    @Column(nullable = false)
     private String status;
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Allocation> allocations;
@@ -47,11 +57,11 @@ public class Event {
         this.description = description;
     }
 
-    public Date getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -78,5 +88,4 @@ public class Event {
     public void setAllocations(List<Allocation> allocations) {
         this.allocations = allocations;
     }
-
 }

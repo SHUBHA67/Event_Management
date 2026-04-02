@@ -1,23 +1,35 @@
+/* Page Layout */
 .page-container {
     padding: 24px;
     max-width: 860px;
     margin: 0 auto;
 }
 
+/* Card Base */
 .card {
-    background: #fff;
+    background: #ffffff;
     border-radius: 12px;
     padding: 28px;
     margin-bottom: 24px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
+/* My Requests – specific card styling */
+.my-requests-card {
+    padding: 24px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Headings */
 h2,
 h3 {
     color: #333;
     margin-bottom: 20px;
 }
 
+/* Form Layout */
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -41,6 +53,7 @@ h3 {
     font-size: 12px;
 }
 
+/* Inputs */
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -53,7 +66,7 @@ h3 {
 }
 
 .hint {
-    color: #aaa;
+    color: #999;
     font-size: 12px;
     margin-top: 4px;
     display: block;
@@ -65,10 +78,11 @@ h3 {
     margin-top: 4px;
 }
 
+/* Messages */
 .success-msg {
     background: #eaffea;
     color: #27ae60;
-    padding: 10px;
+    padding: 10px 14px;
     border-radius: 8px;
     margin-bottom: 16px;
 }
@@ -76,20 +90,26 @@ h3 {
 .error-msg {
     background: #ffeaea;
     color: #c0392b;
-    padding: 10px;
+    padding: 10px 14px;
     border-radius: 8px;
     margin-bottom: 16px;
 }
 
+/* Primary Button */
 .btn-primary {
     padding: 12px 28px;
     background: #6c63ff;
-    color: #fff;
+    color: #ffffff;
     border: none;
     border-radius: 8px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover:not(:disabled) {
+        background: #5a52e0;
+    }
 
     &:disabled {
         background: #bbb;
@@ -123,39 +143,44 @@ h3 {
     font-weight: 600;
 }
 
-/* Status badges */
+/* Status Badges */
 .badge-yellow {
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
     background: #fff8e1;
     color: #f39c12;
     font-size: 12px;
+    font-weight: 600;
 }
 
 .badge-blue {
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
     background: #e8f4ff;
     color: #2980b9;
     font-size: 12px;
+    font-weight: 600;
 }
 
 .badge-green {
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
     background: #eaffea;
     color: #27ae60;
     font-size: 12px;
+    font-weight: 600;
 }
 
 .badge-red {
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
     background: #ffeaea;
     color: #c0392b;
     font-size: 12px;
+    font-weight: 600;
 }
 
+/* Responsive */
 @media (max-width: 480px) {
     .form-row {
         grid-template-columns: 1fr;

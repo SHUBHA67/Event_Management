@@ -1,313 +1,329 @@
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ✅ FIX: Mobile topbar hidden by default (DESKTOP) */
+.mobile-topbar {
+  display: none;
 }
 
 .dashboard-container {
-    display: flex;
-    height: 100vh;
-    background: #f0f2f5;
+  display: flex;
+  height: 100vh;
+  background: #f0f2f5;
 }
 
-/* ===== SIDEBAR (DESKTOP DEFAULT) ===== */
+
 .sidebar {
-    width: 260px;
-    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    display: flex;
-    flex-direction: column;
-    padding: 24px 16px;
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    z-index: 2000; // ensures drawer appears above content
+  width: 260px;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  z-index: 2000;
 }
 
 /* ----- BRAND ----- */
 .brand {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-    .brand-icon {
-        font-size: 2rem;
-        color: white;
-    }
+  .brand-icon {
+    font-size: 2rem;
+    color: white;
+  }
 
-    h2 {
-        color: #e94560;
-        font-size: 22px;
-        font-weight: 700;
-        margin: 0;
-    }
+  h2 {
+    color: #e94560;
+    font-size: 22px;
+    font-weight: 700;
+  }
 }
 
 /* ----- USER INFO ----- */
 .user-info {
-    text-align: center;
-    padding: 24px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .avatar {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, #e94560, #0f3460);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: 700;
-    color: white;
-    margin: 0 auto 10px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #e94560, #0f3460);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin: 0 auto 10px;
 }
 
 .user-name {
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 600;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .role-badge {
-    background: #e94560;
-    color: white;
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+  background: #e94560;
+  color: white;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
 }
 
 /* ----- NAV MENU ----- */
 .nav-menu {
-    flex: 1;
-    padding: 20px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  flex: 1;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: none;
-    color: #cdd6f4;
-    padding: 12px 16px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: #cdd6f4;
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+/* ✅ ACTIVE ROUTE STATE */
+.nav-item.active {
+  background: linear-gradient(135deg, #e94560, #0f3460);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(233, 69, 96, 0.45);
 }
 
 .nav-item:hover {
-    background: rgba(233, 69, 96, 0.25);
-    color: #ffffff;
-    transform: translateX(4px);
+  background: rgba(233, 69, 96, 0.25);
+  color: #ffffff;
+  transform: translateX(4px);
 }
 
 .nav-icon {
-    font-size: 1.2rem;
-    margin-right: 6px;
+  font-size: 1.2rem;
 }
 
-/* ----- LOGOUT BUTTON ----- */
+/* ----- LOGOUT ----- */
 .logout-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    justify-content: center;
-    background: rgba(233, 69, 96, 0.15);
-    border: 1px solid rgba(233, 69, 96, 0.4);
-    color: #e94560;
-    padding: 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(233, 69, 96, 0.15);
+  border: 1px solid rgba(233, 69, 96, 0.4);
+  color: #e94560;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .logout-btn:hover {
-    background: #e94560;
-    color: white;
+  background: #e94560;
+  color: white;
 }
 
-/* ===========================
-   MAIN CONTENT
-=========================== */
 .main-content {
-    flex: 1;
-    padding: 40px;
-    overflow-y: auto;
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
 }
 
 .welcome-card {
-    background: white;
-    border-radius: 16px;
-    padding: 32px 36px;
-    margin-bottom: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border-left: 5px solid #e94560;
+  background: white;
+  border-radius: 16px;
+  padding: 32px 36px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid #e94560;
 }
 
 .welcome-card h1 {
-    font-size: 26px;
-    color: #1a1a2e;
+  font-size: 26px;
+  color: #1a1a2e;
 }
 
 .welcome-card p {
-    color: #666;
-    font-size: 15px;
+  color: #666;
+  font-size: 15px;
 }
 
 .highlight {
-    color: #e94560;
+  color: #e94560;
 }
 
 .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
 }
 
 .card {
-    background: white;
-    border-radius: 16px;
-    padding: 30px 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
-    transition: all 0.3s ease;
-    border-top: 4px solid #e94560;
-    text-align: center;
+  background: white;
+  border-radius: 16px;
+  padding: 30px 24px;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  transition: all 0.35s ease;
+  border-top: 4px solid #e94560;
+}
+
+/* ✅ GRADIENT HOVER ANIMATION */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(233, 69, 96, 0.25), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.card:hover::before {
+  transform: translateX(100%);
 }
 
 .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
 }
 
 .card-icon {
-    font-size: 2.8rem;
-    margin-bottom: 12px;
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+  z-index: 1;
+  position: relative;
 }
 
 .card h3 {
-    font-size: 17px;
-    color: #1a1a2e;
-    font-weight: 700;
+  font-size: 17px;
+  color: #1a1a2e;
+  font-weight: 700;
 }
 
 .card p {
-    color: #888;
-    font-size: 13px;
-    line-height: 1.5;
+  color: #888;
+  font-size: 13px;
 }
 
-/* ===========================
-   RESPONSIVE DESIGN
-=========================== */
 
-/* ----- ≤ 992px (Tablet) ----- */
+
+/* Tablet */
 @media (max-width: 992px) {
-    .sidebar {
-        width: 220px;
-        padding: 20px 12px;
-    }
+  .sidebar {
+    width: 220px;
+  }
 
-    .main-content {
-        padding: 28px;
-    }
+  .main-content {
+    padding: 28px;
+  }
 }
 
-/* ----- MOBILE (≤ 768px) ----- */
+/* ✅ MOBILE */
 @media (max-width: 768px) {
-    .dashboard-container {
-        flex-direction: column;
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 230px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  /* ✅ Mobile Topbar visible ONLY on mobile */
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #1a1a2e;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1200;
+
+    .hamburger-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      cursor: pointer;
     }
 
-    /* Sidebar becomes sliding drawer */
-    .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        height: 100%;
-        transform: translateX(-100%);
-        width: 230px;
-        padding: 24px 16px;
+    .mobile-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #e94560;
     }
+  }
 
-    .sidebar.sidebar-open {
-        transform: translateX(0);
-    }
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1500;
+    animation: fadeIn 0.3s ease;
+  }
 
-    /* Backdrop overlay */
-    .sidebar-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.55);
-        z-index: 1500;
-        animation: fadeIn 0.3s ease;
-    }
-
-    /* Cards 1 column */
-    .cards-grid {
-        grid-template-columns: 1fr;
-    }
-
-    /* Mobile top bar */
-    .mobile-topbar {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px 20px;
-        background: #1a1a2e;
-        color: white;
-        position: sticky;
-        top: 0;
-        z-index: 1200;
-
-        .hamburger-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.8rem;
-            cursor: pointer;
-        }
-
-        .mobile-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #e94560;
-        }
-    }
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* ----- EXTRA SMALL (≤ 480px) ----- */
+/* Extra Small */
 @media (max-width: 480px) {
-    .card-icon {
-        font-size: 2.2rem;
-    }
-    .card h3 {
-        font-size: 15px;
-    }
-    .card p {
-        font-size: 12px;
-    }
+  .card-icon {
+    font-size: 2.2rem;
+  }
+
+  .card h3 {
+    font-size: 15px;
+  }
+
+  .card p {
+    font-size: 12px;
+  }
 }
 
-/* Backdrop Animation */
+/* BACKDROP ANIMATION */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

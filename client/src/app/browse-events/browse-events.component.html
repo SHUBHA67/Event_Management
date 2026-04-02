@@ -1,18 +1,25 @@
 <div class="page-container">
   <div class="card">
     <h2>🗓️ Upcoming Events</h2>
-    <p class="subtitle">Browse all available events. See something you like? Submit a request!</p>
+    <p class="subtitle">
+      Browse all available events. See something you like? Submit a request!
+    </p>
 
-    <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
-
-    <!-- Search bar -->
-    <div class="search-row">
-      <input type="text" [(ngModel)]="searchTerm"
-             placeholder="Search by title or location..."
-             (input)="applyFilter()" />
+    <div class="error-msg" *ngIf="showError">
+      {{ errorMessage }}
     </div>
 
-    <!-- Status filter -->
+    <!-- 🔍 Search bar -->
+    <div class="search-row">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search by title or location..."
+        (input)="applyFilter()"
+      />
+    </div>
+
+    <!-- 🔘 Status filter -->
     <div class="filter-tabs">
       <button [class.active]="activeFilter === 'ALL'"       (click)="filterBy('ALL')">All</button>
       <button [class.active]="activeFilter === 'PLANNED'"   (click)="filterBy('PLANNED')">Planned</button>
@@ -20,24 +27,51 @@
       <button [class.active]="activeFilter === 'COMPLETED'" (click)="filterBy('COMPLETED')">Completed</button>
     </div>
 
-    <div *ngIf="filteredEvents.length === 0" class="empty-state">
-      No events found.
+    <!-- 🦴 Loading Skeleton State -->
+    <div *ngIf="isLoading" class="skeleton-grid">
+      <div *ngFor="let i of [1,2,3]" class="skeleton-card">
+        <div class="skeleton-line long"></div>
+        <div class="skeleton-line medium"></div>
+        <div class="skeleton-line short"></div>
+      </div>
     </div>
 
-    <!-- Event cards -->
-    <div class="events-grid">
-      <div *ngFor="let event of filteredEvents" class="event-card">
+    <!-- 📭 Improved Empty State -->
+    <div
+      *ngIf="!isLoading && filteredEvents.length === 0"
+      class="empty-state empty-state-enhanced"
+    >
+      <div class="empty-icon">📭</div>
+      <h3>No events found</h3>
+      <p>
+        Try adjusting your search or filters.
+        New events may be added soon!
+      </p>
+    </div>
+
+    <!-- 🎉 Event Cards -->
+    <div class="events-grid" *ngIf="!isLoading && filteredEvents.length > 0">
+      <div
+        *ngFor="let event of filteredEvents"
+        class="event-card animate-card"
+      >
         <div class="event-card-header">
           <h3>{{ event.title }}</h3>
-          <span [ngClass]="{
-            'badge-blue'  : event.status === 'PLANNED',
-            'badge-green' : event.status === 'ONGOING',
-            'badge-grey'  : event.status === 'COMPLETED',
-            'badge-red'   : event.status === 'CANCELLED'
-          }">{{ event.status }}</span>
+          <span
+            [ngClass]="{
+              'badge-blue'  : event.status === 'PLANNED',
+              'badge-green' : event.status === 'ONGOING',
+              'badge-grey'  : event.status === 'COMPLETED',
+              'badge-red'   : event.status === 'CANCELLED'
+            }"
+          >
+            {{ event.status }}
+          </span>
         </div>
 
-        <p class="event-desc">{{ event.description }}</p>
+        <p class="event-desc">
+          {{ event.description }}
+        </p>
 
         <div class="event-meta">
           <span>📍 {{ event.location }}</span>
@@ -45,18 +79,23 @@
           <span>🕐 {{ event.dateTime | date:'shortTime' }}</span>
         </div>
 
-        <!-- Resources allocated to this event (from booking details) -->
-        <div *ngIf="event.allocations && event.allocations.length > 0"
-             class="resources-preview">
+        <!-- 🧰 Resources Preview -->
+        <div
+          *ngIf="event.allocations && event.allocations.length > 0"
+          class="resources-preview"
+        >
           <strong>Resources arranged:</strong>
           <span *ngFor="let a of event.allocations; let last = last">
             {{ a.resource?.name }} (×{{ a.quantity }}){{ last ? '' : ', ' }}
           </span>
         </div>
 
-        <button class="btn-request"
-                *ngIf="event.status === 'PLANNED'"
-                (click)="goToRequest()">
+        <!-- 📋 Action Button -->
+        <button
+          class="btn-request"
+          *ngIf="event.status === 'PLANNED'"
+          (click)="goToRequest()"
+        >
           📋 Submit a Similar Request
         </button>
       </div>
