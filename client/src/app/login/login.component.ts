@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
           this.authService.setRole(res.role);
           this.authService.setUsername(res.username)
           this.router.navigate(['/dashboard']);
-          setTimeout(() => window.location.reload(), 1000);
+          // setTimeout(() => window.location.reload(), 1000);
         },
         (err: any) => { this.showError = true; this.errorMessage = 'Invalid username or password'; }
       );

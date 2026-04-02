@@ -1,0 +1,167 @@
+.page-container {
+    padding: 24px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+h2,
+h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.optional {
+    color: #aaa;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.hint {
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+.error-text {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.success-msg {
+    background: #eaffea;
+    color: #27ae60;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.error-msg {
+    background: #ffeaea;
+    color: #c0392b;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.btn-primary {
+    padding: 12px 28px;
+    background: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:disabled {
+        background: #bbb;
+        cursor: not-allowed;
+    }
+}
+
+/* Table */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+.data-table th {
+    background: #f8f9fa;
+    color: #666;
+    font-weight: 600;
+}
+
+/* Status badges */
+.badge-yellow {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #fff8e1;
+    color: #f39c12;
+    font-size: 12px;
+}
+
+.badge-blue {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #e8f4ff;
+    color: #2980b9;
+    font-size: 12px;
+}
+
+.badge-green {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #eaffea;
+    color: #27ae60;
+    font-size: 12px;
+}
+
+.badge-red {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #ffeaea;
+    color: #c0392b;
+    font-size: 12px;
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+}

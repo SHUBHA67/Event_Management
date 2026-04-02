@@ -11,41 +11,56 @@ import { AuthService } from '../../services/auth.service';
 })
 
 export class AddResourceComponent implements OnInit {
-  itemForm: FormGroup;
-  formModel: any = { status: null };
-  showError: boolean = false;
-  errorMessage: any;
-  resourceList: any = [];
-  assignModel: any = {};
-  showMessage: any;
-  responseMessage: any;
+itemForm: FormGroup;
+  resourceList: any[] = [];
+  showMessage  = false;
+  showError    = false;
+  responseMessage = '';
+  errorMessage    = '';
 
-  constructor(public router: Router, public httpService: HttpService,
-    private formBuilder: FormBuilder, private authService: AuthService) {
+  constructor(
+    public router: Router,
+    public httpService: HttpService,
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) {
     this.itemForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      type: ['', Validators.required],
-      availability: ['', Validators.required]
+      name:          ['', Validators.required],
+      type:          ['', Validators.required],
+      // totalQuantity replaces the old boolean availability toggle
+      totalQuantity: ['', [Validators.required, Validators.min(1)]]
     });
   }
 
   ngOnInit(): void { this.getResource(); }
 
   getResource(): void {
-    this.httpService.GetAllResources().subscribe(
-      (res: any) => { this.resourceList = res; },
-      (err: any) => { this.showError = true; this.errorMessage = 'Failed to load resources.'; }
-    );
+    this.httpService.GetAllResources().subscribe({
+      next: (res: any) => { this.resourceList = res; },
+      error: ()        => { this.showError = true; this.errorMessage = 'Failed to load resources.'; }
+    });
   }
 
   onSubmit(): void {
-    if (this.itemForm.valid) {
-      const payload = { ...this.itemForm.value, availability: this.itemForm.value.availability === 'true' };
-      this.httpService.addResource(payload).subscribe(
-        (res: any) => { this.showMessage = true; this.responseMessage = res.message || 'Resource added successfully'; this.itemForm.reset(); this.getResource(); },
-        (err: any) => { this.showError = true; this.errorMessage = 'Failed to add resource.'; }
-      );
-    }
+    if (this.itemForm.invalid) return;
+
+    // Backend derives availability from totalQuantity automatically
+    const payload = {
+      name:          this.itemForm.value.name,
+      type:          this.itemForm.value.type,
+      totalQuantity: +this.itemForm.value.totalQuantity,
+      allocatedQuantity: 0  // always starts at 0
+    };
+
+    this.httpService.addResource(payload).subscribe({
+      next: (res: any) => {
+        this.showMessage     = true;
+        this.responseMessage = 'Resource added successfully';
+        this.itemForm.reset();
+        this.getResource();
+      },
+      error: () => { this.showError = true; this.errorMessage = 'Failed to add resource.'; }
+    });
   }
 }
 

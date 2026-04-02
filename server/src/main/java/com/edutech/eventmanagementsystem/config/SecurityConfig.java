@@ -39,21 +39,20 @@ package com.edutech.eventmanagementsystem.config;
 //         // add the jwtRequestFilter before the UsernamePasswordAuthenticationFilter
 
 // }
+
 import com.edutech.eventmanagementsystem.jwt.JwtRequestFilter;
 import com.edutech.eventmanagementsystem.service.UserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.*;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 @Configuration
 @EnableWebSecurity
@@ -64,8 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
     public SecurityConfig(UserService userDetailsService,
-                          JwtRequestFilter jwtRequestFilter,
-                          PasswordEncoder passwordEncoder) {
+            JwtRequestFilter jwtRequestFilter,
+            PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
         this.passwordEncoder = passwordEncoder;
@@ -79,26 +78,52 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/api/user/register", "/api/user/login").permitAll()
-            .antMatchers("/h2-console/**").permitAll()
-            .antMatchers(HttpMethod.POST,
-                "/api/planner/resource",
-                "/api/planner/event",
-                "/api/planner/allocate-resources").hasAuthority("PLANNER")
-            .antMatchers(HttpMethod.GET,
-                "/api/planner/events",
-                "/api/planner/resources").hasAuthority("PLANNER")
-            .antMatchers(HttpMethod.GET,
-                "/api/staff/event-details/{eventId}").hasAuthority("STAFF")
-            .antMatchers(HttpMethod.GET,
-                "/api/client/booking-details/{eventId}").hasAuthority("CLIENT")
-            .antMatchers(HttpMethod.PUT,
-                "/api/staff/update-setup/{eventId}").hasAuthority("STAFF")
-            .anyRequest().authenticated()
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .authorizeRequests()
+
+                // ── Public ────────────────────────────────────────────
+                .antMatchers(HttpMethod.POST, "/api/user/register", "/api/user/login").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+
+                // ── PLANNER routes ────────────────────────────────────
+                .antMatchers(HttpMethod.POST,
+                        "/api/planner/resource",
+                        "/api/planner/event",
+                        "/api/planner/allocate-resources")
+                .hasAuthority("PLANNER")
+                .antMatchers(HttpMethod.GET,
+                        "/api/planner/events",
+                        "/api/planner/resources",
+                        "/api/planner/event-requests",
+                        "/api/planner/event-requests/pending")
+                .hasAuthority("PLANNER")
+                .antMatchers(HttpMethod.PUT,
+                        "/api/planner/event-requests/*/review",
+                        "/api/planner/event-requests/*/approve",
+                        "/api/planner/event-requests/*/reject")
+                .hasAuthority("PLANNER")
+
+                // ── STAFF routes ──────────────────────────────────────
+                .antMatchers(HttpMethod.GET,
+                        "/api/staff/event-details/*")
+                .hasAuthority("STAFF")
+                .antMatchers(HttpMethod.PUT,
+                        "/api/staff/update-setup/*")
+                .hasAuthority("STAFF")
+
+                // ── CLIENT routes ─────────────────────────────────────
+                .antMatchers(HttpMethod.GET,
+                        "/api/client/booking-details/*",
+                        "/api/client/events",
+                        "/api/client/my-requests")
+                .hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.POST,
+                        "/api/client/event-request")
+                .hasAuthority("CLIENT")
+
+                .anyRequest().authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.headers().frameOptions().disable();
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

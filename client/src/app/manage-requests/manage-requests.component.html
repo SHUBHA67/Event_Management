@@ -1,0 +1,119 @@
+<div class="page-container">
+    <div class="card">
+        <h2>:mailbox_with_mail: Client Event Requests</h2>
+
+        <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
+        <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+
+        <!-- Filter tabs -->
+        <div class="filter-tabs">
+            <button [class.active]="activeFilter === 'ALL'" (click)="filterBy('ALL')">All</button>
+            <button [class.active]="activeFilter === 'PENDING'" (click)="filterBy('PENDING')">Pending</button>
+            <button [class.active]="activeFilter === 'UNDER_REVIEW'" (click)="filterBy('UNDER_REVIEW')">Under
+                Review</button>
+            <button [class.active]="activeFilter === 'APPROVED'" (click)="filterBy('APPROVED')">Approved</button>
+            <button [class.active]="activeFilter === 'REJECTED'" (click)="filterBy('REJECTED')">Rejected</button>
+        </div>
+
+        <!-- Request cards -->
+        <div *ngIf="filteredRequests.length === 0" class="empty-state">
+            No requests found.
+        </div>
+
+        <div *ngFor="let req of filteredRequests" class="request-card">
+
+            <!-- Header -->
+            <div class="request-header">
+                <div>
+                    <h3>{{ req.eventTitle }}</h3>
+                    <small class="client-name">:bust_in_silhouette: Client: {{ req.client?.username }}</small>
+                </div>
+                <span [ngClass]="{
+'badge-yellow' : req.status === 'PENDING',
+'badge-blue' : req.status === 'UNDER_REVIEW',
+'badge-green' : req.status === 'APPROVED',
+'badge-red' : req.status === 'REJECTED'
+}">{{ req.status }}</span>
+            </div>
+
+            <!-- Details -->
+            <p class="req-desc">{{ req.eventDescription }}</p>
+
+            <div class="req-meta">
+                <span>:round_pushpin: {{ req.eventLocation }}</span>
+                <span>:date: {{ req.eventDate | date:'mediumDate' }}</span>
+                <span>:busts_in_silhouette: {{ req.expectedAttendees }} attendees</span>
+            </div>
+
+            <div *ngIf="req.resourceRequirements" class="req-resources">
+                <strong>Client's resource notes:</strong> {{ req.resourceRequirements }}
+            </div>
+
+            <div *ngIf="req.rejectionReason" class="rejection-reason">
+                <strong>Rejection reason:</strong> {{ req.rejectionReason }}
+            </div>
+
+            <!-- Action buttons — show only for actionable statuses -->
+            <div class="action-row" *ngIf="req.status === 'PENDING' || req.status === 'UNDER_REVIEW'">
+
+                <button class="btn-review" *ngIf="req.status === 'PENDING'" (click)="markUnderReview(req.requestId)">
+                    :mag: Mark Under Review
+                </button>
+
+                <button class="btn-approve" *ngIf="req.status === 'UNDER_REVIEW'" (click)="openApprovePanel(req)">
+                    :white_check_mark: Approve & Create Event
+                </button>
+
+                <button class="btn-reject" *ngIf="req.status === 'UNDER_REVIEW'" (click)="openRejectPanel(req)">
+                    :x: Reject
+                </button>
+            </div>
+
+            <!-- Inline Approve Panel -->
+            <div class="approve-panel" *ngIf="approvingRequestId === req.requestId">
+                <h4>Allocate Resources for This Event</h4>
+                <p class="hint">Select resources and quantities. Approval will be blocked if quantities exceed available
+                    stock.</p>
+
+                <div *ngFor="let item of allocationItems; let i = index" class="alloc-row">
+                    <select [(ngModel)]="item.resourceId">
+                        <option value="">-- Select Resource --</option>
+                        <option *ngFor="let res of resourceList" [value]="res.resourceID"
+                            [disabled]="!res.availability">
+                            {{ res.name }} ({{ res.type }}) — Available: {{ res.availableQuantity }}
+                        </option>
+                    </select>
+
+                    <input type="number" [(ngModel)]="item.quantity" placeholder="Qty" min="1" />
+
+                    <button class="btn-remove" (click)="removeAllocationRow(i)">✕</button>
+                </div>
+
+                <button class="btn-add-row" (click)="addAllocationRow()">+ Add Resource</button>
+
+                <div class="panel-actions">
+                    <button class="btn-approve" (click)="submitApproval(req.requestId)"
+                        [disabled]="allocationItems.length === 0">
+                        Confirm Approval
+                    </button>
+                    <button class="btn-cancel" (click)="closePanel()">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Inline Reject Panel -->
+            <div class="reject-panel" *ngIf="rejectingRequestId === req.requestId">
+                <h4>Rejection Reason *</h4>
+                <textarea [(ngModel)]="rejectionReason" rows="3"
+                    placeholder="e.g. Projectors not available on requested date"></textarea>
+                <div class="panel-actions">
+                    <button class="btn-reject" (click)="submitRejection(req.requestId)"
+                        [disabled]="!rejectionReason.trim()">
+                        Confirm Rejection
+                    </button>
+                    <button class="btn-cancel" (click)="closePanel()">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

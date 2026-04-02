@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from './registration/registration.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpService } from '../services/http.service';
 import { DashbaordComponent } from './dashbaord/dashbaord.component';
 import { CreateEventComponent } from './create-event/create-event.component';
@@ -15,26 +15,36 @@ import { ResourceAllocateComponent } from './resource-allocate/resource-allocate
 import { ViewEventsComponent } from './view-events/view-events.component';
 import { BookingDetailsComponent } from './booking-details/booking-details.component';
 
+// ── NEW components ────────────────────────────────────────────────
+import { SubmitRequestComponent } from './submit-request/submit-request.component';
+import { ManageRequestsComponent } from './manage-requests/manage-requests.component';
+import { BrowseEventsComponent } from './browse-events/browse-events.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-      RegistrationComponent,
-      DashbaordComponent,    
-      CreateEventComponent,
-      AddResourceComponent,
-      ResourceAllocateComponent,
-      ViewEventsComponent,
-      BookingDetailsComponent
+    RegistrationComponent,
+    DashbaordComponent,
+    CreateEventComponent,
+    AddResourceComponent,
+    ResourceAllocateComponent,
+    ViewEventsComponent,
+    BookingDetailsComponent,
+
+    // ── NEW ───────────────────────────────────────────────────────
+    SubmitRequestComponent,
+    ManageRequestsComponent,
+    BrowseEventsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule 
+    HttpClientModule,
   ],
-  providers: [HttpService,HttpClientModule ],
+  providers: [HttpService, HttpClientModule],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
