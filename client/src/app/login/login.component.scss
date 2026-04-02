@@ -1,140 +1,238 @@
-a{
-    cursor: pointer;
+$blue: #77BEF0;
+$yellow: #FFCB61;
+$orange: #FF894F;
+$red: #EA5B6F;
+$dark: #1E2235;
+$white: #FFFFFF;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.auth-page {
+display: flex;
+min-height: 100vh;
+font-family: 'Nunito', 'Segoe UI', sans-serif;
 }
 
-.login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 16px; /* ✅ ADDED so the card doesn’t touch screen edges */
-  }
+/* ====== SIDEBAR ====== */
+.auth-sidebar {
+flex: 0 0 400px;
+background: linear-gradient(160deg, $dark 0%, #2A3555 100%);
+display: flex;
+flex-direction: column;
+padding: 44px 48px;
+position: relative;
+overflow: hidden;
 
-  .login-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 40px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  }
+.sidebar-brand {
+font-size: 28px;
+font-weight: 900;
+color: $blue;
+letter-spacing: -0.5px;
+margin-bottom: auto;
+}
 
-  .login-header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
+.sidebar-content {
+padding: 60px 0;
 
-  .login-header h2 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 6px;
-  }
+h2 {
+font-size: 34px;
+font-weight: 900;
+color: $white;
+margin-bottom: 14px;
+line-height: 1.2;
+}
 
-  .login-header p {
-    color: #888;
-  }
+p {
+font-size: 15px;
+color: rgba(255,255,255,0.6);
+line-height: 1.7;
+}
+}
 
-  .form-group {
-    margin-bottom: 18px;
-  }
+.sidebar-decoration {
+position: absolute;
+bottom: 0; right: 0;
+width: 100%; height: 100%;
+pointer-events: none;
+}
 
-  .form-group label {
-    display: block;
-    color: #555;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
+.deco-circle {
+position: absolute;
+border-radius: 50%;
+opacity: 0.15;
 
-  .form-group input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-  }
+&.dc1 {
+width: 280px; height: 280px;
+background: $blue;
+bottom: -80px; right: -80px;
+}
 
-  .form-group input:focus {
-    border-color: #6c63ff;
-    outline: none;
-  }
+&.dc2 {
+width: 160px; height: 160px;
+background: $yellow;
+bottom: 80px; right: 80px;
+}
+}
+}
 
-  .error-text {
-    color: #e74c3c;
-    font-size: 12px;
-    margin-top: 4px;
-  }
+/* ====== FORM AREA ====== */
+.auth-form-area {
+flex: 1;
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding: 60px 80px;
+background: #F5F7FA;
+position: relative;
+}
 
-  .alert-error {
-    background: #ffeaea;
-    border: 1px solid #e74c3c;
-    color: #c0392b;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    font-size: 14px;
-  }
+.back-btn {
+position: absolute;
+top: 28px;
+left: 40px;
+background: none;
+border: none;
+color: #888;
+font-family: inherit;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+padding: 6px 10px;
+border-radius: 6px;
+transition: 0.2s;
 
-  .btn-primary {
-    width: 100%;
-    padding: 12px;
-    background: #6c63ff;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-  }
+&:hover { background: #E8ECF0; color: $dark; }
+}
 
-  .btn-primary:hover {
-    background: #574fd6;
-  }
+.auth-card {
+max-width: 420px;
+width: 100%;
 
-  .btn-primary:disabled {
-    background: #bbb;
-    cursor: not-allowed;
-  }
+h2 {
+font-size: 32px;
+font-weight: 900;
+color: $dark;
+margin-bottom: 8px;
+}
 
-  .register-link {
-    text-align: center;
-    margin-top: 16px;
-    color: #888;
-    font-size: 14px;
-  }
+.auth-subtitle {
+color: #888;
+font-size: 15px;
+margin-bottom: 32px;
+}
+}
 
-  /* ===========================
-     MOBILE (≤480px)
-  =========================== */
-  @media (max-width: 480px) {
-    .login-card {
-      padding: 24px; /* smaller padding */
-      border-radius: 12px;
-    }
+.form-group {
+margin-bottom: 20px;
 
-    .login-header h2 {
-      font-size: 20px;
-    }
+label {
+display: block;
+color: #444;
+font-weight: 700;
+font-size: 14px;
+margin-bottom: 8px;
+}
 
-    .login-header p {
-      font-size: 13px;
-    }
+input {
+width: 100%;
+padding: 12px 14px;
+border: 1.5px solid #DDE3EC;
+border-radius: 10px;
+font-family: inherit;
+font-size: 14px;
+background: $white;
+color: $dark;
+transition: border-color 0.2s;
+outline: none;
 
-    .form-group label {
-      font-size: 13px;
-    }
+&:focus { border-color: $blue; box-shadow: 0 0 0 3px rgba($blue, 0.14); }
+&::placeholder { color: #BBB; }
+}
+}
 
-    .form-group input {
-      padding: 10px 12px;
-      font-size: 13px;
-    }
+.password-wrap {
+position: relative;
 
-    .btn-primary {
-      font-size: 14px;
-      padding: 10px;
-    }
+input { padding-right: 70px; }
 
-    .register-link {
-      font-size: 13px;
-    }
-  }
+.pw-toggle {
+position: absolute;
+right: 14px;
+top: 50%;
+transform: translateY(-50%);
+background: none;
+border: none;
+color: $blue;
+font-family: inherit;
+font-size: 13px;
+font-weight: 700;
+cursor: pointer;
+transition: color 0.2s;
+
+&:hover { color: darken($blue, 15%); }
+}
+}
+
+.error-text {
+color: $red;
+font-size: 12px;
+margin-top: 5px;
+font-weight: 600;
+}
+
+.alert-error {
+background: rgba($red, 0.1);
+border: 1px solid rgba($red, 0.3);
+color: darken($red, 8%);
+padding: 12px 14px;
+border-radius: 10px;
+margin-bottom: 18px;
+font-size: 14px;
+font-weight: 600;
+}
+
+.btn-primary {
+width: 100%;
+padding: 13px;
+background: $blue;
+color: $white;
+border: none;
+border-radius: 10px;
+font-family: inherit;
+font-size: 16px;
+font-weight: 800;
+cursor: pointer;
+transition: 0.2s;
+margin-bottom: 18px;
+
+&:hover { background: #5AABEA; transform: translateY(-1px); }
+&:disabled { background: #C5D8E8; cursor: not-allowed; transform: none; }
+}
+
+.auth-link {
+text-align: center;
+color: #888;
+font-size: 14px;
+
+a {
+color: $blue;
+font-weight: 700;
+cursor: pointer;
+text-decoration: none;
+&:hover { text-decoration: underline; }
+}
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 900px) {
+.auth-sidebar { flex: 0 0 300px; padding: 36px 32px; }
+.auth-form-area { padding: 60px 48px; }
+}
+
+@media (max-width: 680px) {
+.auth-page { flex-direction: column; }
+.auth-sidebar { flex: 0 0 auto; padding: 36px 28px 48px; min-height: auto; }
+.auth-form-area { padding: 48px 24px; }
+.back-btn { top: 16px; left: 16px; }
+.auth-card { max-width: 100%; }
+}

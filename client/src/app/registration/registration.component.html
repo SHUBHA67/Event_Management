@@ -1,90 +1,93 @@
-<div class="register-container">
-  <div class="register-card">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <div class="register-header">
-      <h2>📋 Create Account</h2>
-      <p>Register to access the platform</p>
+<div class="auth-page">
+
+  <div class="auth-sidebar reg-sidebar">
+    <div class="sidebar-brand">Eventia</div>
+    <div class="sidebar-content">
+      <h2>Join Eventia</h2>
+      <p>Create an account to start planning, staffing or booking events on our platform.</p>
+      <div class="role-pills">
+        <span class="pill p-blue">Planner</span>
+        <span class="pill p-orange">Staff</span>
+        <span class="pill p-red">Client</span>
+      </div>
     </div>
-
-    <div class="success-msg" *ngIf="showMessage">
-      {{ responseMessage }}
+    <div class="sidebar-decoration">
+      <div class="deco-circle dc1"></div>
+      <div class="deco-circle dc2"></div>
     </div>
+  </div>
 
-    <form [formGroup]="itemForm" (ngSubmit)="onRegister()">
+  <div class="auth-form-area">
+    <button class="back-btn" (click)="goToLanding()">&#8592; Back to Home</button>
 
-      <!-- Username Field -->
-      <div class="form-group">
-        <label>Username</label>
-        <input type="text" formControlName="username" placeholder="Enter username" />
+    <div class="auth-card">
+      <h2>Create Account</h2>
+      <p class="auth-subtitle">Register to access the Eventia platform</p>
 
-        <div *ngIf="itemForm.controls['username'].touched && itemForm.controls['username'].errors">
-          <small class="text-danger" *ngIf="itemForm.controls['username'].errors?.['required']">
-            Username is required
-          </small>
+      <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
 
-          <small class="text-danger" *ngIf="itemForm.controls['username'].errors?.['minlength']">
-            Minimum 3 characters required
-          </small>
-        </div>
-      </div>
+      <form [formGroup]="itemForm" (ngSubmit)="onRegister()">
 
-      <!-- Email Field -->
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" formControlName="email" placeholder="Enter email" />
-        <div class="error-text" *ngIf="itemForm.get('email')?.invalid && itemForm.get('email')?.touched">
-          Valid email is required.
-        </div>
-      </div>
-
-      <!-- Password Field -->
-      <div class="form-group">
-        <label>Password</label>
-
-        <div class="password-wrapper">
-          <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Enter password" />
-
-          <button type="button" class="show-btn" (click)="togglePassword()">
-            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
-          </button>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" formControlName="username" placeholder="Choose a username" />
+          <div *ngIf="itemForm.controls['username'].touched && itemForm.controls['username'].errors">
+            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['required']">Username is
+              required</span>
+            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['minlength']">Minimum 3 characters
+              required</span>
+          </div>
         </div>
 
-        <div *ngIf="itemForm.controls['password'].touched && itemForm.controls['password'].errors">
-          <small class="text-danger" *ngIf="itemForm.controls['password'].errors?.['required']">
-            Password is required
-          </small>
-
-          <small class="text-danger" *ngIf="itemForm.controls['password'].errors?.['passwordStrength']">
-            At least 1 capital character, 1 special symbol and 1 number required
-          </small>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" formControlName="email" placeholder="Enter your email address" />
+          <div class="error-text" *ngIf="itemForm.get('email')?.invalid && itemForm.get('email')?.touched">
+            A valid email address is required.
+          </div>
         </div>
-      </div>
 
-      <!-- Role Field -->
-      <div class="form-group">
-        <label>Role</label>
-        <select formControlName="role">
-          <option value="">-- Select Role --</option>
-          <option value="PLANNER">Planner</option>
-          <option value="STAFF">Staff</option>
-          <option value="CLIENT">Client</option>
-        </select>
-        <div class="error-text" *ngIf="itemForm.get('role')?.invalid && itemForm.get('role')?.touched">
-          Role is required.
+        <div class="form-group">
+          <label>Password</label>
+          <div class="password-wrap">
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
+              placeholder="Create a strong password" />
+            <button type="button" class="pw-toggle" (click)="togglePassword()">
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          <div *ngIf="itemForm.controls['password'].touched && itemForm.controls['password'].errors">
+            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['required']">Password is
+              required</span>
+            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['passwordStrength']">Needs 1
+              uppercase, 1 number and 1 special character</span>
+          </div>
         </div>
-      </div>
 
-      <!-- Submit Button -->
-      <button type="submit" class="btn-primary">
-        Register
-      </button>
+        <div class="form-group">
+          <label>Role</label>
+          <select formControlName="role">
+            <option value="">-- Select your role --</option>
+            <option value="PLANNER">Planner</option>
+            <option value="STAFF">Staff</option>
+            <option value="CLIENT">Client</option>
+          </select>
+          <div class="error-text" *ngIf="itemForm.get('role')?.invalid && itemForm.get('role')?.touched">
+            Please select a role.
+          </div>
+        </div>
 
-      <p class="login-link">
-        Already have an account?
-        <a routerLink="/login" style="color:#6c63ff;">Login here</a>
-      </p>
+        <button type="submit" class="btn-primary">Create Account</button>
 
-    </form>
+        <p class="auth-link">
+          Already have an account?
+          <a routerLink="/login">Sign in here</a>
+        </p>
 
+      </form>
+    </div>
   </div>
 </div>

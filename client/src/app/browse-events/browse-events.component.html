@@ -32,8 +32,8 @@
                     <h3>{{ event.title }}</h3>
                     <span [ngClass]="{
 'badge-green' : event.status === 'PLANNED',
-'badge-blue'  : event.status === 'ONGOING',
-'badge-grey'  : event.status === 'COMPLETED',
+'badge-blue' : event.status === 'ONGOING',
+'badge-grey' : event.status === 'COMPLETED',
 'badge-red' : event.status === 'CANCELLED'
 }">{{ event.status }}</span>
                 </div>

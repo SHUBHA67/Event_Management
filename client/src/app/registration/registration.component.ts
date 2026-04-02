@@ -13,15 +13,13 @@ export class RegistrationComponent implements OnInit {
   itemForm!: FormGroup;
   responseMessage: string = '';
   showMessage: boolean = false;
-
-  // 👇 Needed for eye icon show/hide feature
   showPassword: boolean = false;
 
   constructor(
     private httpService: HttpService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.itemForm = this.fb.group({
@@ -32,35 +30,26 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  // 👁️ Toggle password visibility
-  togglePassword() {
+  togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
 
-  // 🔐 Password strength validator
   passwordValidator(control: AbstractControl): ValidationErrors | null {
     const value: string = control.value;
-
     if (!value) return null;
-
     const hasUpperCase = /[A-Z]/.test(value);
     const hasNumber = /[0-9]/.test(value);
     const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-
-    const passwordValid = hasUpperCase && hasNumber && hasSymbol;
-
-    return passwordValid ? null : { passwordStrength: true };
+    return hasUpperCase && hasNumber && hasSymbol ? null : { passwordStrength: true };
   }
 
   onRegister(): void {
     if (this.itemForm.valid) {
       this.httpService.registerUser(this.itemForm.value).subscribe({
         next: () => {
-          this.responseMessage = 'User registered successfully';
+          this.responseMessage = 'Account created successfully! Redirecting to login...';
           this.showMessage = true;
-
-          // Navigate to login
-          this.router.navigateByUrl('/login');
+          // setTimeout(() => this.router.navigateByUrl('/login'), 1500);
         },
         error: () => {
           this.responseMessage = 'Registration failed. Please try again.';
@@ -69,4 +58,6 @@ export class RegistrationComponent implements OnInit {
       });
     }
   }
+
+  goToLanding(): void { this.router.navigate(['/landing']); }
 }

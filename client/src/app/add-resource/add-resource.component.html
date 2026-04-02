@@ -1,54 +1,44 @@
 <div class="page-container">
-  <div class="card">
-    <h2>🔧 Add New Resource</h2>
+  <div class="page-header">
+    <button class="back-btn" (click)="router.navigate(['/dashboard'])">&#8592; Back</button>
+    <h2 class="page-title">Add New Resource</h2>
+  </div>
 
+  <div class="card">
     <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-    <div class="error-msg"   *ngIf="showError">{{ errorMessage }}</div>
+    <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
 
     <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
       <div class="form-group">
         <label>Resource Name *</label>
         <input type="text" formControlName="name" placeholder="Enter resource name" />
-        <div class="error-text"
-             *ngIf="itemForm.get('name')?.invalid && itemForm.get('name')?.touched">
-          Name is required.
+        <div class="error-text" *ngIf="itemForm.get('name')?.invalid && itemForm.get('name')?.touched">Name is required.
         </div>
       </div>
 
       <div class="form-group">
         <label>Resource Type *</label>
         <input type="text" formControlName="type" placeholder="e.g. Audio, Furniture, AV" />
-        <div class="error-text"
-             *ngIf="itemForm.get('type')?.invalid && itemForm.get('type')?.touched">
-          Type is required.
+        <div class="error-text" *ngIf="itemForm.get('type')?.invalid && itemForm.get('type')?.touched">Type is required.
         </div>
       </div>
 
-      <!-- NEW: Total Quantity -->
       <div class="form-group">
         <label>Total Quantity *</label>
         <input type="number" formControlName="totalQuantity" placeholder="e.g. 10" min="1" />
         <small class="hint">How many units of this resource do you have in total?</small>
         <div class="error-text"
-             *ngIf="itemForm.get('totalQuantity')?.invalid && itemForm.get('totalQuantity')?.touched">
-          Quantity must be at least 1.
-        </div>
+          *ngIf="itemForm.get('totalQuantity')?.invalid && itemForm.get('totalQuantity')?.touched">Quantity must be at
+          least 1.</div>
       </div>
 
-      <!-- Availability is now auto-derived; no manual toggle needed -->
-
-      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">
-        Add Resource
-      </button>
-
+      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Add Resource</button>
     </form>
   </div>
 
-  <!-- Resources Table -->
   <div class="card" *ngIf="resourceList.length > 0">
-    <h3>📦 All Resources</h3>
-
+    <h3 class="section-title">All Resources</h3>
     <div class="table-responsive">
       <table class="data-table">
         <thead>

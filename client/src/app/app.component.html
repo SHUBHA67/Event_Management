@@ -1,7 +1,6 @@
-<div *ngIf="IsLoggin" class="navbar">
-  <div class="nav-brand" (click)="goToDashboard()" style="cursor: pointer;">🎯 Event Manager</div>
+<div *ngIf="IsLoggin" class="eventia-navbar">
+  <div class="nav-brand" (click)="goToDashboard()">Eventia</div>
 
-  <!-- Hamburger -->
   <div class="hamburger" [class.open]="menuOpen" (click)="toggleMenu()">
     <span></span><span></span><span></span>
   </div>
@@ -10,27 +9,20 @@
 
     <a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
 
-    <!-- PLANNER -->
     <ng-container *ngIf="roleName === 'PLANNER'">
-      <a routerLink="/create-event"    routerLinkActive="active" (click)="closeMenu()">Create Event</a>
-      <a routerLink="/add-resource"    routerLinkActive="active" (click)="closeMenu()">Add Resource</a>
+      <a routerLink="/create-event"  routerLinkActive="active" (click)="closeMenu()">Create Event</a>
+      <a routerLink="/add-resource"  routerLinkActive="active" (click)="closeMenu()">Add Resource</a>
       <a routerLink="/resource-allocate" routerLinkActive="active" (click)="closeMenu()">Allocate Resource</a>
-      <!-- NEW -->
-      <a routerLink="/manage-requests" routerLinkActive="active" (click)="closeMenu()">
-        Client Requests
-      </a>
+      <a routerLink="/manage-requests" routerLinkActive="active" (click)="closeMenu()">Client Requests</a>
     </ng-container>
 
-    <!-- STAFF -->
     <ng-container *ngIf="roleName === 'STAFF'">
       <a routerLink="/view-events" routerLinkActive="active" (click)="closeMenu()">View Events</a>
     </ng-container>
 
-    <!-- CLIENT -->
     <ng-container *ngIf="roleName === 'CLIENT'">
-      <a routerLink="/browse-events"  routerLinkActive="active" (click)="closeMenu()">Browse Events</a>
-      <!-- NEW -->
-      <a routerLink="/submit-request" routerLinkActive="active" (click)="closeMenu()">Submit Request</a>
+      <a routerLink="/browse-events" routerLinkActive="active" (click)="closeMenu()">Browse Events</a>
+      <a routerLink="/submit-request"  routerLinkActive="active" (click)="closeMenu()">Submit Request</a>
       <a routerLink="/booking-details" routerLinkActive="active" (click)="closeMenu()">Booking Details</a>
     </ng-container>
 

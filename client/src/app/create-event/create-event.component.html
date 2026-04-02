@@ -1,7 +1,10 @@
 <div class="page-container">
-  <div class="card">
-    <h2>:spiral_calendar_pad: Create New Event</h2>
+  <div class="page-header">
+    <button class="back-btn" (click)="router.navigate(['/dashboard'])">&#8592; Back</button>
+    <h2 class="page-title">Create New Event</h2>
+  </div>
 
+  <div class="card">
     <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
     <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
 
@@ -11,17 +14,14 @@
         <div class="form-group">
           <label>Title *</label>
           <input type="text" formControlName="title" placeholder="Event title" />
-          <div class="error-text" *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">
-            Title is required.
-          </div>
+          <div class="error-text" *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">Title is
+            required.</div>
         </div>
-
         <div class="form-group">
           <label>Location *</label>
           <input type="text" formControlName="location" placeholder="Event location" />
           <div class="error-text" *ngIf="itemForm.get('location')?.invalid && itemForm.get('location')?.touched">
-            Location is required.
-          </div>
+            Location is required.</div>
         </div>
       </div>
 
@@ -29,19 +29,16 @@
         <label>Description *</label>
         <textarea formControlName="description" placeholder="Event description" rows="3"></textarea>
         <div class="error-text" *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">
-          Description is required.
-        </div>
+          Description is required.</div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label>Date & Time *</label>
+          <label>Date and Time *</label>
           <input type="datetime-local" formControlName="dateTime" />
-          <div class="error-text" *ngIf="itemForm.get('dateTime')?.invalid && itemForm.get('dateTime')?.touched">
-            Date & Time is required.
-          </div>
+          <div class="error-text" *ngIf="itemForm.get('dateTime')?.invalid && itemForm.get('dateTime')?.touched">Date
+            and Time is required.</div>
         </div>
-
         <div class="form-group">
           <label>Status *</label>
           <select formControlName="status">
@@ -51,34 +48,27 @@
             <option value="COMPLETED">Completed</option>
             <option value="CANCELLED">Cancelled</option>
           </select>
-          <div class="error-text" *ngIf="itemForm.get('status')?.invalid && itemForm.get('status')?.touched">
-            Status is required.
-          </div>
+          <div class="error-text" *ngIf="itemForm.get('status')?.invalid && itemForm.get('status')?.touched">Status is
+            required.</div>
         </div>
       </div>
 
-      <!-- Staff Assignment -->
       <div class="form-group">
         <label>Assign Staff *</label>
         <select formControlName="staffId">
           <option value="">-- Select Staff Member --</option>
-          <option *ngFor="let staff of staffList" [value]="staff.id">
-            {{ staff.username }}
-          </option>
+          <option *ngFor="let staff of staffList" [value]="staff.id">{{ staff.username }}</option>
         </select>
-        <div class="error-text" *ngIf="itemForm.get('staffId')?.invalid && itemForm.get('staffId')?.touched">
-          Staff assignment is required.
-        </div>
+        <div class="error-text" *ngIf="itemForm.get('staffId')?.invalid && itemForm.get('staffId')?.touched">Staff
+          assignment is required.</div>
       </div>
 
       <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Create Event</button>
-
     </form>
   </div>
 
-  <!-- All Events Table -->
   <div class="card" *ngIf="eventList.length > 0">
-    <h3> All Events</h3>
+    <h3 class="section-title">All Events</h3>
     <div class="table-responsive">
       <table class="data-table">
         <thead>
@@ -97,7 +87,7 @@
             <td>{{ event.eventID }}</td>
             <td>{{ event.title }}</td>
             <td>{{ event.location }}</td>
-            <td><span class="badge">{{ event.status }}</span></td>
+            <td><span class="status-badge">{{ event.status }}</span></td>
             <td>{{ event.dateTime | date:'short' }}</td>
             <td>{{ event.planner?.username || '—' }}</td>
             <td>{{ event.assignedStaff?.username || '—' }}</td>
