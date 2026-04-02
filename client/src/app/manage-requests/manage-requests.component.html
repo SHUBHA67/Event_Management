@@ -15,10 +15,7 @@
             <button [class.active]="activeFilter === 'REJECTED'" (click)="filterBy('REJECTED')">Rejected</button>
         </div>
 
-        <!-- Request cards -->
-        <div *ngIf="filteredRequests.length === 0" class="empty-state">
-            No requests found.
-        </div>
+        <div *ngIf="filteredRequests.length === 0" class="empty-state">No requests found.</div>
 
         <div *ngFor="let req of filteredRequests" class="request-card">
 
@@ -49,51 +46,52 @@
                 <strong>Client's resource notes:</strong> {{ req.resourceRequirements }}
             </div>
 
+            <!-- Show linked event info if approved -->
+            <div *ngIf="req.status === 'APPROVED' && req.linkedEvent" class="linked-event-info">
+                <strong>:white_check_mark: Linked Event:</strong> {{ req.linkedEvent.title }} —
+                {{ req.linkedEvent.dateTime | date:'mediumDate' }} |
+                Staff: {{ req.linkedEvent.assignedStaff?.username || 'Not assigned' }}
+            </div>
+
             <div *ngIf="req.rejectionReason" class="rejection-reason">
                 <strong>Rejection reason:</strong> {{ req.rejectionReason }}
             </div>
 
-            <!-- Action buttons — show only for actionable statuses -->
+            <!-- Action buttons -->
             <div class="action-row" *ngIf="req.status === 'PENDING' || req.status === 'UNDER_REVIEW'">
-
                 <button class="btn-review" *ngIf="req.status === 'PENDING'" (click)="markUnderReview(req.requestId)">
                     :mag: Mark Under Review
                 </button>
 
                 <button class="btn-approve" *ngIf="req.status === 'UNDER_REVIEW'" (click)="openApprovePanel(req)">
-                    :white_check_mark: Approve & Create Event
+                    :white_check_mark: Approve
                 </button>
 
                 <button class="btn-reject" *ngIf="req.status === 'UNDER_REVIEW'" (click)="openRejectPanel(req)">
-                    :x: Reject
+                    ✕ Reject
                 </button>
             </div>
 
-            <!-- Inline Approve Panel -->
+            <!-- Inline Approve Panel — Link Event -->
             <div class="approve-panel" *ngIf="approvingRequestId === req.requestId">
-                <h4>Allocate Resources for This Event</h4>
-                <p class="hint">Select resources and quantities. Approval will be blocked if quantities exceed available
-                    stock.</p>
+                <h4>Link an Event to This Request</h4>
+                <p class="hint">
+                    First create the event and allocate resources from the planner menu.
+                    Then come back here and select the event to approve this request.
+                </p>
 
-                <div *ngFor="let item of allocationItems; let i = index" class="alloc-row">
-                    <select [(ngModel)]="item.resourceId">
-                        <option value="">-- Select Resource --</option>
-                        <option *ngFor="let res of resourceList" [value]="res.resourceID"
-                            [disabled]="!res.availability">
-                            {{ res.name }} ({{ res.type }}) — Available: {{ res.availableQuantity }}
+                <div class="form-group">
+                    <label>Select Event to Link *</label>
+                    <select [(ngModel)]="selectedEventId">
+                        <option value="">-- Select Event --</option>
+                        <option *ngFor="let event of eventList" [value]="event.eventID">
+                            {{ event.title }} — {{ event.dateTime | date:'mediumDate' }} ({{ event.status }})
                         </option>
                     </select>
-
-                    <input type="number" [(ngModel)]="item.quantity" placeholder="Qty" min="1" />
-
-                    <button class="btn-remove" (click)="removeAllocationRow(i)">✕</button>
                 </div>
 
-                <button class="btn-add-row" (click)="addAllocationRow()">+ Add Resource</button>
-
                 <div class="panel-actions">
-                    <button class="btn-approve" (click)="submitApproval(req.requestId)"
-                        [disabled]="allocationItems.length === 0">
+                    <button class="btn-approve" (click)="submitApproval(req.requestId)" [disabled]="!selectedEventId">
                         Confirm Approval
                     </button>
                     <button class="btn-cancel" (click)="closePanel()">Cancel</button>
@@ -104,7 +102,7 @@
             <div class="reject-panel" *ngIf="rejectingRequestId === req.requestId">
                 <h4>Rejection Reason *</h4>
                 <textarea [(ngModel)]="rejectionReason" rows="3"
-                    placeholder="e.g. Projectors not available on requested date"></textarea>
+                    placeholder="e.g. Requested date is unavailable"></textarea>
                 <div class="panel-actions">
                     <button class="btn-reject" (click)="submitRejection(req.requestId)"
                         [disabled]="!rejectionReason.trim()">

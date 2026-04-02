@@ -12,41 +12,62 @@ import { AuthService } from '../../services/auth.service';
 })
 export class CreateEventComponent implements OnInit {
   itemForm: FormGroup;
-  formModel: any = { status: null };
-  showError: boolean = false;
-  errorMessage: any;
-  eventList: any = [];
-  assignModel: any = {};
-  showMessage: any;
-  responseMessage: any;
+  showError = false;
+  errorMessage = '';
+  eventList: any[] = [];
+  staffList: any[] = [];
+  showMessage = false;
+  responseMessage = '';
 
-  constructor(public router: Router, public httpService: HttpService,
-    private formBuilder: FormBuilder, private authService: AuthService) {
+  constructor(
+    public router: Router,
+    public httpService: HttpService,
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) {
     this.itemForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       dateTime: ['', Validators.required],
       location: ['', Validators.required],
-      status: ['', Validators.required]
+      status: ['', Validators.required],
+      staffId: ['', Validators.required] // Staff assignment is mandatory
     });
   }
 
-  ngOnInit(): void { this.getEvent(); }
+  ngOnInit(): void {
+    this.getEvent();
+    this.getStaffUsers();
+  }
 
   getEvent(): void {
-    this.httpService.GetAllevents().subscribe(
-      (res: any) => { this.eventList = res; },
-      (err: any) => { this.showError = true; this.errorMessage = 'Failed to load events.'; }
-    );
+    this.httpService.GetAllevents().subscribe({
+      next: (res: any) => { this.eventList = res; },
+      error: () => { this.showError = true; this.errorMessage = 'Failed to load events.'; }
+    });
+  }
+
+  getStaffUsers(): void {
+    this.httpService.getStaffUsers().subscribe({
+      next: (res: any) => { this.staffList = res; },
+      error: () => { this.showError = true; this.errorMessage = 'Failed to load staff list.'; }
+    });
   }
 
   onSubmit(): void {
-    if (this.itemForm.valid) {
-      this.httpService.createEvent(this.itemForm.value).subscribe(
-        (res: any) => { this.showMessage = true; this.responseMessage = res.message || 'Event created successfully'; this.itemForm.reset(); this.getEvent(); },
-        (err: any) => { this.showError = true; this.errorMessage = 'Failed to create event.'; }
-      );
-    }
+    if (this.itemForm.invalid) return;
+
+    const { staffId, ...eventData } = this.itemForm.value;
+
+    this.httpService.createEvent(eventData, staffId).subscribe({
+      next: (res: any) => {
+        this.showMessage = true;
+        this.responseMessage = 'Event created successfully';
+        this.itemForm.reset();
+        this.getEvent();
+      },
+      error: () => { this.showError = true; this.errorMessage = 'Failed to create event.'; }
+    });
   }
 }
 

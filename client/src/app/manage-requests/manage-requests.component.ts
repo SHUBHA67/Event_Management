@@ -7,16 +7,15 @@ import { HttpService } from '../../services/http.service';
     styleUrls: ['./manage-requests.component.scss']
 })
 export class ManageRequestsComponent implements OnInit {
-
     allRequests: any[] = [];
     filteredRequests: any[] = [];
-    resourceList: any[] = [];
+    eventList: any[] = []; // All existing events for the link dropdown
 
     activeFilter = 'ALL';
 
     // Approve panel state
     approvingRequestId: number | null = null;
-    allocationItems: { resourceId: string; quantity: number }[] = [];
+    selectedEventId: string = ''; // Event planner selects to link
 
     // Reject panel state
     rejectingRequestId: number | null = null;
@@ -31,22 +30,19 @@ export class ManageRequestsComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadRequests();
-        this.loadResources();
+        this.loadEvents();
     }
 
     loadRequests(): void {
         this.httpService.getAllEventRequests().subscribe({
-            next: (res: any) => {
-                this.allRequests = res;
-                this.applyFilter();
-            },
+            next: (res: any) => { this.allRequests = res; this.applyFilter(); },
             error: () => { this.showError = true; this.errorMessage = 'Failed to load requests.'; }
         });
     }
 
-    loadResources(): void {
-        this.httpService.GetAllResources().subscribe({
-            next: (res: any) => { this.resourceList = res; }
+    loadEvents(): void {
+        this.httpService.GetAllevents().subscribe({
+            next: (res: any) => { this.eventList = res; }
         });
     }
 
@@ -63,7 +59,7 @@ export class ManageRequestsComponent implements OnInit {
         }
     }
 
-    // ── Mark UNDER_REVIEW ────────────────────────────────────────────
+    // ── Mark UNDER_REVIEW ──────────────────────────────────────────────
     markUnderReview(requestId: number): void {
         this.httpService.markRequestUnderReview(requestId).subscribe({
             next: () => { this.loadRequests(); },
@@ -71,57 +67,43 @@ export class ManageRequestsComponent implements OnInit {
         });
     }
 
-    // ── Approve panel ────────────────────────────────────────────────
+    // ── Approve panel ──────────────────────────────────────────────────
     openApprovePanel(req: any): void {
         this.approvingRequestId = req.requestId;
         this.rejectingRequestId = null;
-        this.allocationItems = [{ resourceId: '', quantity: 1 }];
-    }
-
-    addAllocationRow(): void {
-        this.allocationItems.push({ resourceId: '', quantity: 1 });
-    }
-
-    removeAllocationRow(index: number): void {
-        this.allocationItems.splice(index, 1);
+        this.selectedEventId = '';
+        this.showError = false;
     }
 
     submitApproval(requestId: number): void {
-        // Validate all rows are filled
-        const hasEmpty = this.allocationItems.some(i => !i.resourceId || i.quantity < 1);
-        if (hasEmpty) {
+        if (!this.selectedEventId) {
             this.showError = true;
-            this.errorMessage = 'Please fill all resource rows before approving.';
+            this.errorMessage = 'Please select an event to link to this request.';
             return;
         }
 
-        const payload = {
-            allocations: this.allocationItems.map(i => ({
-                resourceId: +i.resourceId,
-                quantity: i.quantity
-            }))
-        };
+        const payload = { eventId: +this.selectedEventId };
 
         this.httpService.approveEventRequest(requestId, payload).subscribe({
             next: () => {
                 this.showMessage = true;
-                this.responseMessage = 'Request approved and event created successfully!';
+                this.responseMessage = 'Request approved and event linked successfully!';
                 this.closePanel();
                 this.loadRequests();
             },
             error: (err: any) => {
                 this.showError = true;
-                // Backend returns the exact resource that failed e.g. "Not enough quantity for resource: Projector"
                 this.errorMessage = err?.error?.message || 'Approval failed.';
             }
         });
     }
 
-    // ── Reject panel ─────────────────────────────────────────────────
+    // ── Reject panel ───────────────────────────────────────────────────
     openRejectPanel(req: any): void {
         this.rejectingRequestId = req.requestId;
         this.approvingRequestId = null;
         this.rejectionReason = '';
+        this.showError = false;
     }
 
     submitRejection(requestId: number): void {
@@ -130,7 +112,7 @@ export class ManageRequestsComponent implements OnInit {
         this.httpService.rejectEventRequest(requestId, { rejectionReason: this.rejectionReason }).subscribe({
             next: () => {
                 this.showMessage = true;
-                this.responseMessage = 'Request rejected and client has been notified.';
+                this.responseMessage = 'Request rejected.';
                 this.closePanel();
                 this.loadRequests();
             },
@@ -142,7 +124,7 @@ export class ManageRequestsComponent implements OnInit {
         this.approvingRequestId = null;
         this.rejectingRequestId = null;
         this.rejectionReason = '';
-        this.allocationItems = [];
+        this.selectedEventId = '';
         this.showError = false;
     }
 }

@@ -15,19 +15,13 @@ public class EventRequestService {
     private final EventRequestRepository eventRequestRepository;
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
-    private final ResourceRepository resourceRepository;
-    private final AllocationRepository allocationRepository;
 
     public EventRequestService(EventRequestRepository eventRequestRepository,
             UserRepository userRepository,
-            EventRepository eventRepository,
-            ResourceRepository resourceRepository,
-            AllocationRepository allocationRepository) {
+            EventRepository eventRepository) {
         this.eventRequestRepository = eventRequestRepository;
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
-        this.resourceRepository = resourceRepository;
-        this.allocationRepository = allocationRepository;
     }
 
     // ── CLIENT: Submit a new event request ──────────────────────────
@@ -40,23 +34,26 @@ public class EventRequestService {
         return eventRequestRepository.save(request);
     }
 
-    // ── CLIENT: View their own requests ────────────────────────────
+    // ── CLIENT: View their own requests ─────────────────────────────
     public List<EventRequest> getClientRequests(String clientUsername) {
         User client = userRepository.findByUsername(clientUsername);
         return eventRequestRepository.findByClientId(client.getId());
     }
 
-    // ── PLANNER: View all PENDING requests ─────────────────────────
-    public List<EventRequest> getPendingRequests() {
-        return eventRequestRepository.findByStatus("PENDING");
+    // ── CLIENT: Get approved bookings with linked event details ─────
+    // Returns only APPROVED requests for the logged-in client
+    // The linkedEvent on each request carries event + planner + staff info
+    public List<EventRequest> getClientBookings(String clientUsername) {
+        User client = userRepository.findByUsername(clientUsername);
+        return eventRequestRepository.findByClientIdAndStatus(client.getId(), "APPROVED");
     }
 
-    // ── PLANNER: View all requests regardless of status ────────────
+    // ── PLANNER: View all requests regardless of status ─────────────
     public List<EventRequest> getAllRequests() {
         return eventRequestRepository.findAll();
     }
 
-    // ── PLANNER: Mark request as UNDER_REVIEW ──────────────────────
+    // ── PLANNER: Mark request as UNDER_REVIEW ───────────────────────
     public EventRequest markUnderReview(Long requestId) {
         EventRequest req = eventRequestRepository.findById(requestId)
                 .orElseThrow(() -> new RuntimeException("Request not found"));
@@ -65,61 +62,26 @@ public class EventRequestService {
         return eventRequestRepository.save(req);
     }
 
-    // ── PLANNER: Approve request ────────────────────────────────────
-    // This creates the actual Event, allocates resources, links them back
+    // ── PLANNER: Approve request ─────────────────────────────────────
+    // Planner has already manually created the event and allocated resources
+    // This action simply links the chosen event to the request and marks it
+    // APPROVED
     public EventRequest approveRequest(Long requestId, ApproveRequestDTO dto) {
-
         EventRequest req = eventRequestRepository.findById(requestId)
                 .orElseThrow(() -> new RuntimeException("Request not found"));
 
-        // 1. Validate all requested allocations have enough available quantity
-        for (ApproveRequestDTO.AllocationItem item : dto.getAllocations()) {
-            Resource resource = resourceRepository.findById(item.getResourceId())
-                    .orElseThrow(() -> new RuntimeException("Resource not found: " + item.getResourceId()));
+        // Find the event the planner created and wants to link
+        Event linkedEvent = eventRepository.findById(dto.getEventId())
+                .orElseThrow(() -> new RuntimeException("Event not found. Please create the event first."));
 
-            int available = resource.getAvailableQuantity();
-            if (available < item.getQuantity()) {
-                throw new RuntimeException(
-                        "Not enough quantity for resource: " + resource.getName() +
-                                ". Available: " + available + ", Requested: " + item.getQuantity());
-            }
-        }
-
-        // 2. Create the actual Event from the request data
-        Event event = new Event();
-        event.setTitle(req.getEventTitle());
-        event.setDescription(req.getEventDescription());
-        event.setLocation(req.getEventLocation());
-        event.setDateTime(req.getEventDate());
-        event.setStatus("PLANNED");
-        Event savedEvent = eventRepository.save(event);
-
-        // 3. Allocate each resource — reduce available quantity
-        for (ApproveRequestDTO.AllocationItem item : dto.getAllocations()) {
-            Resource resource = resourceRepository.findById(item.getResourceId())
-                    .orElseThrow(() -> new RuntimeException("Resource not found"));
-
-            // Deduct from available pool
-            resource.setAllocatedQuantity(resource.getAllocatedQuantity() + item.getQuantity());
-            resource.recalculateAvailability(); // flip availability if pool hits 0
-            resourceRepository.save(resource);
-
-            // Save allocation record
-            Allocation allocation = new Allocation();
-            allocation.setEvent(savedEvent);
-            allocation.setResource(resource);
-            allocation.setQuantity(item.getQuantity());
-            allocationRepository.save(allocation);
-        }
-
-        // 4. Update request status and link to event
+        // Link the event and approve
+        req.setLinkedEvent(linkedEvent);
         req.setStatus("APPROVED");
-        req.setLinkedEvent(savedEvent);
         req.setUpdatedAt(new Date());
         return eventRequestRepository.save(req);
     }
 
-    // ── PLANNER: Reject request with mandatory reason ───────────────
+    // ── PLANNER: Reject request with mandatory reason ────────────────
     public EventRequest rejectRequest(Long requestId, RejectRequestDTO dto) {
         if (dto.getRejectionReason() == null || dto.getRejectionReason().isBlank()) {
             throw new RuntimeException("Rejection reason is mandatory");
@@ -132,23 +94,5 @@ public class EventRequestService {
         req.setRejectionReason(dto.getRejectionReason());
         req.setUpdatedAt(new Date());
         return eventRequestRepository.save(req);
-    }
-
-    // ── Called when Event status becomes COMPLETED ──────────────────
-    // Releases all allocated resources back to the pool
-    public void releaseResourcesOnCompletion(Long eventId) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
-
-        for (Allocation allocation : event.getAllocations()) {
-            Resource resource = allocation.getResource();
-            int released = allocation.getQuantity();
-
-            // Return quantity to available pool
-            int newAllocated = resource.getAllocatedQuantity() - released;
-            resource.setAllocatedQuantity(Math.max(newAllocated, 0)); // never go below 0
-            resource.recalculateAvailability();
-            resourceRepository.save(resource);
-        }
     }
 }

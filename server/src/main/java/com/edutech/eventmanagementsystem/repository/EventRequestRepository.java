@@ -10,8 +10,12 @@ import java.util.List;
 public interface EventRequestRepository extends JpaRepository<EventRequest, Long> {
 
     // Planner sees all requests by status
+    // Planner: filter requests by status
     List<EventRequest> findByStatus(String status);
 
-    // Client sees their own requests (by their user id)
+    // Client: view their own requests
     List<EventRequest> findByClientId(Long clientId);
+
+    // Client: view only approved bookings (to show linked events)
+    List<EventRequest> findByClientIdAndStatus(Long clientId, String status);
 }

@@ -1,6 +1,5 @@
 package com.edutech.eventmanagementsystem.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +13,7 @@ import com.edutech.eventmanagementsystem.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -36,6 +35,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+    // Returns all users with STAFF role for the dropdown in Create Event
+    public List<User> getStaffUsers() {
+        return userRepository.findByRole("STAFF");
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -45,15 +49,6 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
-        );
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
     }
-
-    
-
-
-
-    
-
-
 }

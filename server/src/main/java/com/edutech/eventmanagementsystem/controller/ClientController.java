@@ -1,25 +1,16 @@
 package com.edutech.eventmanagementsystem.controller;
 
-
-import java.util.List;
-
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.edutech.eventmanagementsystem.entity.Event;
-import com.edutech.eventmanagementsystem.service.EventService;
-
-import com.edutech.eventmanagementsystem.entity.EventRequest;
-import com.edutech.eventmanagementsystem.service.EventRequestService;
 import org.springframework.web.bind.annotation.*;
+import com.edutech.eventmanagementsystem.entity.Event;
+import com.edutech.eventmanagementsystem.entity.EventRequest;
+import com.edutech.eventmanagementsystem.service.EventService;
+import com.edutech.eventmanagementsystem.service.EventRequestService;
 
 import java.security.Principal;
 import java.util.HashMap;
-
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,22 +26,13 @@ public class ClientController {
         this.eventRequestService = eventRequestService;
     }
 
-    // ── Existing: view booking/event details by ID ──────────────────
-    @GetMapping("/booking-details/{eventId}")
-    public ResponseEntity<Event> getBookingDetails(@PathVariable Long eventId) {
-        Event event = eventService.getEventDetails(eventId);
-        return ResponseEntity.ok(event);
-    }
-
-    // ── NEW: Browse all PLANNED / upcoming events ───────────────────
+    // ── Browse all events (public listing for all clients) ───────────
     @GetMapping("/events")
     public ResponseEntity<List<Event>> browseEvents() {
-        List<Event> events = eventService.getAllEvents();
-        return ResponseEntity.ok(events);
+        return ResponseEntity.ok(eventService.getAllEvents());
     }
 
-    // ── NEW: Submit an event request ───────────────────────────────
-    // Principal gives us the logged-in client's username from JWT
+    // ── Submit an event request ──────────────────────────────────────
     @PostMapping("/event-request")
     public ResponseEntity<?> submitRequest(@RequestBody EventRequest request,
             Principal principal) {
@@ -64,10 +46,18 @@ public class ClientController {
         }
     }
 
-    // ── NEW: Client views their own requests and statuses ──────────
+    // ── View all own requests and their statuses ─────────────────────
     @GetMapping("/my-requests")
     public ResponseEntity<List<EventRequest>> getMyRequests(Principal principal) {
-        List<EventRequest> requests = eventRequestService.getClientRequests(principal.getName());
-        return ResponseEntity.ok(requests);
+        return ResponseEntity.ok(eventRequestService.getClientRequests(principal.getName()));
+    }
+
+    // ── View only APPROVED bookings with linked event details ────────
+    // Each approved request carries the linkedEvent which has
+    // title, location, dateTime, status, planner name, staff name, allocations
+    // No manual event ID search needed — auto-fetched by logged-in client identity
+    @GetMapping("/my-bookings")
+    public ResponseEntity<List<EventRequest>> getMyBookings(Principal principal) {
+        return ResponseEntity.ok(eventRequestService.getClientBookings(principal.getName()));
     }
 }

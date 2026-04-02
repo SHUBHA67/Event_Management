@@ -1,16 +1,15 @@
 <div class="page-container">
   <div class="card">
-    <h2>🔍 Search Event Details</h2>
-
-    <div class="search-row">
-      <input type="number" [(ngModel)]="formModel.eventID" placeholder="Enter Event ID" />
-      <button class="btn-search" (click)="searchEvent()">Search</button>
-    </div>
+    <h2>:clipboard: My Assigned Events</h2>
 
     <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
     <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
 
-    <div *ngFor="let event of eventObj" class="event-detail-card">
+    <div *ngIf="myEvents.length === 0 && !showError" class="empty-state">
+      No events assigned to you yet.
+    </div>
+
+    <div *ngFor="let event of myEvents" class="event-detail-card">
       <div class="event-detail-header">
         <h3>{{ event.title }}</h3>
         <span class="badge">{{ event.status }}</span>
@@ -19,64 +18,43 @@
       <p>{{ event.description }}</p>
 
       <div class="event-meta">
-        <span>📍 {{ event.location }}</span>
-        <span>📅 {{ event.dateTime | date:'medium' }}</span>
+        <span>:round_pushpin: {{ event.location }}</span>
+        <span>:date: {{ event.dateTime | date:'medium' }}</span>
+        <span>:office_worker: Planner: {{ event.planner?.username || '—' }}</span>
       </div>
 
-      <button class="btn-edit" (click)="edit(event)">✏️ Edit Event</button>
-    </div>
-  </div>
-
-  <div class="card" *ngIf="isUpdate">
-    <h3>✏️ Update Event</h3>
-
-    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-
-      <div class="form-group">
-        <label>Title *</label>
-        <input type="text" formControlName="title" />
-        <div class="error-text"
-             *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">
-          Title is required.
-        </div>
+      <!-- Allocated Resources -->
+      <div *ngIf="event.allocations && event.allocations.length > 0" class="resources-section">
+        <strong>Resources:</strong>
+        <span *ngFor="let a of event.allocations; let last = last">
+          {{ a.resource?.name }} (×{{ a.quantity }}){{ last ? '' : ', ' }}
+        </span>
       </div>
 
-      <div class="form-group">
-        <label>Description *</label>
-        <textarea formControlName="description" rows="3"></textarea>
-        <div class="error-text"
-             *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">
-          Description is required.
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Date & Time *</label>
-          <input type="datetime-local" formControlName="dateTime" />
-        </div>
-
-        <div class="form-group">
-          <label>Location *</label>
-          <input type="text" formControlName="location" />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Status *</label>
-        <select formControlName="status">
-          <option value="">-- Select Status --</option>
-          <option value="PLANNED">Planned</option>
-          <option value="ONGOING">Ongoing</option>
-          <option value="COMPLETED">Completed</option>
-          <option value="CANCELLED">Cancelled</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">
-        Update Event
+      <button class="btn-edit" (click)="openStatusUpdate(event)" *ngIf="updatingEventId !== event.eventID">
+        :pencil2: Update Status
       </button>
 
-    </form>
+      <!-- Status Update Panel -->
+      <div class="status-panel" *ngIf="updatingEventId === event.eventID">
+        <div class="form-group">
+          <label>Update Status *</label>
+          <select [(ngModel)]="selectedStatus">
+            <option value="">-- Select Status --</option>
+            <option value="PLANNED">Planned</option>
+            <option value="ONGOING">Ongoing</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="CANCELLED">Cancelled</option>
+          </select>
+        </div>
+        <div class="action-row">
+          <button class="btn-primary" (click)="submitStatusUpdate()" [disabled]="!selectedStatus">
+            Save Status
+          </button>
+          <button class="btn-cancel" (click)="cancelUpdate()">Cancel</button>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
