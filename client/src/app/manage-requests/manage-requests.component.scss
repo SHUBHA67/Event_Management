@@ -1,0 +1,333 @@
+.page-container {
+    padding: 24px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Filter tabs */
+.filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+
+    button {
+        padding: 7px 16px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        background: #f8f9fa;
+        color: #666;
+        cursor: pointer;
+        font-size: 13px;
+
+        &.active {
+            background: #6c63ff;
+            color: #fff;
+            border-color: #6c63ff;
+        }
+
+        &:hover:not(.active) {
+            background: #eee;
+        }
+    }
+}
+
+.empty-state {
+    color: #aaa;
+    text-align: center;
+    padding: 40px 0;
+    font-size: 15px;
+}
+
+/* Individual request card */
+.request-card {
+    border: 1px solid #e8ecf0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+
+    h3 {
+        margin: 0;
+        color: #333;
+        font-size: 17px;
+    }
+
+    .client-name {
+        color: #888;
+        font-size: 13px;
+    }
+}
+
+.req-desc {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.req-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.req-resources {
+    background: #f8f9fa;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 12px;
+}
+
+/* Linked event info — shown when APPROVED */
+.linked-event-info {
+    background: #eaffea;
+    border: 1px solid #a8e6c1;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #27ae60;
+    margin-bottom: 12px;
+}
+
+/* Rejection reason */
+.rejection-reason {
+    background: #ffeaea;
+    border: 1px solid #f5b7b1;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #c0392b;
+    margin-bottom: 12px;
+}
+
+/* Action row */
+.action-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* Inline panels */
+.approve-panel,
+.reject-panel {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 18px;
+    margin-top: 14px;
+
+    h4 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .hint {
+        color: #888;
+        font-size: 13px;
+        margin-bottom: 14px;
+        line-height: 1.5;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+        resize: vertical;
+    }
+}
+
+.form-group {
+    margin-bottom: 14px;
+
+    label {
+        display: block;
+        color: #555;
+        font-weight: 600;
+        margin-bottom: 6px;
+        font-size: 14px;
+    }
+
+    select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+}
+
+.panel-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+/* Status badges */
+.badge-yellow {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #fff8e1;
+    color: #f39c12;
+    font-size: 12px;
+}
+
+.badge-blue {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #e8f4ff;
+    color: #2980b9;
+    font-size: 12px;
+}
+
+.badge-green {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #eaffea;
+    color: #27ae60;
+    font-size: 12px;
+}
+
+.badge-red {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #ffeaea;
+    color: #c0392b;
+    font-size: 12px;
+}
+
+/* Feedback messages */
+.success-msg {
+    background: #eaffea;
+    color: #27ae60;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.error-msg {
+    background: #ffeaea;
+    color: #c0392b;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+/* Action buttons */
+.btn-review {
+    padding: 8px 16px;
+    background: #f39c12;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+        background: #d68910;
+    }
+}
+
+.btn-approve {
+    padding: 8px 16px;
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:disabled {
+        background: #bbb;
+        cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+        background: #219a52;
+    }
+}
+
+.btn-reject {
+    padding: 8px 16px;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:disabled {
+        background: #bbb;
+        cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+        background: #c0392b;
+    }
+}
+
+.btn-cancel {
+    padding: 8px 16px;
+    background: #f0f0f0;
+    color: #555;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+
+    &:hover {
+        background: #e0e0e0;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .request-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .action-row,
+    .panel-actions {
+        flex-direction: column;
+    }
+
+    .btn-review,
+    .btn-approve,
+    .btn-reject,
+    .btn-cancel {
+        width: 100%;
+        text-align: center;
+    }
+}

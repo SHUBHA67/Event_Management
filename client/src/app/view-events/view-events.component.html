@@ -1,6 +1,6 @@
 <div class="page-container">
   <div class="card">
-    <h2>:clipboard: My Assigned Events</h2>
+    <h2> My Assigned Events</h2>
 
     <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
     <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
@@ -18,8 +18,8 @@
       <p>{{ event.description }}</p>
 
       <div class="event-meta">
-        <span>:round_pushpin: {{ event.location }}</span>
-        <span>:date: {{ event.dateTime | date:'medium' }}</span>
+        <span> {{ event.location }}</span>
+        <span> {{ event.dateTime | date:'medium' }}</span>
         <span>:office_worker: Planner: {{ event.planner?.username || '—' }}</span>
       </div>
 

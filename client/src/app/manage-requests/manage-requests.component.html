@@ -23,7 +23,7 @@
             <div class="request-header">
                 <div>
                     <h3>{{ req.eventTitle }}</h3>
-                    <small class="client-name">:bust_in_silhouette: Client: {{ req.client?.username }}</small>
+                    <small class="client-name"> Client: {{ req.client?.username }}</small>
                 </div>
                 <span [ngClass]="{
 'badge-yellow' : req.status === 'PENDING',
@@ -37,8 +37,8 @@
             <p class="req-desc">{{ req.eventDescription }}</p>
 
             <div class="req-meta">
-                <span>:round_pushpin: {{ req.eventLocation }}</span>
-                <span>:date: {{ req.eventDate | date:'mediumDate' }}</span>
+                <span> {{ req.eventLocation }}</span>
+                <span> {{ req.eventDate | date:'mediumDate' }}</span>
                 <span>:busts_in_silhouette: {{ req.expectedAttendees }} attendees</span>
             </div>
 

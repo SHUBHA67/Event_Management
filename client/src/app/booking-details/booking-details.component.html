@@ -1,0 +1,74 @@
+<div class="page-container">
+    <div class="card">
+        <h2>:admission_tickets: My Booking Details</h2>
+
+        <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+
+        <div *ngIf="bookings.length === 0 && !showError" class="empty-state">
+            You have no approved bookings yet.
+        </div>
+
+        <div *ngFor="let booking of bookings" class="booking-card">
+
+            <!-- Header -->
+            <div class="booking-header">
+                <h3>{{ booking.eventTitle }}</h3>
+                <span class="badge">APPROVED</span>
+            </div>
+
+            <p class="description">{{ booking.eventDescription }}</p>
+
+            <!-- Linked Event Meta -->
+            <div *ngIf="booking.linkedEvent" class="booking-meta">
+                <div class="meta-item">
+                    <span class="meta-label"> Location</span>
+                    {{ booking.linkedEvent.location }}
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label"> Date &amp; Time</span>
+                    {{ booking.linkedEvent.dateTime | date:'medium' }}
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">:card_index_dividers: Status</span>
+                    {{ booking.linkedEvent.status }}
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">:office_worker: Planner</span>
+                    {{ booking.linkedEvent.planner?.username || '—' }}
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">:construction_worker: Assigned Staff</span>
+                    {{ booking.linkedEvent.assignedStaff?.username || '—' }}
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">:busts_in_silhouette: Your Attendees</span>
+                    {{ booking.expectedAttendees }}
+                </div>
+            </div>
+
+            <!-- Allocated Resources -->
+            <div class="resources-section"  *ngIf="booking.linkedEvent?.allocations?.length > 0">
+                <h4>:package: Allocated Resources</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Resource</th>
+                                <th>Type</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let alloc of booking.linkedEvent.allocations">
+                                <td>{{ alloc.resource?.name }}</td>
+                                <td>{{ alloc.resource?.type }}</td>
+                                <td>{{ alloc.quantity }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
