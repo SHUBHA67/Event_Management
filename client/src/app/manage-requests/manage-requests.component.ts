@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http.service';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'app-manage-requests',
@@ -26,7 +28,7 @@ export class ManageRequestsComponent implements OnInit {
     responseMessage = '';
     errorMessage = '';
 
-    constructor(private httpService: HttpService) { }
+    constructor(private httpService: HttpService, private router: Router) { }
 
     ngOnInit(): void {
         this.loadRequests();
@@ -127,4 +129,9 @@ export class ManageRequestsComponent implements OnInit {
         this.selectedEventId = '';
         this.showError = false;
     }
+    
+  goBackToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
 }

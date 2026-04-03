@@ -1,3 +1,6 @@
+<link
+  href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+  rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <!-- Mobile Top Bar -->
@@ -5,7 +8,7 @@
   <button class="hamburger-btn" (click)="toggleSidebar()">
     <i class="bi" [ngClass]="sidebarOpen ? 'bi-x-lg' : 'bi-list'"></i>
   </button>
-  <h2 class="mobile-title">EventPro</h2>
+  <span class="mobile-title">Eventia</span>
 </div>
 
 <!-- Backdrop -->
@@ -17,8 +20,7 @@
   <div class="sidebar" [class.sidebar-open]="sidebarOpen">
 
     <div class="brand">
-      <i class="bi bi-calendar-event brand-icon" style="color:white;"></i>
-      <h2 style="text-align:center;">EventPro</h2>
+      <span class="brand-name">Eventia</span>
     </div>
 
     <div class="user-info">
@@ -32,7 +34,7 @@
       <!-- PLANNER -->
       <ng-container *ngIf="roleName === 'PLANNER'">
         <button class="nav-item" (click)="navigateTo('/create-event')">
-          <i class="bi bi-plus-circle nav-icon"></i> Create Event
+          <i class="bi bi-calendar-plus nav-icon"></i> Create Event
         </button>
         <button class="nav-item" (click)="navigateTo('/add-resource')">
           <i class="bi bi-box-seam nav-icon"></i> Add Resource
@@ -40,7 +42,6 @@
         <button class="nav-item" (click)="navigateTo('/resource-allocate')">
           <i class="bi bi-link-45deg nav-icon"></i> Allocate Resources
         </button>
-        <!-- NEW -->
         <button class="nav-item" (click)="navigateTo('/manage-requests')">
           <i class="bi bi-envelope-open nav-icon"></i> Client Requests
         </button>
@@ -58,7 +59,6 @@
         <button class="nav-item" (click)="navigateTo('/browse-events')">
           <i class="bi bi-calendar2-event nav-icon"></i> Browse Events
         </button>
-        <!-- NEW -->
         <button class="nav-item" (click)="navigateTo('/submit-request')">
           <i class="bi bi-send nav-icon"></i> Submit Request
         </button>
@@ -76,62 +76,88 @@
 
   <!-- Main Content -->
   <div class="main-content">
+
     <div class="welcome-card">
-      <h1>Welcome back, <span class="highlight">{{ username }}</span>!</h1>
-      <p>You are logged in as <strong>{{ roleName }}</strong>. Use the sidebar to navigate.</p>
+      <div class="welcome-text">
+        <h1>Welcome back, <span class="highlight">{{ username }}</span></h1>
+        <p>You are logged in as <strong>{{ roleName }}</strong>. Use the sidebar to navigate.</p>
+      </div>
+      <div class="welcome-decoration"></div>
     </div>
 
     <!-- PLANNER Cards -->
     <div class="cards-grid" *ngIf="roleName === 'PLANNER'">
-      <div class="card" (click)="navigateTo('/create-event')">
-        <i class="bi bi-calendar-plus card-icon"></i>
+      <div class="card card-accent-blue" (click)="navigateTo('/create-event')">
+        <div class="card-icon-wrap icon-blue">
+          <i class="bi bi-calendar-plus"></i>
+        </div>
         <h3>Create Event</h3>
         <p>Plan and schedule new events with all details.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
-      <div class="card" (click)="navigateTo('/add-resource')">
-        <i class="bi bi-box-seam card-icon"></i>
+      <div class="card card-accent-yellow" (click)="navigateTo('/add-resource')">
+        <div class="card-icon-wrap icon-yellow">
+          <i class="bi bi-box-seam"></i>
+        </div>
         <h3>Add Resource</h3>
         <p>Register resources with quantity for allocation.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
-      <div class="card" (click)="navigateTo('/resource-allocate')">
-        <i class="bi bi-link-45deg card-icon"></i>
+      <div class="card card-accent-orange" (click)="navigateTo('/resource-allocate')">
+        <div class="card-icon-wrap icon-orange">
+          <i class="bi bi-link-45deg"></i>
+        </div>
         <h3>Allocate Resources</h3>
         <p>Assign resources to specific events efficiently.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
-      <!-- NEW -->
-      <div class="card" (click)="navigateTo('/manage-requests')">
-        <i class="bi bi-envelope-open card-icon"></i>
+      <div class="card card-accent-red" (click)="navigateTo('/manage-requests')">
+        <div class="card-icon-wrap icon-red">
+          <i class="bi bi-envelope-open"></i>
+        </div>
         <h3>Client Requests</h3>
         <p>Review, approve or reject incoming event requests from clients.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
     </div>
 
     <!-- STAFF Cards -->
     <div class="cards-grid" *ngIf="roleName === 'STAFF'">
-      <div class="card" (click)="navigateTo('/view-events')">
-        <i class="bi bi-clipboard-check card-icon"></i>
+      <div class="card card-accent-blue" (click)="navigateTo('/view-events')">
+        <div class="card-icon-wrap icon-blue">
+          <i class="bi bi-clipboard-check"></i>
+        </div>
         <h3>View & Update Events</h3>
-        <p>Search and update event setup details.</p>
+        <p>Search and update event setup details assigned to you.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
     </div>
 
     <!-- CLIENT Cards -->
     <div class="cards-grid" *ngIf="roleName === 'CLIENT'">
-      <div class="card" (click)="navigateTo('/browse-events')">
-        <i class="bi bi-calendar2-event card-icon"></i>
+      <div class="card card-accent-blue" (click)="navigateTo('/browse-events')">
+        <div class="card-icon-wrap icon-blue">
+          <i class="bi bi-calendar2-event"></i>
+        </div>
         <h3>Browse Events</h3>
         <p>Explore all upcoming events available on the platform.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
-      <!-- NEW -->
-      <div class="card" (click)="navigateTo('/submit-request')">
-        <i class="bi bi-send card-icon"></i>
+      <div class="card card-accent-yellow" (click)="navigateTo('/submit-request')">
+        <div class="card-icon-wrap icon-yellow">
+          <i class="bi bi-send"></i>
+        </div>
         <h3>Submit Request</h3>
-        <p>Request a custom event. Track its status here.</p>
+        <p>Request a custom event and track its status here.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
-      <div class="card" (click)="navigateTo('/booking-details')">
-        <i class="bi bi-ticket-perforated card-icon"></i>
+      <div class="card card-accent-orange" (click)="navigateTo('/booking-details')">
+        <div class="card-icon-wrap icon-orange">
+          <i class="bi bi-ticket-perforated"></i>
+        </div>
         <h3>Booking Details</h3>
         <p>View your confirmed event booking information.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
     </div>
 

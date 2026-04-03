@@ -1,117 +1,111 @@
-<div class="page-container">
+<div class="page-wrapper">
+
+  <button class="back-btn" (click)="goBackToDashboard()">
+    <i class="bi bi-arrow-left"></i> Back to Dashboard
+  </button>
+
+  <div class="page-container">
     <div class="card">
-        <h2>:mailbox_with_mail: Client Event Requests</h2>
+      <div class="card-header">
+        <h2>Client Event Requests</h2>
+      </div>
 
-        <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-        <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+      <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
+      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
 
-        <!-- Filter tabs -->
-        <div class="filter-tabs">
-            <button [class.active]="activeFilter === 'ALL'" (click)="filterBy('ALL')">All</button>
-            <button [class.active]="activeFilter === 'PENDING'" (click)="filterBy('PENDING')">Pending</button>
-            <button [class.active]="activeFilter === 'UNDER_REVIEW'" (click)="filterBy('UNDER_REVIEW')">Under
-                Review</button>
-            <button [class.active]="activeFilter === 'APPROVED'" (click)="filterBy('APPROVED')">Approved</button>
-            <button [class.active]="activeFilter === 'REJECTED'" (click)="filterBy('REJECTED')">Rejected</button>
+      <div class="filter-tabs">
+        <button [class.active]="activeFilter === 'ALL'"          (click)="filterBy('ALL')">All</button>
+        <button [class.active]="activeFilter === 'PENDING'"      (click)="filterBy('PENDING')">Pending</button>
+        <button [class.active]="activeFilter === 'UNDER_REVIEW'" (click)="filterBy('UNDER_REVIEW')">Under Review</button>
+        <button [class.active]="activeFilter === 'APPROVED'"     (click)="filterBy('APPROVED')">Approved</button>
+        <button [class.active]="activeFilter === 'REJECTED'"     (click)="filterBy('REJECTED')">Rejected</button>
+      </div>
+
+      <div *ngIf="filteredRequests.length === 0" class="empty-state">No requests found.</div>
+
+      <div *ngFor="let req of filteredRequests" class="request-card">
+
+        <div class="request-header">
+          <div>
+            <h3>{{ req.eventTitle }}</h3>
+            <small class="client-name">Client: {{ req.client?.username }}</small>
+          </div>
+          <span [ngClass]="{
+            'badge-yellow': req.status === 'PENDING',
+            'badge-blue'  : req.status === 'UNDER_REVIEW',
+            'badge-green' : req.status === 'APPROVED',
+            'badge-red'   : req.status === 'REJECTED'
+          }">{{ req.status }}</span>
         </div>
 
-        <div *ngIf="filteredRequests.length === 0" class="empty-state">No requests found.</div>
+        <p class="req-desc">{{ req.eventDescription }}</p>
 
-        <div *ngFor="let req of filteredRequests" class="request-card">
-
-            <!-- Header -->
-            <div class="request-header">
-                <div>
-                    <h3>{{ req.eventTitle }}</h3>
-                    <small class="client-name"> Client: {{ req.client?.username }}</small>
-                </div>
-                <span [ngClass]="{
-'badge-yellow' : req.status === 'PENDING',
-'badge-blue' : req.status === 'UNDER_REVIEW',
-'badge-green' : req.status === 'APPROVED',
-'badge-red' : req.status === 'REJECTED'
-}">{{ req.status }}</span>
-            </div>
-
-            <!-- Details -->
-            <p class="req-desc">{{ req.eventDescription }}</p>
-
-            <div class="req-meta">
-                <span> {{ req.eventLocation }}</span>
-                <span> {{ req.eventDate | date:'mediumDate' }}</span>
-                <span>:busts_in_silhouette: {{ req.expectedAttendees }} attendees</span>
-            </div>
-
-            <div *ngIf="req.resourceRequirements" class="req-resources">
-                <strong>Client's resource notes:</strong> {{ req.resourceRequirements }}
-            </div>
-
-            <!-- Show linked event info if approved -->
-            <div *ngIf="req.status === 'APPROVED' && req.linkedEvent" class="linked-event-info">
-                <strong>:white_check_mark: Linked Event:</strong> {{ req.linkedEvent.title }} —
-                {{ req.linkedEvent.dateTime | date:'mediumDate' }} |
-                Staff: {{ req.linkedEvent.assignedStaff?.username || 'Not assigned' }}
-            </div>
-
-            <div *ngIf="req.rejectionReason" class="rejection-reason">
-                <strong>Rejection reason:</strong> {{ req.rejectionReason }}
-            </div>
-
-            <!-- Action buttons -->
-            <div class="action-row" *ngIf="req.status === 'PENDING' || req.status === 'UNDER_REVIEW'">
-                <button class="btn-review" *ngIf="req.status === 'PENDING'" (click)="markUnderReview(req.requestId)">
-                    :mag: Mark Under Review
-                </button>
-
-                <button class="btn-approve" *ngIf="req.status === 'UNDER_REVIEW'" (click)="openApprovePanel(req)">
-                    :white_check_mark: Approve
-                </button>
-
-                <button class="btn-reject" *ngIf="req.status === 'UNDER_REVIEW'" (click)="openRejectPanel(req)">
-                    ✕ Reject
-                </button>
-            </div>
-
-            <!-- Inline Approve Panel — Link Event -->
-            <div class="approve-panel" *ngIf="approvingRequestId === req.requestId">
-                <h4>Link an Event to This Request</h4>
-                <p class="hint">
-                    First create the event and allocate resources from the planner menu.
-                    Then come back here and select the event to approve this request.
-                </p>
-
-                <div class="form-group">
-                    <label>Select Event to Link *</label>
-                    <select [(ngModel)]="selectedEventId">
-                        <option value="">-- Select Event --</option>
-                        <option *ngFor="let event of eventList" [value]="event.eventID">
-                            {{ event.title }} — {{ event.dateTime | date:'mediumDate' }} ({{ event.status }})
-                        </option>
-                    </select>
-                </div>
-
-                <div class="panel-actions">
-                    <button class="btn-approve" (click)="submitApproval(req.requestId)" [disabled]="!selectedEventId">
-                        Confirm Approval
-                    </button>
-                    <button class="btn-cancel" (click)="closePanel()">Cancel</button>
-                </div>
-            </div>
-
-            <!-- Inline Reject Panel -->
-            <div class="reject-panel" *ngIf="rejectingRequestId === req.requestId">
-                <h4>Rejection Reason *</h4>
-                <textarea [(ngModel)]="rejectionReason" rows="3"
-                    placeholder="e.g. Requested date is unavailable"></textarea>
-                <div class="panel-actions">
-                    <button class="btn-reject" (click)="submitRejection(req.requestId)"
-                        [disabled]="!rejectionReason.trim()">
-                        Confirm Rejection
-                    </button>
-                    <button class="btn-cancel" (click)="closePanel()">Cancel</button>
-                </div>
-            </div>
-
+        <div class="req-meta">
+          <span><i class="bi bi-geo-alt"></i> {{ req.eventLocation }}</span>
+          <span><i class="bi bi-calendar3"></i> {{ req.eventDate | date:'mediumDate' }}</span>
+          <span><i class="bi bi-people"></i> {{ req.expectedAttendees }} attendees</span>
         </div>
+
+        <div *ngIf="req.resourceRequirements" class="req-resources">
+          <strong>Client's resource notes:</strong> {{ req.resourceRequirements }}
+        </div>
+
+        <div *ngIf="req.status === 'APPROVED' && req.linkedEvent" class="linked-event-info">
+          <strong>Linked Event:</strong> {{ req.linkedEvent.title }} —
+          {{ req.linkedEvent.dateTime | date:'mediumDate' }} |
+          Staff: {{ req.linkedEvent.assignedStaff?.username || 'Not assigned' }}
+        </div>
+
+        <div *ngIf="req.rejectionReason" class="rejection-reason">
+          <strong>Rejection reason:</strong> {{ req.rejectionReason }}
+        </div>
+
+        <div class="action-row" *ngIf="req.status === 'PENDING' || req.status === 'UNDER_REVIEW'">
+          <button class="btn-review" *ngIf="req.status === 'PENDING'" (click)="markUnderReview(req.requestId)">
+            Mark Under Review
+          </button>
+          <button class="btn-approve" *ngIf="req.status === 'UNDER_REVIEW'" (click)="openApprovePanel(req)">
+            Approve
+          </button>
+          <button class="btn-reject" *ngIf="req.status === 'UNDER_REVIEW'" (click)="openRejectPanel(req)">
+            Reject
+          </button>
+        </div>
+
+        <!-- Approve Panel -->
+        <div class="approve-panel" *ngIf="approvingRequestId === req.requestId">
+          <h4>Link an Event to This Request</h4>
+          <p class="hint">First create the event and allocate resources, then come back and select it here.</p>
+          <div class="form-group">
+            <label>Select Event to Link *</label>
+            <select [(ngModel)]="selectedEventId">
+              <option value="">-- Select Event --</option>
+              <option *ngFor="let event of eventList" [value]="event.eventID">
+                {{ event.title }} — {{ event.dateTime | date:'mediumDate' }} ({{ event.status }})
+              </option>
+            </select>
+          </div>
+          <div class="panel-actions">
+            <button class="btn-approve" (click)="submitApproval(req.requestId)" [disabled]="!selectedEventId">
+              Confirm Approval
+            </button>
+            <button class="btn-cancel" (click)="closePanel()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Reject Panel -->
+        <div class="reject-panel" *ngIf="rejectingRequestId === req.requestId">
+          <h4>Rejection Reason *</h4>
+          <textarea [(ngModel)]="rejectionReason" rows="3" placeholder="e.g. Requested date is unavailable"></textarea>
+          <div class="panel-actions">
+            <button class="btn-reject" (click)="submitRejection(req.requestId)" [disabled]="!rejectionReason.trim()">
+              Confirm Rejection
+            </button>
+            <button class="btn-cancel" (click)="closePanel()">Cancel</button>
+          </div>
+        </div>
+
+      </div>
     </div>
+  </div>
 </div>

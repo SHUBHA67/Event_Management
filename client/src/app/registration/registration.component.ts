@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {
     this.itemForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, this.passwordValidator]],
+      password: ['', [Validators.required, this.passwordValidator, Validators.minLength(6),Validators.maxLength(13)]],
       email: ['', [Validators.required, Validators.email]],
       role: ['', Validators.required]
     });
@@ -49,7 +49,7 @@ export class RegistrationComponent implements OnInit {
         next: () => {
           this.responseMessage = 'Account created successfully! Redirecting to login...';
           this.showMessage = true;
-          // setTimeout(() => this.router.navigateByUrl('/login'), 1500);
+          setTimeout(() => this.router.navigateByUrl('/login'), 1500);
         },
         error: () => {
           this.responseMessage = 'Registration failed. Please try again.';

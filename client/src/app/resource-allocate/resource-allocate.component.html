@@ -1,53 +1,55 @@
-<div class="page-container">
-  <div class="card">
-    <h2>🔗 Allocate Resources to Event</h2>
+<div class="page-wrapper">
 
-    <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-    <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+  <button class="back-btn" (click)="router.navigate(['/dashboard'])">
+    <i class="bi bi-arrow-left"></i> Back to Dashboard
+  </button>
 
-    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-
-      <div class="form-group">
-        <label>Select Event *</label>
-        <select formControlName="eventId">
-          <option value="">-- Select Event --</option>
-          <option *ngFor="let event of eventList" [value]="event.eventID">
-            {{ event.title }}
-          </option>
-        </select>
-        <div class="error-text"
-             *ngIf="itemForm.get('eventId')?.invalid && itemForm.get('eventId')?.touched">
-          Event is required.
-        </div>
+  <div class="page-container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Allocate Resources to Event</h2>
       </div>
 
-      <div class="form-group">
-        <label>Select Resource *</label>
-        <select formControlName="resourceId">
-          <option value="">-- Select Resource --</option>
-          <option *ngFor="let res of resourceList" [value]="res.resourceID">
-            {{ res.name }} ({{ res.type }})
-          </option>
-        </select>
-        <div class="error-text"
-             *ngIf="itemForm.get('resourceId')?.invalid && itemForm.get('resourceId')?.touched">
-          Resource is required.
+      <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
+      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+
+      <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+          <label>Select Event *</label>
+          <select formControlName="eventId">
+            <option value="">-- Select Event --</option>
+            <option *ngFor="let event of eventList" [value]="event.eventID">{{ event.title }}</option>
+          </select>
+          <div class="error-text" *ngIf="itemForm.get('eventId')?.invalid && itemForm.get('eventId')?.touched">
+            Event is required.
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label>Quantity *</label>
-        <input type="number" formControlName="quantity" placeholder="Enter quantity" min="1" />
-        <div class="error-text"
-             *ngIf="itemForm.get('quantity')?.invalid && itemForm.get('quantity')?.touched">
-          Quantity is required.
+        <div class="form-group">
+          <label>Select Resource *</label>
+          <select formControlName="resourceId">
+            <option value="">-- Select Resource --</option>
+            <option *ngFor="let res of resourceList" [value]="res.resourceID">
+              {{ res.name }} ({{ res.type }})
+            </option>
+          </select>
+          <div class="error-text" *ngIf="itemForm.get('resourceId')?.invalid && itemForm.get('resourceId')?.touched">
+            Resource is required.
+          </div>
         </div>
-      </div>
 
-      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">
-        Allocate Resource
-      </button>
+        <div class="form-group">
+          <label>Quantity *</label>
+          <input type="number" formControlName="quantity" placeholder="Enter quantity" min="1" />
+          <div class="error-text" *ngIf="itemForm.get('quantity')?.invalid && itemForm.get('quantity')?.touched">
+            Quantity is required.
+          </div>
+        </div>
 
-    </form>
+        <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Allocate Resource</button>
+
+      </form>
+    </div>
   </div>
 </div>

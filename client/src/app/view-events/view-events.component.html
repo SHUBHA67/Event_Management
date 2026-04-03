@@ -1,60 +1,67 @@
-<div class="page-container">
-  <div class="card">
-    <h2> My Assigned Events</h2>
+<div class="page-wrapper">
 
-    <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
-    <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
+  <button class="back-btn" (click)="router.navigate(['/dashboard'])">
+    <i class="bi bi-arrow-left"></i> Back to Dashboard
+  </button>
 
-    <div *ngIf="myEvents.length === 0 && !showError" class="empty-state">
-      No events assigned to you yet.
-    </div>
-
-    <div *ngFor="let event of myEvents" class="event-detail-card">
-      <div class="event-detail-header">
-        <h3>{{ event.title }}</h3>
-        <span class="badge">{{ event.status }}</span>
+  <div class="page-container">
+    <div class="card">
+      <div class="card-header">
+        <h2>My Assigned Events</h2>
       </div>
 
-      <p>{{ event.description }}</p>
+      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+      <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
 
-      <div class="event-meta">
-        <span> {{ event.location }}</span>
-        <span> {{ event.dateTime | date:'medium' }}</span>
-        <span>:office_worker: Planner: {{ event.planner?.username || '—' }}</span>
+      <div *ngIf="myEvents.length === 0 && !showError" class="empty-state">
+        No events assigned to you yet.
       </div>
 
-      <!-- Allocated Resources -->
-      <div *ngIf="event.allocations && event.allocations.length > 0" class="resources-section">
-        <strong>Resources:</strong>
-        <span *ngFor="let a of event.allocations; let last = last">
-          {{ a.resource?.name }} (×{{ a.quantity }}){{ last ? '' : ', ' }}
-        </span>
-      </div>
+      <div *ngFor="let event of myEvents" class="event-card">
 
-      <button class="btn-edit" (click)="openStatusUpdate(event)" *ngIf="updatingEventId !== event.eventID">
-        :pencil2: Update Status
-      </button>
-
-      <!-- Status Update Panel -->
-      <div class="status-panel" *ngIf="updatingEventId === event.eventID">
-        <div class="form-group">
-          <label>Update Status *</label>
-          <select [(ngModel)]="selectedStatus">
-            <option value="">-- Select Status --</option>
-            <option value="PLANNED">Planned</option>
-            <option value="ONGOING">Ongoing</option>
-            <option value="COMPLETED">Completed</option>
-            <option value="CANCELLED">Cancelled</option>
-          </select>
+        <div class="event-card-header">
+          <h3>{{ event.title }}</h3>
+          <span class="badge">{{ event.status }}</span>
         </div>
-        <div class="action-row">
-          <button class="btn-primary" (click)="submitStatusUpdate()" [disabled]="!selectedStatus">
-            Save Status
-          </button>
-          <button class="btn-cancel" (click)="cancelUpdate()">Cancel</button>
-        </div>
-      </div>
 
+        <p class="event-desc">{{ event.description }}</p>
+
+        <div class="event-meta">
+          <span><i class="bi bi-geo-alt"></i> {{ event.location }}</span>
+          <span><i class="bi bi-calendar3"></i> {{ event.dateTime | date:'medium' }}</span>
+          <span><i class="bi bi-person"></i> Planner: {{ event.planner?.username || '—' }}</span>
+        </div>
+
+        <div *ngIf="event.allocations && event.allocations.length > 0" class="resources-section">
+          <strong>Resources:</strong>
+          <span *ngFor="let a of event.allocations; let last = last">
+            {{ a.resource?.name }} (x{{ a.quantity }}){{ last ? '' : ', ' }}
+          </span>
+        </div>
+
+        <button class="btn-edit" (click)="openStatusUpdate(event)" *ngIf="updatingEventId !== event.eventID">
+          Update Status
+        </button>
+
+        <!-- Status Update Panel -->
+        <div class="status-panel" *ngIf="updatingEventId === event.eventID">
+          <div class="form-group">
+            <label>Update Status *</label>
+            <select [(ngModel)]="selectedStatus">
+              <option value="">-- Select Status --</option>
+              <option value="PLANNED">Planned</option>
+              <option value="ONGOING">Ongoing</option>
+              <option value="COMPLETED">Completed</option>
+              <option value="CANCELLED">Cancelled</option>
+            </select>
+          </div>
+          <div class="action-row">
+            <button class="btn-primary" (click)="submitStatusUpdate()" [disabled]="!selectedStatus">Save Status</button>
+            <button class="btn-cancel" (click)="cancelUpdate()">Cancel</button>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>

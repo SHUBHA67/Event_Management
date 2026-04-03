@@ -1,99 +1,117 @@
-<div class="page-container">
-  <div class="page-header">
-    <button class="back-btn" (click)="router.navigate(['/dashboard'])">&#8592; Back</button>
-    <h2 class="page-title">Create New Event</h2>
-  </div>
+<div class="page-wrapper">
 
-  <div class="card">
-    <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-    <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+  <!-- Back Button -->
+  <button class="back-btn" (click)="router.navigate(['/dashboard'])">
+    <i class="bi bi-arrow-left"></i> Back to Dashboard
+  </button>
 
-    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Title *</label>
-          <input type="text" formControlName="title" placeholder="Event title" />
-          <div class="error-text" *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">Title is
-            required.</div>
-        </div>
-        <div class="form-group">
-          <label>Location *</label>
-          <input type="text" formControlName="location" placeholder="Event location" />
-          <div class="error-text" *ngIf="itemForm.get('location')?.invalid && itemForm.get('location')?.touched">
-            Location is required.</div>
-        </div>
+  <div class="page-container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Create New Event</h2>
       </div>
 
-      <div class="form-group">
-        <label>Description *</label>
-        <textarea formControlName="description" placeholder="Event description" rows="3"></textarea>
-        <div class="error-text" *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">
-          Description is required.</div>
-      </div>
+      <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
+      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label>Date and Time *</label>
-          <input type="datetime-local" formControlName="dateTime" />
-          <div class="error-text" *ngIf="itemForm.get('dateTime')?.invalid && itemForm.get('dateTime')?.touched">Date
-            and Time is required.</div>
+      <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Title *</label>
+            <input type="text" formControlName="title" placeholder="Event title" />
+            <div class="error-text" *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">
+              Title is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Location *</label>
+            <input type="text" formControlName="location" placeholder="Event location" />
+            <div class="error-text" *ngIf="itemForm.get('location')?.invalid && itemForm.get('location')?.touched">
+              Location is required.
+            </div>
+          </div>
         </div>
+
         <div class="form-group">
-          <label>Status *</label>
-          <select formControlName="status">
-            <option value="">-- Select Status --</option>
-            <option value="PLANNED">Planned</option>
-            <option value="ONGOING">Ongoing</option>
-            <option value="COMPLETED">Completed</option>
-            <option value="CANCELLED">Cancelled</option>
+          <label>Description *</label>
+          <textarea formControlName="description" placeholder="Event description" rows="3"></textarea>
+          <div class="error-text" *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">
+            Description is required.
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date & Time *</label>
+            <input type="datetime-local" formControlName="dateTime" />
+            <div class="error-text" *ngIf="itemForm.get('dateTime')?.invalid && itemForm.get('dateTime')?.touched">
+              Date & Time is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Status *</label>
+            <select formControlName="status">
+              <option value="">-- Select Status --</option>
+              <option value="PLANNED">Planned</option>
+              <option value="ONGOING">Ongoing</option>
+              <option value="COMPLETED">Completed</option>
+              <option value="CANCELLED">Cancelled</option>
+            </select>
+            <div class="error-text" *ngIf="itemForm.get('status')?.invalid && itemForm.get('status')?.touched">
+              Status is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Assign Staff *</label>
+          <select formControlName="staffId">
+            <option value="">-- Select Staff Member --</option>
+            <option *ngFor="let staff of staffList" [value]="staff.id">{{ staff.username }}</option>
           </select>
-          <div class="error-text" *ngIf="itemForm.get('status')?.invalid && itemForm.get('status')?.touched">Status is
-            required.</div>
+          <div class="error-text" *ngIf="itemForm.get('staffId')?.invalid && itemForm.get('staffId')?.touched">
+            Staff assignment is required.
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label>Assign Staff *</label>
-        <select formControlName="staffId">
-          <option value="">-- Select Staff Member --</option>
-          <option *ngFor="let staff of staffList" [value]="staff.id">{{ staff.username }}</option>
-        </select>
-        <div class="error-text" *ngIf="itemForm.get('staffId')?.invalid && itemForm.get('staffId')?.touched">Staff
-          assignment is required.</div>
-      </div>
+        <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Create Event</button>
 
-      <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Create Event</button>
-    </form>
-  </div>
-
-  <div class="card" *ngIf="eventList.length > 0">
-    <h3 class="section-title">All Events</h3>
-    <div class="table-responsive">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Planner</th>
-            <th>Staff</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let event of eventList">
-            <td>{{ event.eventID }}</td>
-            <td>{{ event.title }}</td>
-            <td>{{ event.location }}</td>
-            <td><span class="status-badge">{{ event.status }}</span></td>
-            <td>{{ event.dateTime | date:'short' }}</td>
-            <td>{{ event.planner?.username || '—' }}</td>
-            <td>{{ event.assignedStaff?.username || '—' }}</td>
-          </tr>
-        </tbody>
-      </table>
+      </form>
     </div>
+
+    <!-- All Events Table -->
+    <div class="card" *ngIf="eventList.length > 0">
+      <div class="card-header">
+        <h3>All Events</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Planner</th>
+              <th>Staff</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let event of eventList">
+              <td>{{ event.eventID }}</td>
+              <td>{{ event.title }}</td>
+              <td>{{ event.location }}</td>
+              <td><span class="badge">{{ event.status }}</span></td>
+              <td>{{ event.dateTime | date:'short' }}</td>
+              <td>{{ event.planner?.username || '—' }}</td>
+              <td>{{ event.assignedStaff?.username || '—' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 </div>

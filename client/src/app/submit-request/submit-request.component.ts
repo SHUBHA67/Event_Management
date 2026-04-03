@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from '../../services/http.service';
+import {  Router } from '@angular/router';
 
 @Component({
     selector: 'app-submit-request',
@@ -17,7 +18,7 @@ export class SubmitRequestComponent implements OnInit {
     errorMessage = '';
     isSubmitting = false;
 
-    constructor(private fb: FormBuilder, private httpService: HttpService) {
+    constructor(private fb: FormBuilder, private httpService: HttpService,private router:Router) {
         this.requestForm = this.fb.group({
             eventTitle: ['', Validators.required],
             eventDescription: ['', Validators.required],
@@ -61,4 +62,7 @@ export class SubmitRequestComponent implements OnInit {
             }
         });
     }
+    goBackToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }

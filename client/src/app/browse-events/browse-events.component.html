@@ -1,60 +1,65 @@
-<div class="page-container">
+<div class="page-wrapper">
+
+  <button class="back-btn" (click)="goBackToDashboard()">
+    <i class="bi bi-arrow-left"></i> Back to Dashboard
+  </button>
+
+  <div class="page-container">
     <div class="card">
-        <h2> Browse Events</h2>
+      <div class="card-header">
+        <h2>Browse Events</h2>
         <p class="subtitle">Explore all upcoming events on the platform.</p>
+      </div>
 
-        <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
 
-        <!-- Search -->
-        <div class="search-row">
-            <input type="text" placeholder="Search by title or location…" [(ngModel)]="searchTerm"
-                (input)="applyFilter()" />
+      <div class="search-row">
+        <input type="text" placeholder="Search by title or location..." [(ngModel)]="searchTerm" (input)="applyFilter()" />
+      </div>
+
+      <div class="filter-tabs">
+        <button [class.active]="activeFilter === 'ALL'"       (click)="filterBy('ALL')">All</button>
+        <button [class.active]="activeFilter === 'PLANNED'"   (click)="filterBy('PLANNED')">Planned</button>
+        <button [class.active]="activeFilter === 'ONGOING'"   (click)="filterBy('ONGOING')">Ongoing</button>
+        <button [class.active]="activeFilter === 'COMPLETED'" (click)="filterBy('COMPLETED')">Completed</button>
+        <button [class.active]="activeFilter === 'CANCELLED'" (click)="filterBy('CANCELLED')">Cancelled</button>
+      </div>
+
+      <div *ngIf="filteredEvents.length === 0 && !showError" class="empty-state">
+        No events found.
+      </div>
+
+      <div class="events-grid">
+        <div *ngFor="let event of filteredEvents" class="event-card">
+
+          <div class="event-card-header">
+            <h3>{{ event.title }}</h3>
+            <span [ngClass]="{
+              'badge-blue'  : event.status === 'PLANNED',
+              'badge-orange': event.status === 'ONGOING',
+              'badge-grey'  : event.status === 'COMPLETED',
+              'badge-red'   : event.status === 'CANCELLED'
+            }">{{ event.status }}</span>
+          </div>
+
+          <p class="event-desc">{{ event.description }}</p>
+
+          <div class="event-meta">
+            <span><i class="bi bi-geo-alt"></i> {{ event.location }}</span>
+            <span><i class="bi bi-calendar3"></i> {{ event.dateTime | date:'mediumDate' }}</span>
+            <span><i class="bi bi-person"></i> {{ event.planner?.username || '—' }}</span>
+          </div>
+
+          <div class="resources-preview" *ngIf="event.allocations && event.allocations.length > 0">
+            <strong>Resources:</strong>
+            <span *ngFor="let a of event.allocations; let last = last">
+              {{ a.resource?.name }} (x{{ a.quantity }}){{ last ? '' : ', ' }}
+            </span>
+          </div>
+
         </div>
-
-        <!-- Filter Tabs -->
-        <div class="filter-tabs">
-            <button [class.active]="activeFilter === 'ALL'" (click)="filterBy('ALL')">All</button>
-            <button [class.active]="activeFilter === 'PLANNED'" (click)="filterBy('PLANNED')">Planned</button>
-            <button [class.active]="activeFilter === 'ONGOING'" (click)="filterBy('ONGOING')">Ongoing</button>
-            <button [class.active]="activeFilter === 'COMPLETED'" (click)="filterBy('COMPLETED')">Completed</button>
-            <button [class.active]="activeFilter === 'CANCELLED'" (click)="filterBy('CANCELLED')">Cancelled</button>
-        </div>
-
-        <div *ngIf="filteredEvents.length === 0 && !showError" class="empty-state">
-            No events found.
-        </div>
-
-        <!-- Events Grid -->
-        <div class="events-grid">
-            <div *ngFor="let event of filteredEvents" class="event-card">
-
-                <div class="event-card-header">
-                    <h3>{{ event.title }}</h3>
-                    <span [ngClass]="{
-'badge-green' : event.status === 'PLANNED',
-'badge-blue' : event.status === 'ONGOING',
-'badge-grey' : event.status === 'COMPLETED',
-'badge-red' : event.status === 'CANCELLED'
-}">{{ event.status }}</span>
-                </div>
-
-                <p class="event-desc">{{ event.description }}</p>
-
-                <div class="event-meta">
-                    <span> {{ event.location }}</span>
-                    <span>{{ event.dateTime | date:'mediumDate' }}</span>
-                    <span> {{ event.planner?.username || '—' }}</span>
-                </div>
-
-                <div class="resources-preview" *ngIf="event.allocations && event.allocations.length > 0">
-                    <strong>Resources:</strong>
-                    <span *ngFor="let a of event.allocations; let last = last">
-                        {{ a.resource?.name }} (x{{ a.quantity }}){{ last ? '' : ', ' }}
-                    </span>
-                </div>
-
-            </div>
-        </div>
+      </div>
 
     </div>
+  </div>
 </div>

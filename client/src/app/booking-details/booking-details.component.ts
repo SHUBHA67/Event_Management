@@ -1,8 +1,7 @@
+
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from '../../services/http.service';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-booking-details',
@@ -15,7 +14,10 @@ export class BookingDetailsComponent implements OnInit {
   showError = false;
   errorMessage = '';
 
-  constructor(private httpService: HttpService) { }
+  constructor(
+    private httpService: HttpService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadMyBookings();
@@ -33,9 +35,8 @@ export class BookingDetailsComponent implements OnInit {
       }
     });
   }
+
+  goBackToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }
-
-///todo: complete missing code.
-
-
-
