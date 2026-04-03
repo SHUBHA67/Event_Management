@@ -23,11 +23,33 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.itemForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, this.passwordValidator, Validators.minLength(6),Validators.maxLength(13)]],
+      username: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          this.usernameValidator // ✅ new
+        ]
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(13),
+          this.passwordValidator // ✅ updated logic below
+        ]
+      ],
       email: ['', [Validators.required, Validators.email]],
       role: ['', Validators.required]
     });
+  }
+  usernameValidator(control: AbstractControl): ValidationErrors | null {
+    const value: string = control.value;
+    if (!value) return null;
+
+    const startsWithNumber = /^[0-9]/.test(value);
+    return startsWithNumber ? { startsWithNumber: true } : null;
   }
 
   togglePassword(): void {
@@ -37,12 +59,16 @@ export class RegistrationComponent implements OnInit {
   passwordValidator(control: AbstractControl): ValidationErrors | null {
     const value: string = control.value;
     if (!value) return null;
+
     const hasUpperCase = /[A-Z]/.test(value);
+    const hasAlphabet = /[a-zA-Z]/.test(value);   // ✅ at least 1 alphabet
     const hasNumber = /[0-9]/.test(value);
     const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-    return hasUpperCase && hasNumber && hasSymbol ? null : { passwordStrength: true };
-  }
 
+    return hasUpperCase && hasAlphabet && hasNumber && hasSymbol
+      ? null
+      : { passwordStrength: true };
+  }
   onRegister(): void {
     if (this.itemForm.valid) {
       this.httpService.registerUser(this.itemForm.value).subscribe({

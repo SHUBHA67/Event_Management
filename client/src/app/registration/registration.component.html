@@ -35,10 +35,17 @@
           <label>Username</label>
           <input type="text" formControlName="username" placeholder="Choose a username" />
           <div *ngIf="itemForm.controls['username'].touched && itemForm.controls['username'].errors">
-            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['required']">Username is
-              required</span>
-            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['minlength']">Minimum 3 characters
-              required</span>
+            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['required']">
+              Username is required
+            </span>
+
+            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['minlength']">
+              Minimum 6 characters required
+            </span>
+
+            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['startsWithNumber']">
+              Username should not start with a number
+            </span>
           </div>
         </div>
 
@@ -60,11 +67,19 @@
             </button>
           </div>
           <div *ngIf="itemForm.controls['password'].touched && itemForm.controls['password'].errors">
-            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['required']">Password is
-              required</span>
-            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['passwordStrength']">Needs 1
-              uppercase, 1 number and 1 special character</span>
+            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['required']">
+              Password is required
+            </span>
+
+            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['minlength']">
+              Password must be at least 8 characters
+            </span>
+
+            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['passwordStrength']">
+              Must contain 1 uppercase, 1 alphabet, 1 number and 1 special character
+            </span>
           </div>
+          
         </div>
 
         <div class="form-group">

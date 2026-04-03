@@ -4,6 +4,12 @@ $orange: #FF894F;
 $red: #EA5B6F;
 $dark: #1E2235;
 $white: #FFFFFF;
+$page-bg: 
+  radial-gradient(circle at 12% 18%, rgba(119, 190, 240, 0.35) 0%, transparent 72%),
+  radial-gradient(circle at 88% 22%, rgba(255, 203, 97, 0.22) 0%, transparent 72%),
+  radial-gradient(circle at 78% 92%, rgba(234, 91, 111, 0.22) 0%, transparent 72%),
+  radial-gradient(circle at 18% 88%, rgba(255, 137, 79, 0.20) 0%, transparent 72%),
+  linear-gradient(135deg, #F8FAFC 0%, #EEF2F7 55%, #E9EFFA 100%);
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -104,7 +110,7 @@ $white: #FFFFFF;
   flex-direction: column;
   justify-content: center;
   padding: 60px 80px;
-  background: #F5F7FA;
+  background: $page-bg;
   position: relative;
   overflow-y: auto;
 }

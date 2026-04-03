@@ -7,6 +7,8 @@ $white: #FFFFFF;
 $bg: #F5F7FA;
 $text-med: #555E70;
 
+$nav-bar: #F5F7FA;
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -26,7 +28,7 @@ $text-med: #555E70;
     justify-content: space-between;
     align-items: center;
     padding: 18px 64px;
-    background: $white;
+    background: $nav-bar;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
     position: sticky;
     top: 0;
