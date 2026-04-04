@@ -120,6 +120,19 @@ $page-bg:
   a { color: $blue; font-weight: 700; cursor: pointer; text-decoration: none; &:hover { text-decoration: underline; } }
 }
 
+.error-msg {
+  background: rgba($red, 0.1);
+  border: 1px solid rgba($red, 0.3);
+  color: darken($red, 8%);
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+
 @media (max-width: 900px) {
   .auth-sidebar { flex: 0 0 300px; padding: 36px 32px; }
   .auth-form-area { padding: 60px 40px; }

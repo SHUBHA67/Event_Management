@@ -25,6 +25,10 @@ public class UserService implements UserDetailsService {
     }
 
     public User registerUser(User user) {
+        // Unique username check
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            throw new RuntimeException("Username already taken. Please choose a different username.");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -33,14 +37,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
-    // Returns all users with STAFF role for the dropdown in Create Event
-    public List<User> getStaffUsers() {
-        return userRepository.findByRole("STAFF");
+    // Returns only STAFF users who are NOT already assigned to an event on the given date
+    public List<User> getAvailableStaff(String dateTime) {
+        return userRepository.findAvailableStaff(dateTime);
     }
 
-    // Returns all users with VENDOR role for the planner dropdown
-    public List<User> getVendorUsers() {
-        return userRepository.findByRole("VENDOR");
+    public List<User> getStaffUsers() {
+        return userRepository.findByRole("STAFF");
     }
 
     @Override

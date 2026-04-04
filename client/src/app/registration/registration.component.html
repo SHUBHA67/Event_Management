@@ -29,6 +29,7 @@
       <p class="auth-subtitle">Register to access the Eventia platform</p>
 
       <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
+      <div class="error-msg" *ngIf="showError">{{ responseMessage }}</div>
 
       <form [formGroup]="itemForm" (ngSubmit)="onRegister()">
 

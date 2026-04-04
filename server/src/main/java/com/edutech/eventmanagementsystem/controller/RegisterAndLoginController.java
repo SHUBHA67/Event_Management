@@ -1,19 +1,12 @@
 package com.edutech.eventmanagementsystem.controller;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.*;
 
 import com.edutech.eventmanagementsystem.dto.LoginRequest;
 import com.edutech.eventmanagementsystem.dto.LoginResponse;
@@ -21,6 +14,8 @@ import com.edutech.eventmanagementsystem.entity.User;
 import com.edutech.eventmanagementsystem.jwt.JwtUtil;
 import com.edutech.eventmanagementsystem.service.UserService;
 
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -31,8 +26,8 @@ public class RegisterAndLoginController {
     private final JwtUtil jwtUtil;
 
     public RegisterAndLoginController(UserService userService,
-                                      AuthenticationManager authenticationManager,
-                                      JwtUtil jwtUtil) {
+            AuthenticationManager authenticationManager,
+            JwtUtil jwtUtil) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -43,9 +38,15 @@ public class RegisterAndLoginController {
         try {
             User savedUser = userService.registerUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+        } catch (RuntimeException e) {
+            // Catches duplicate username and other business rule violations
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Registration failed: " + e.getMessage());
+            Map<String, String> err = new HashMap<>();
+            err.put("message", "Registration failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
         }
     }
 
@@ -67,5 +68,4 @@ public class RegisterAndLoginController {
                     .body("Login failed: " + e.getMessage());
         }
     }
-
 }

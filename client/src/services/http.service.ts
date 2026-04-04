@@ -38,39 +38,23 @@ export class HttpService {
     return this.http.get(`${this.serverName}/api/planner/staff-users`, { headers: this.getHeaders() });
   }
 
-  public getVendors(): Observable<any> {
-    return this.http.get(`${this.serverName}/api/planner/vendors`, { headers: this.getHeaders() });
-  }
-
-  public getVendorResources(vendorId: number): Observable<any> {
-    return this.http.get(`${this.serverName}/api/planner/vendor/${vendorId}/resources`, { headers: this.getHeaders() });
-  }
-
-  public checkStaffAvailability(staffId: number, dateTime: string): Observable<any> {
-    return this.http.get(`${this.serverName}/api/planner/staff/${staffId}/availability?dateTime=${dateTime}`, { headers: this.getHeaders() });
+  // Returns only staff with no event collision on that date
+  public getAvailableStaff(dateTime: string): Observable<any> {
+    return this.http.get(`${this.serverName}/api/planner/available-staff?dateTime=${encodeURIComponent(dateTime)}`, { headers: this.getHeaders() });
   }
 
   public GetAllevents(): Observable<any> {
     return this.http.get(`${this.serverName}/api/planner/events`, { headers: this.getHeaders() });
   }
 
-  public getEventDetails(eventId: number): Observable<any> {
-    return this.http.get(`${this.serverName}/api/planner/event/${eventId}`, { headers: this.getHeaders() });
-  }
-
   public GetAllResources(): Observable<any> {
     return this.http.get(`${this.serverName}/api/planner/resources`, { headers: this.getHeaders() });
   }
 
-  // staffId is optional — kept backward-compatible for tests that call createEvent(details) without staffId
-  public createEvent(details: any, staffId?: any): Observable<any> {
-    const url = staffId
-      ? `${this.serverName}/api/planner/event?staffId=${staffId}`
-      : `${this.serverName}/api/planner/event`;
-    return this.http.post(url, details, { headers: this.getHeaders() });
+  public createEvent(details: any, staffId: any): Observable<any> {
+    return this.http.post(`${this.serverName}/api/planner/event?staffId=${staffId}`, details, { headers: this.getHeaders() });
   }
 
-  // Kept for AddResourceComponent which is still declared in app.module.ts
   public addResource(details: any): Observable<any> {
     return this.http.post(`${this.serverName}/api/planner/resource`, details, { headers: this.getHeaders() });
   }
@@ -86,10 +70,6 @@ export class HttpService {
     return this.http.get(`${this.serverName}/api/planner/event-requests`, { headers: this.getHeaders() });
   }
 
-  public getEventRequestById(requestId: number): Observable<any> {
-    return this.http.get(`${this.serverName}/api/planner/event-requests/${requestId}`, { headers: this.getHeaders() });
-  }
-
   public markRequestUnderReview(requestId: number): Observable<any> {
     return this.http.put(`${this.serverName}/api/planner/event-requests/${requestId}/review`, {}, { headers: this.getHeaders() });
   }
@@ -100,19 +80,6 @@ export class HttpService {
 
   public rejectEventRequest(requestId: number, payload: any): Observable<any> {
     return this.http.put(`${this.serverName}/api/planner/event-requests/${requestId}/reject`, payload, { headers: this.getHeaders() });
-  }
-
-  // ── Vendor ────────────────────────────────────────────────────────
-  public addVendorResource(details: any): Observable<any> {
-    return this.http.post(`${this.serverName}/api/vendor/resource`, details, { headers: this.getHeaders() });
-  }
-
-  public getMyVendorResources(): Observable<any> {
-    return this.http.get(`${this.serverName}/api/vendor/my-resources`, { headers: this.getHeaders() });
-  }
-
-  public dispatchResource(resourceId: number, payload: { quantity: number }): Observable<any> {
-    return this.http.put(`${this.serverName}/api/vendor/resource/${resourceId}/dispatch`, payload, { headers: this.getHeaders() });
   }
 
   // ── Staff ─────────────────────────────────────────────────────────
@@ -139,9 +106,5 @@ export class HttpService {
 
   public getMyBookings(): Observable<any> {
     return this.http.get(`${this.serverName}/api/client/my-bookings`, { headers: this.getHeaders() });
-  }
-
-  public cancelEventRequest(requestId: number, payload: { cancellationFeedback: string }): Observable<any> {
-    return this.http.put(`${this.serverName}/api/client/event-request/${requestId}/cancel`, payload, { headers: this.getHeaders() });
   }
 }

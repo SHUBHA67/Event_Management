@@ -40,32 +40,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
 
-                // ── Public ─────────────────────────────────────────────
+                // ── Public ──────────────────────────────────────────
                 .antMatchers(HttpMethod.POST, "/api/user/register", "/api/user/login").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
 
-                // ── VENDOR ──────────────────────────────────────────────
-                .antMatchers(HttpMethod.POST, "/api/vendor/resource")
-                .hasAuthority("VENDOR")
-                .antMatchers(HttpMethod.GET, "/api/vendor/my-resources")
-                .hasAuthority("VENDOR")
-                .antMatchers(HttpMethod.PUT, "/api/vendor/resource/*/dispatch")
-                .hasAuthority("VENDOR")
-
-                // ── PLANNER ─────────────────────────────────────────────
+                // ── PLANNER ─────────────────────────────────────────
                 .antMatchers(HttpMethod.GET,
                         "/api/planner/events",
-                        "/api/planner/event/*",
                         "/api/planner/resources",
                         "/api/planner/staff-users",
-                        "/api/planner/vendors",
-                        "/api/planner/vendor/*/resources",
-                        "/api/planner/staff/*/availability",
-                        "/api/planner/event-requests",
-                        "/api/planner/event-requests/*")
+                        "/api/planner/available-staff",
+                        "/api/planner/event-requests")
                 .hasAuthority("PLANNER")
                 .antMatchers(HttpMethod.POST,
                         "/api/planner/event",
+                        "/api/planner/resource",
                         "/api/planner/allocate-resources")
                 .hasAuthority("PLANNER")
                 .antMatchers(HttpMethod.PUT,
@@ -74,22 +63,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/planner/event-requests/*/reject")
                 .hasAuthority("PLANNER")
 
-                // ── STAFF ───────────────────────────────────────────────
-                .antMatchers(HttpMethod.GET, "/api/staff/my-events")
-                .hasAuthority("STAFF")
-                .antMatchers(HttpMethod.PUT, "/api/staff/update-status/*")
-                .hasAuthority("STAFF")
+                // ── STAFF ────────────────────────────────────────────
+                .antMatchers(HttpMethod.GET, "/api/staff/my-events").hasAuthority("STAFF")
+                .antMatchers(HttpMethod.PUT, "/api/staff/update-status/*").hasAuthority("STAFF")
 
-                // ── CLIENT ──────────────────────────────────────────────
+                // ── CLIENT ───────────────────────────────────────────
                 .antMatchers(HttpMethod.GET,
                         "/api/client/events",
                         "/api/client/my-requests",
                         "/api/client/my-bookings")
                 .hasAuthority("CLIENT")
-                .antMatchers(HttpMethod.POST, "/api/client/event-request")
-                .hasAuthority("CLIENT")
-                .antMatchers(HttpMethod.PUT, "/api/client/event-request/*/cancel")
-                .hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.POST, "/api/client/event-request").hasAuthority("CLIENT")
 
                 .anyRequest().authenticated()
                 .and()
