@@ -45,6 +45,8 @@ public class JwtUtil {
         return claimsResolver.apply(claims);
     }
 
+    // very Imp
+    // It verifies that the JWT is valid and untampered, then returns the payload (claims) inside the token.
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }

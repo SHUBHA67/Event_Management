@@ -19,6 +19,8 @@ import { BookingDetailsComponent } from './booking-details/booking-details.compo
 import { SubmitRequestComponent } from './submit-request/submit-request.component';
 import { ManageRequestsComponent } from './manage-requests/manage-requests.component';
 import { BrowseEventsComponent } from './browse-events/browse-events.component';
+import { AboutComponent } from './about-component/about.component';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { BrowseEventsComponent } from './browse-events/browse-events.component';
     SubmitRequestComponent,
     ManageRequestsComponent,
     BrowseEventsComponent,
+    AboutComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

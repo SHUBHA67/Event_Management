@@ -1,0 +1,147 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<div class="contact-page">
+
+  <!-- Nav -->
+  <nav class="landing-nav">
+    <div class="nav-brand" (click)="goHome()">Eventia</div>
+    <div class="nav-links">
+      <a class="nav-link" (click)="goHome()">Home</a>
+      <a class="nav-link" routerLink="/about">About</a>
+      <a class="nav-link" routerLink="/contact">Contact Us</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-nav-outline" (click)="goToLogin()">Login</button>
+      <button class="btn-nav-solid" (click)="goToRegister()">Get Started</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="contact-hero">
+    <div class="contact-orb co1"></div>
+    <div class="contact-orb co2"></div>
+    <div class="contact-hero-content">
+      <div class="contact-tag">Get In Touch</div>
+      <h1>We'd Love to <span class="highlight">Hear</span> From You</h1>
+      <p>Whether you have a question about features, need help with your account, or want to explore a partnership — our team is ready to help.</p>
+    </div>
+  </section>
+
+  <!-- Contact Body -->
+  <section class="contact-body">
+    <div class="contact-grid">
+
+      <!-- Info Cards -->
+      <div class="contact-info">
+        <h2>Contact Information</h2>
+        <p class="contact-info-sub">Reach us through any of the channels below and we'll respond within 24 hours.</p>
+
+        <div class="info-cards">
+          <div class="info-card ic-blue">
+            <div class="info-icon ii-blue">&#9993;</div>
+            <div>
+              <div class="info-label">Email Us</div>
+              <div class="info-value">hello&#64;eventia.app</div>
+            </div>
+          </div>
+          <div class="info-card ic-orange">
+            <div class="info-icon ii-orange">&#128222;</div>
+            <div>
+              <div class="info-label">Call Us</div>
+              <div class="info-value">+1 (800) 123-4567</div>
+            </div>
+          </div>
+          <div class="info-card ic-teal">
+            <div class="info-icon ii-teal">&#128205;</div>
+            <div>
+              <div class="info-label">Visit Us</div>
+              <div class="info-value">42 Event Plaza, Suite 500<br>San Francisco, CA 94103</div>
+            </div>
+          </div>
+          <div class="info-card ic-yellow">
+            <div class="info-icon ii-yellow">&#128337;</div>
+            <div>
+              <div class="info-label">Working Hours</div>
+              <div class="info-value">Mon – Fri, 9 AM – 6 PM PST</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="contact-form-card">
+        <h2>Send Us a Message</h2>
+        <p class="form-sub">Fill in the form and we'll get back to you shortly.</p>
+
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" formControlName="firstName" placeholder="Jane" />
+              <div class="error-text" *ngIf="contactForm.get('firstName')?.invalid && contactForm.get('firstName')?.touched">
+                First name is required.
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" formControlName="lastName" placeholder="Smith" />
+              <div class="error-text" *ngIf="contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched">
+                Last name is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" formControlName="email" placeholder="jane&#64;example.com" />
+            <div class="error-text" *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+              A valid email is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Subject</label>
+            <select formControlName="subject">
+              <option value="" disabled selected>Select a topic</option>
+              <option value="general">General Inquiry</option>
+              <option value="support">Technical Support</option>
+              <option value="billing">Billing & Pricing</option>
+              <option value="partnership">Partnership</option>
+              <option value="other">Other</option>
+            </select>
+            <div class="error-text" *ngIf="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched">
+              Please select a subject.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Message</label>
+            <textarea formControlName="message" rows="5" placeholder="Tell us how we can help you..."></textarea>
+            <div class="error-text" *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched">
+              Message is required.
+            </div>
+          </div>
+
+          <div class="success-alert" *ngIf="submitted">
+            &#10003; &nbsp; Thanks! Your message has been sent. We'll be in touch soon.
+          </div>
+
+          <button type="submit" class="btn-submit" [disabled]="contactForm.invalid">
+            Send Message &#10148;
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="footer-brand">Eventia</div>
+    <p>Smart Event Management Platform &mdash; Connecting Planners, Staff, Clients and Vendors</p>
+  </footer>
+
+</div>

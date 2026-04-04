@@ -12,6 +12,8 @@ import { SubmitRequestComponent } from './submit-request/submit-request.componen
 import { ManageRequestsComponent } from './manage-requests/manage-requests.component';
 import { BrowseEventsComponent } from './browse-events/browse-events.component';
 import { LandingComponent } from './landing/landing.component';
+import { AboutComponent } from './about-component/about.component';
+import { ContactComponent } from './contact/contact.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent },
@@ -26,6 +28,8 @@ const routes: Routes = [
   { path: 'submit-request', component: SubmitRequestComponent },
   { path: 'browse-events', component: BrowseEventsComponent },
   { path: 'manage-requests', component: ManageRequestsComponent },
+  {path : 'about' , component : AboutComponent},
+  {path : 'contact' , component : ContactComponent},
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: '**', redirectTo: '/landing', pathMatch: 'full' },
 ];

@@ -175,7 +175,19 @@ $font-display: 'Syne', 'Segoe UI', sans-serif;
         border-color: $red;
     }
 }
+.sidebar-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+//   padding: 12px 0; // optional spacing
+}
 
+.logo-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  display: block; // avoids inline spacing issues
+}
 // ══════════════════════════════════════════════
 // MAIN CONTENT
 // ══════════════════════════════════════════════

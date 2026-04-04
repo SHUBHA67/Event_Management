@@ -1,0 +1,109 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<div class="about-page">
+
+  <!-- Nav (reuse landing nav styles) -->
+  <nav class="landing-nav">
+    <div class="nav-brand" (click)="goHome()">Eventia</div>
+    <div class="nav-links">
+      <a class="nav-link" (click)="goHome()">Home</a>
+      <a class="nav-link" routerLink="/about">About</a>
+      <a class="nav-link" routerLink="/contact">Contact Us</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-nav-outline" (click)="goToLogin()">Login</button>
+      <button class="btn-nav-solid" (click)="goToRegister()">Get Started</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="about-hero">
+    <div class="about-hero-orb orb1"></div>
+    <div class="about-hero-orb orb2"></div>
+    <div class="about-hero-content">
+      <div class="about-tag">Who We Are</div>
+      <h1>Built for <span class="highlight">Modern</span> Event Teams</h1>
+      <p>Eventia was founded with one mission — eliminate the chaos from event planning and replace it with clarity, control, and collaboration.</p>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="about-mission">
+    <div class="about-mission-inner">
+      <div class="mission-text">
+        <div class="section-pill">Our Mission</div>
+        <h2>Empowering Every Role in the Event Ecosystem</h2>
+        <p>From the planner strategising the entire event, to the vendor supplying the chairs — every person in the event workflow deserves a tool built for them. Eventia unifies planners, staff, clients and vendors under one smart, real-time platform.</p>
+        <p>We believe great events happen when communication is effortless, resources are tracked with precision, and every team member is aligned from kickoff to wrap-up.</p>
+      </div>
+      <div class="mission-stats">
+        <div class="mstat-card">
+          <div class="mstat-val">1,240+</div>
+          <div class="mstat-label">Events Executed</div>
+        </div>
+        <div class="mstat-card">
+          <div class="mstat-val">320+</div>
+          <div class="mstat-label">Happy Clients</div>
+        </div>
+        <div class="mstat-card">
+          <div class="mstat-val">5,800+</div>
+          <div class="mstat-label">Resources Tracked</div>
+        </div>
+        <div class="mstat-card">
+          <div class="mstat-val">4</div>
+          <div class="mstat-label">User Roles Supported</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="about-values">
+    <div class="section-header">
+      <h2>What We Stand For</h2>
+      <p>The principles that guide every decision we make</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card vc-blue">
+        <div class="value-icon vi-blue">&#9670;</div>
+        <h3>Transparency</h3>
+        <p>Every stakeholder sees the same real-time picture — no more conflicting spreadsheets or missed updates.</p>
+      </div>
+      <div class="value-card vc-yellow">
+        <div class="value-icon vi-yellow">&#9651;</div>
+        <h3>Efficiency</h3>
+        <p>Automate the repetitive, surface the important, and let your team focus on delivering unforgettable experiences.</p>
+      </div>
+      <div class="value-card vc-orange">
+        <div class="value-icon vi-orange">&#9632;</div>
+        <h3>Collaboration</h3>
+        <p>Planners, staff, clients and vendors work in concert — not in silos. Real-time assignments and status updates keep everyone in sync.</p>
+      </div>
+      <div class="value-card vc-teal">
+        <div class="value-icon vi-teal">&#9675;</div>
+        <h3>Reliability</h3>
+        <p>When the event starts, there's no room for error. Eventia is engineered to be there when it counts most.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="about-cta">
+    <div class="about-cta-inner">
+      <h2>Ready to Transform Your Events?</h2>
+      <p>Join hundreds of teams already using Eventia to plan smarter and execute flawlessly.</p>
+      <div class="cta-actions">
+        <button class="btn-cta-primary" (click)="goToRegister()">Create Free Account</button>
+        <button class="btn-cta-outline" (click)="goToLogin()">Sign In Instead</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="footer-brand">Eventia</div>
+    <p>Smart Event Management Platform &mdash; Connecting Planners, Staff, Clients and Vendors</p>
+  </footer>
+
+</div>
