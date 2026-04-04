@@ -8,12 +8,18 @@
     <div class="card">
       <div class="card-header">
         <h2>Create New Event</h2>
+        <span class="autofill-badge" *ngIf="isPrefilled">
+          <i class="bi bi-magic"></i> Auto-filled from client request
+        </span>
       </div>
 
       <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+      <div class="error-msg"   *ngIf="showError">{{ errorMessage }}</div>
 
       <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
+        <!-- ── Event Details ─────────────────────────────────────── -->
+        <p class="section-label">Event Details</p>
 
         <div class="form-row">
           <div class="form-group">
@@ -42,13 +48,13 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label>Date & Time *</label>
+            <label>Date &amp; Time *</label>
             <input type="datetime-local" formControlName="dateTime" />
             <small class="hint" *ngIf="!itemForm.get('dateTime')?.value">
               Select a date to see available staff.
             </small>
             <div class="error-text" *ngIf="itemForm.get('dateTime')?.invalid && itemForm.get('dateTime')?.touched">
-              Date & Time is required.
+              Date &amp; Time is required.
             </div>
           </div>
           <div class="form-group">
@@ -66,9 +72,12 @@
           </div>
         </div>
 
+        <!-- ── Staff Assignment ──────────────────────────────────── -->
+        <p class="section-label">Staff Assignment</p>
+
         <div class="form-group">
           <label>Assign Staff *</label>
-          <select formControlName="staffId" [disabled]="!itemForm.get('dateTime')?.value">
+          <select formControlName="staffId" [attr.disabled]="!itemForm.get('dateTime')?.value ? true : null">
             <option value="">
               {{ itemForm.get('dateTime')?.value ? '-- Select Available Staff --' : '-- Pick a date first --' }}
             </option>
@@ -82,7 +91,56 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Create Event</button>
+        <!-- ── Vendor Resource ───────────────────────────────────── -->
+        <p class="section-label">Vendor &amp; Resource</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Select Vendor *</label>
+            <select formControlName="vendorId">
+              <option value="">-- Select Vendor --</option>
+              <option *ngFor="let vendor of vendorList" [value]="vendor.id">{{ vendor.username }}</option>
+            </select>
+            <div class="error-text" *ngIf="itemForm.get('vendorId')?.invalid && itemForm.get('vendorId')?.touched">
+              Vendor is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Select Resource *</label>
+            <select formControlName="resourceId" [attr.disabled]="!itemForm.get('vendorId')?.value ? true : null">
+              <option value="">
+                {{ itemForm.get('vendorId')?.value ? '-- Select Resource --' : '-- Pick a vendor first --' }}
+              </option>
+              <option *ngFor="let res of resourceList" [value]="res.resourceID">
+                {{ res.name }} ({{ res.type }}) — {{ res.totalQuantity - res.allocatedQuantity }} available
+              </option>
+            </select>
+            <div class="error-text" *ngIf="itemForm.get('resourceId')?.invalid && itemForm.get('resourceId')?.touched">
+              Resource is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="max-width: 50%;" *ngIf="itemForm.get('resourceId')?.value">
+          <label>Quantity *</label>
+          <input
+            type="number"
+            formControlName="quantity"
+            placeholder="Enter quantity"
+            min="1"
+            [max]="getSelectedResourceAvailable()" />
+          <small class="hint">
+            Max available: {{ getSelectedResourceAvailable() }}
+          </small>
+          <div class="error-text" *ngIf="itemForm.get('quantity')?.invalid && itemForm.get('quantity')?.touched">
+            Quantity is required (min 1).
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" [disabled]="itemForm.invalid || isSubmitting">
+          <i class="bi bi-calendar-check"></i>
+          {{ isSubmitting ? 'Creating...' : 'Create Event' }}
+        </button>
 
       </form>
     </div>

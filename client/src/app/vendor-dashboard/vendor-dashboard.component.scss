@@ -154,6 +154,22 @@ $font: 'DM Sans', 'Segoe UI', sans-serif;
   i { font-size: 3rem; display: block; margin-bottom: 14px; }
   p { font-size: 15px; }
 }
+.btn-mark-sent {
+  width: 100%; padding: 9px; background: rgba(76,175,130,0.12); color: darken($green, 10%);
+  border: 1.5px solid rgba(76,175,130,0.35); border-radius: 8px; font-size: 13px;
+  font-weight: 700; cursor: pointer; font-family: $font; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  &:hover { background: $green; color: #fff; border-color: $green; }
+}
+
+.btn-mark-unsent {
+  width: 100%; padding: 9px; background: rgba(234,91,111,0.10); color: darken($red, 8%);
+  border: 1.5px solid rgba(234,91,111,0.3); border-radius: 8px; font-size: 13px;
+  font-weight: 700; cursor: pointer; font-family: $font; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  &:hover { background: $red; color: #fff; border-color: $red; }
+}
+
 
 @media (max-width: 600px) {
   .form-row { grid-template-columns: 1fr; }

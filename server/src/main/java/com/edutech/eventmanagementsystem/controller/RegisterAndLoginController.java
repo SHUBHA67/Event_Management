@@ -32,10 +32,13 @@ public class RegisterAndLoginController {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
+    
+    
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         try {
+            
             User savedUser = userService.registerUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
         } catch (RuntimeException e) {

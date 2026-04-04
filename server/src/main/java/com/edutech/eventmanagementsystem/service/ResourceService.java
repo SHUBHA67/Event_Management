@@ -113,4 +113,21 @@ public class ResourceService {
     public Resource addResource(Resource resource) {
         return resourceRepository.save(resource);
     }
+    public Resource markSentStatus(Long resourceId, String newStatus, String vendorUsername) {
+    Resource resource = resourceRepository.findById(resourceId)
+            .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
+
+    if (resource.getVendor() == null ||
+            !resource.getVendor().getUsername().equals(vendorUsername)) {
+        throw new RuntimeException("Unauthorized: this resource does not belong to you");
+    }
+
+    if (!"AVAILABLE".equals(newStatus) && !"DISPATCHED".equals(newStatus)) {
+        throw new RuntimeException("Invalid status. Must be AVAILABLE or DISPATCHED.");
+    }
+
+    resource.setDispatchStatus(newStatus);
+    return resourceRepository.save(resource);
+}
+
 }

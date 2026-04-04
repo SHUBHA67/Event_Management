@@ -18,6 +18,8 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    
+    
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -41,7 +43,7 @@ public class UserService implements UserDetailsService {
     public List<User> getAvailableStaff(String dateTime) {
         return userRepository.findAvailableStaff(dateTime);
     }
-
+    
     public List<User> getStaffUsers() {
         return userRepository.findByRole("STAFF");
     }
@@ -57,4 +59,8 @@ public class UserService implements UserDetailsService {
                 user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
     }
+    public List<User> getVendorUsers() {
+    return userRepository.findByRole("VENDOR");
+}
+
 }

@@ -17,6 +17,7 @@
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/dto/LoginResponse.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/repository/AllocationRepository.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/repository/EventRepository.java
+/home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/controller/VendorController.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/entity/Allocation.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/controller/RegisterAndLoginController.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/repository/UserRepository.java
@@ -24,4 +25,7 @@
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/controller/StaffController.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/service/UserService.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/dto/LoginRequest.java
+/home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/dto/StaffAvailabilityResponse.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/service/EventService.java
+/home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/dto/CancelRequestDTO.java
+/home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/dto/VendorResourceDispatchDTO.java

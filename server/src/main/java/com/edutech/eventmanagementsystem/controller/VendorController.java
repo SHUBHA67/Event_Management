@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import com.edutech.eventmanagementsystem.dto.VendorResourceDispatchDTO;
 import com.edutech.eventmanagementsystem.entity.Resource;
 import com.edutech.eventmanagementsystem.service.ResourceService;
+import com.edutech.eventmanagementsystem.service.UserService;
+import com.edutech.eventmanagementsystem.entity.User;
+
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -18,9 +21,11 @@ import java.util.Map;
 public class VendorController {
 
     private final ResourceService resourceService;
+    private final UserService userService;
 
-    public VendorController(ResourceService resourceService) {
+    public VendorController(ResourceService resourceService, UserService userService) {
         this.resourceService = resourceService;
+        this.userService = userService;
     }
 
     // ── Add a new resource (vendor's own) ────────────────────────────
@@ -65,4 +70,18 @@ public class VendorController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
         }
     }
+    @PutMapping("/resource/{resourceId}/sent-status")
+public ResponseEntity<?> markSentStatus(@PathVariable Long resourceId,
+        @RequestBody Map<String, String> body,
+        Principal principal) {
+    try {
+        String newStatus = body.get("dispatchStatus");
+        Resource updated = resourceService.markSentStatus(resourceId, newStatus, principal.getName());
+        return ResponseEntity.ok(updated);
+    } catch (Exception e) {
+        Map<String, String> err = new HashMap<>();
+        err.put("message", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+}
 }

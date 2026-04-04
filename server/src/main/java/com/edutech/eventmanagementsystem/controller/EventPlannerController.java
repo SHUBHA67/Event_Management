@@ -146,4 +146,28 @@ public class EventPlannerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+    @GetMapping("/api/planner/event-requests/{requestId}")
+public ResponseEntity<?> getRequestById(@PathVariable Long requestId) {
+    try {
+        EventRequest req = eventRequestService.getRequestById(requestId);
+        return ResponseEntity.ok(req);
+    } catch (Exception e) {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+}
+
+
+    @GetMapping("/api/planner/vendors")
+    public ResponseEntity<List<User>> getVendors() {
+        return ResponseEntity.ok(userService.getVendorUsers());
+    }
+
+    @GetMapping("/api/planner/vendor/{vendorId}/resources")
+    public ResponseEntity<List<Resource>> getVendorResources(@PathVariable Long vendorId) {
+        return ResponseEntity.ok(resourceService.getResourcesByVendor(vendorId));
+    }
+
+
 }

@@ -38,7 +38,6 @@ export class HttpService {
     return this.http.get(`${this.serverName}/api/planner/staff-users`, { headers: this.getHeaders() });
   }
 
-  // Returns only staff with no event collision on that date
   public getAvailableStaff(dateTime: string): Observable<any> {
     return this.http.get(`${this.serverName}/api/planner/available-staff?dateTime=${encodeURIComponent(dateTime)}`, { headers: this.getHeaders() });
   }
@@ -107,4 +106,52 @@ export class HttpService {
   public getMyBookings(): Observable<any> {
     return this.http.get(`${this.serverName}/api/client/my-bookings`, { headers: this.getHeaders() });
   }
+
+  // ── Client: Cancel request ────────────────────────────────────────
+  // Fixes error in submit-request.component.ts line 88
+  public cancelEventRequest(requestId: number, payload: { cancellationFeedback: string }): Observable<any> {
+    return this.http.put(`${this.serverName}/api/client/event-request/${requestId}/cancel`, payload, { headers: this.getHeaders() });
+  }
+
+  // ── Vendor ────────────────────────────────────────────────────────
+  // Fixes all three errors in vendor-dashboard.component.ts
+  public getMyVendorResources(): Observable<any> {
+    return this.http.get(`${this.serverName}/api/vendor/my-resources`, { headers: this.getHeaders() });
+  }
+
+  public addVendorResource(details: any): Observable<any> {
+    return this.http.post(`${this.serverName}/api/vendor/resource`, details, { headers: this.getHeaders() });
+  }
+
+  public dispatchResource(resourceId: number, payload: { quantity: number }): Observable<any> {
+    return this.http.put(`${this.serverName}/api/vendor/resource/${resourceId}/dispatch`, payload, { headers: this.getHeaders() });
+  }
+
+  public markResourceSentStatus(resourceId: number, payload: { dispatchStatus: string }): Observable<any> {
+  return this.http.put(`${this.serverName}/api/vendor/resource/${resourceId}/sent-status`, payload, { headers: this.getHeaders() });
+}
+public getEventRequestById(requestId: number): Observable<any> {
+  return this.http.get(`${this.serverName}/api/planner/event-requests/${requestId}`, { headers: this.getHeaders() });
+}
+
+// Get all vendor users for the vendor dropdown
+public getVendorUsers(): Observable<any> {
+  return this.http.get(`${this.serverName}/api/planner/vendors`, { headers: this.getHeaders() });
+}
+
+// Get resources belonging to a specific vendor
+public getResourcesByVendor(vendorId: number): Observable<any> {
+  return this.http.get(`${this.serverName}/api/planner/vendor/${vendorId}/resources`, { headers: this.getHeaders() });
+}
+
+// Allocate a resource to an event (called after event creation)
+public allocateResourceToEvent(eventId: number, resourceId: number, quantity: number): Observable<any> {
+  return this.http.post(
+    `${this.serverName}/api/planner/allocate-resources?eventId=${eventId}&resourceId=${resourceId}`,
+    { quantity },
+    { headers: this.getHeaders() }
+  );
+}
+
+
 }

@@ -22,12 +22,16 @@
           <div class="form-group">
             <label>Resource Name *</label>
             <input type="text" formControlName="name" placeholder="e.g. Stage Lights" />
-            <div class="error-text" *ngIf="resourceForm.get('name')?.invalid && resourceForm.get('name')?.touched">Name is required.</div>
+            <div class="error-text" *ngIf="resourceForm.get('name')?.invalid && resourceForm.get('name')?.touched">
+              Name is required.
+            </div>
           </div>
           <div class="form-group">
             <label>Resource Type *</label>
             <input type="text" formControlName="type" placeholder="e.g. Lighting, Audio, Furniture" />
-            <div class="error-text" *ngIf="resourceForm.get('type')?.invalid && resourceForm.get('type')?.touched">Type is required.</div>
+            <div class="error-text" *ngIf="resourceForm.get('type')?.invalid && resourceForm.get('type')?.touched">
+              Type is required.
+            </div>
           </div>
         </div>
 
@@ -35,7 +39,9 @@
           <label>Total Quantity *</label>
           <input type="number" formControlName="totalQuantity" placeholder="e.g. 10" min="1" />
           <small class="hint">How many units of this resource do you have?</small>
-          <div class="error-text" *ngIf="resourceForm.get('totalQuantity')?.invalid && resourceForm.get('totalQuantity')?.touched">Quantity must be at least 1.</div>
+          <div class="error-text" *ngIf="resourceForm.get('totalQuantity')?.invalid && resourceForm.get('totalQuantity')?.touched">
+            Quantity must be at least 1.
+          </div>
         </div>
 
         <button type="submit" class="btn-primary" [disabled]="resourceForm.invalid">
@@ -60,7 +66,7 @@
               <span class="res-type">{{ res.type }}</span>
             </div>
             <span [ngClass]="res.dispatchStatus === 'DISPATCHED' ? 'badge-orange' : 'badge-green'">
-              {{ res.dispatchStatus || 'AVAILABLE' }}
+              {{ res.dispatchStatus === 'DISPATCHED' ? 'Sent' : 'Not Sent' }}
             </span>
           </div>
 
@@ -79,26 +85,13 @@
             </div>
           </div>
 
-          <!-- Dispatch Panel Toggle -->
-          <button class="btn-dispatch" (click)="openDispatch(res)"
-            *ngIf="dispatchingId !== res.resourceID && res.totalQuantity - res.allocatedQuantity > 0">
-            <i class="bi bi-truck"></i> Dispatch
+          <!-- Mark as Sent / Not Sent toggle -->
+          <button
+            [ngClass]="res.dispatchStatus === 'DISPATCHED' ? 'btn-mark-unsent' : 'btn-mark-sent'"
+            (click)="toggleSentStatus(res)">
+            <i [ngClass]="res.dispatchStatus === 'DISPATCHED' ? 'bi bi-x-circle' : 'bi bi-check-circle'"></i>
+            {{ res.dispatchStatus === 'DISPATCHED' ? 'Mark as Not Sent' : 'Mark as Sent' }}
           </button>
-
-          <!-- Dispatch Panel -->
-          <div class="dispatch-panel" *ngIf="dispatchingId === res.resourceID">
-            <label>Quantity to Dispatch *</label>
-            <div class="dispatch-row">
-              <input type="number" [(ngModel)]="dispatchQty" min="1"
-                [max]="res.totalQuantity - res.allocatedQuantity"
-                placeholder="Enter qty (max {{ res.totalQuantity - res.allocatedQuantity }})" />
-              <button class="btn-confirm" (click)="confirmDispatch(res.resourceID)"
-                [disabled]="!dispatchQty || dispatchQty < 1 || dispatchQty > (res.totalQuantity - res.allocatedQuantity)">
-                Confirm
-              </button>
-              <button class="btn-cancel" (click)="cancelDispatch()">Cancel</button>
-            </div>
-          </div>
 
         </div>
       </div>

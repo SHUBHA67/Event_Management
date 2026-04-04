@@ -45,13 +45,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()
 
                 // ── PLANNER ─────────────────────────────────────────
+
                 .antMatchers(HttpMethod.GET,
-                        "/api/planner/events",
-                        "/api/planner/resources",
-                        "/api/planner/staff-users",
-                        "/api/planner/available-staff",
-                        "/api/planner/event-requests")
-                .hasAuthority("PLANNER")
+        "/api/planner/events",
+        "/api/planner/resources",
+        "/api/planner/staff-users",
+        "/api/planner/available-staff",
+        "/api/planner/event-requests",
+        "/api/planner/event-requests/*",
+        "/api/planner/vendors",
+        "/api/planner/vendor/*/resources")   // ← add these
+        .hasAuthority("PLANNER")
+
+        
                 .antMatchers(HttpMethod.POST,
                         "/api/planner/event",
                         "/api/planner/resource",
@@ -74,6 +80,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/client/my-bookings")
                 .hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.POST, "/api/client/event-request").hasAuthority("CLIENT")
+
+                // ── VENDOR ──────────────────────────────────────────────────────────
+        .antMatchers(HttpMethod.GET,  "/api/vendor/my-resources").hasAuthority("VENDOR")
+.antMatchers(HttpMethod.POST, "/api/vendor/resource").hasAuthority("VENDOR")
+.antMatchers(HttpMethod.PUT,
+        "/api/vendor/resource/*/dispatch",
+        "/api/vendor/resource/*/sent-status")
+.hasAuthority("VENDOR")
+
 
                 .anyRequest().authenticated()
                 .and()

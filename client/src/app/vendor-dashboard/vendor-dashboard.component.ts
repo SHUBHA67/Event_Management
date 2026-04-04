@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from '../../services/http.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-vendor-dashboard',
@@ -13,14 +13,10 @@ export class VendorDashboardComponent implements OnInit {
   resourceForm: FormGroup;
   resourceList: any[] = [];
 
-  showMessage  = false;
-  showError    = false;
+  showMessage     = false;
+  showError       = false;
   responseMessage = '';
   errorMessage    = '';
-
-  // Dispatch state
-  dispatchingId: number | null = null;
-  dispatchQty: number | null = null;
 
   constructor(
     public router: Router,
@@ -38,8 +34,8 @@ export class VendorDashboardComponent implements OnInit {
 
   loadResources(): void {
     this.httpService.getMyVendorResources().subscribe({
-      next: (res: any) => { this.resourceList = res; },
-      error: () => { this.showError = true; this.errorMessage = 'Failed to load resources.'; }
+      next: (res: any) => { this.resourceList = res; this.showError = false; },
+      error: () => { this.showError = true; this.errorMessage = 'Failed to load your resources.'; }
     });
   }
 
@@ -66,31 +62,22 @@ export class VendorDashboardComponent implements OnInit {
     });
   }
 
-  openDispatch(res: any): void {
-    this.dispatchingId = res.resourceID;
-    this.dispatchQty   = null;
-  }
+  toggleSentStatus(res: any): void {
+    const newStatus = res.dispatchStatus === 'DISPATCHED' ? 'AVAILABLE' : 'DISPATCHED';
 
-  cancelDispatch(): void {
-    this.dispatchingId = null;
-    this.dispatchQty   = null;
-  }
-
-  confirmDispatch(resourceId: number): void {
-    if (!this.dispatchQty || this.dispatchQty < 1) return;
-
-    this.httpService.dispatchResource(resourceId, { quantity: this.dispatchQty }).subscribe({
+    this.httpService.markResourceSentStatus(res.resourceID, { dispatchStatus: newStatus }).subscribe({
       next: () => {
         this.showMessage     = true;
         this.showError       = false;
-        this.responseMessage = 'Resource dispatched successfully!';
-        this.cancelDispatch();
+        this.responseMessage = newStatus === 'DISPATCHED'
+          ? `${res.name} marked as Sent.`
+          : `${res.name} marked as Not Sent.`;
         this.loadResources();
         setTimeout(() => this.showMessage = false, 3000);
       },
       error: (err: any) => {
         this.showError    = true;
-        this.errorMessage = err?.error?.message || 'Failed to dispatch resource.';
+        this.errorMessage = err?.error?.message || 'Failed to update status.';
       }
     });
   }
