@@ -152,6 +152,14 @@ public allocateResourceToEvent(eventId: number, resourceId: number, quantity: nu
     { headers: this.getHeaders() }
   );
 }
+public updateVendorResource(resourceId: number, payload: any): Observable<any> {
+  return this.http.put(`${this.serverName}/api/vendor/resource/${resourceId}/update`, payload, { headers: this.getHeaders() });
+}
+
+public deleteVendorResource(resourceId: number): Observable<any> {
+  return this.http.delete(`${this.serverName}/api/vendor/resource/${resourceId}`, { headers: this.getHeaders() });
+}
+
 
 
 }

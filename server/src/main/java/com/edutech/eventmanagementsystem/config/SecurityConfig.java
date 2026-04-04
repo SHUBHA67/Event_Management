@@ -82,12 +82,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/client/event-request").hasAuthority("CLIENT")
 
                 // ── VENDOR ──────────────────────────────────────────────────────────
-        .antMatchers(HttpMethod.GET,  "/api/vendor/my-resources").hasAuthority("VENDOR")
+    .antMatchers(HttpMethod.GET,  "/api/vendor/my-resources").hasAuthority("VENDOR")
 .antMatchers(HttpMethod.POST, "/api/vendor/resource").hasAuthority("VENDOR")
 .antMatchers(HttpMethod.PUT,
         "/api/vendor/resource/*/dispatch",
-        "/api/vendor/resource/*/sent-status")
+        "/api/vendor/resource/*/sent-status",
+        "/api/vendor/resource/*/update")
 .hasAuthority("VENDOR")
+.antMatchers(HttpMethod.DELETE, "/api/vendor/resource/*").hasAuthority("VENDOR")
+
 
 
                 .anyRequest().authenticated()

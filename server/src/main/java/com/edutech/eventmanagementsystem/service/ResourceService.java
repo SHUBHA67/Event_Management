@@ -36,6 +36,14 @@ public class ResourceService {
     public Resource addVendorResource(Resource resource, String vendorUsername) {
         User vendor = userRepository.findByUsername(vendorUsername);
         if (vendor == null) throw new RuntimeException("Vendor not found");
+
+        // Duplicate name check per vendor
+        resourceRepository.findByNameAndVendorId(resource.getName(), vendor.getId())
+                .ifPresent(existing -> {
+                    throw new RuntimeException(
+                            "You already have a resource named \"" + resource.getName() + "\". Please use a different name.");
+                });
+
         resource.setVendor(vendor);
         resource.setAllocatedQuantity(0);
         resource.setDispatchStatus("AVAILABLE");
@@ -48,13 +56,62 @@ public class ResourceService {
         return resourceRepository.findByVendorUsername(vendorUsername);
     }
 
-    // ── VENDOR: Dispatch a resource (mark as dispatched, update qty) ─
-    // Dispatching reduces available quantity by the dispatched amount
+    // ── VENDOR: Update a resource (name, type, totalQuantity) ────────
+    public Resource updateVendorResource(Long resourceId, Resource updates, String vendorUsername) {
+        Resource resource = resourceRepository.findById(resourceId)
+                .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
+
+        if (resource.getVendor() == null ||
+                !resource.getVendor().getUsername().equals(vendorUsername)) {
+            throw new RuntimeException("Unauthorized: this resource does not belong to you");
+        }
+
+        // Duplicate name check — exclude the current resource
+        resourceRepository.findByNameAndVendorIdExcluding(
+                updates.getName(), resource.getVendor().getId(), resourceId)
+                .ifPresent(existing -> {
+                    throw new RuntimeException(
+                            "You already have a resource named \"" + updates.getName() + "\". Please use a different name.");
+                });
+
+        // Cannot set totalQuantity below already allocated amount
+        if (updates.getTotalQuantity() < resource.getAllocatedQuantity()) {
+            throw new RuntimeException(
+                    "Total quantity cannot be less than the already allocated quantity ("
+                            + resource.getAllocatedQuantity() + ").");
+        }
+
+        resource.setName(updates.getName());
+        resource.setType(updates.getType());
+        resource.setTotalQuantity(updates.getTotalQuantity());
+        resource.recalculateAvailability();
+        return resourceRepository.save(resource);
+    }
+
+    // ── VENDOR: Delete a resource ─────────────────────────────────────
+    public void deleteVendorResource(Long resourceId, String vendorUsername) {
+        Resource resource = resourceRepository.findById(resourceId)
+                .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
+
+        if (resource.getVendor() == null ||
+                !resource.getVendor().getUsername().equals(vendorUsername)) {
+            throw new RuntimeException("Unauthorized: this resource does not belong to you");
+        }
+
+        if (resource.getAllocatedQuantity() > 0) {
+            throw new RuntimeException(
+                    "Cannot delete a resource that is currently allocated to an event. " +
+                            "Please wait until the event is completed.");
+        }
+
+        resourceRepository.delete(resource);
+    }
+
+    // ── VENDOR: Dispatch a resource ──────────────────────────────────
     public Resource dispatchResource(Long resourceId, int quantity, String vendorUsername) {
         Resource resource = resourceRepository.findById(resourceId)
                 .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
 
-        // Ensure this resource belongs to the calling vendor
         if (resource.getVendor() == null ||
                 !resource.getVendor().getUsername().equals(vendorUsername)) {
             throw new RuntimeException("Unauthorized: this resource does not belong to you");
@@ -71,6 +128,24 @@ public class ResourceService {
         return resourceRepository.save(resource);
     }
 
+    // ── VENDOR: Toggle sent status ────────────────────────────────────
+    public Resource markSentStatus(Long resourceId, String newStatus, String vendorUsername) {
+        Resource resource = resourceRepository.findById(resourceId)
+                .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
+
+        if (resource.getVendor() == null ||
+                !resource.getVendor().getUsername().equals(vendorUsername)) {
+            throw new RuntimeException("Unauthorized: this resource does not belong to you");
+        }
+
+        if (!"AVAILABLE".equals(newStatus) && !"DISPATCHED".equals(newStatus)) {
+            throw new RuntimeException("Invalid status. Must be AVAILABLE or DISPATCHED.");
+        }
+
+        resource.setDispatchStatus(newStatus);
+        return resourceRepository.save(resource);
+    }
+
     // ── PLANNER: Get all resources from a specific vendor ────────────
     public List<Resource> getResourcesByVendor(Long vendorId) {
         return resourceRepository.findByVendorId(vendorId);
@@ -82,7 +157,6 @@ public class ResourceService {
     }
 
     // ── PLANNER: Allocate a vendor resource to an event ─────────────
-    // Called during event creation — replaces the old standalone allocate flow
     public void allocateResources(Long eventId, Long resourceId, Allocation allocation) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EntityNotFoundException("Event not found with ID: " + eventId));
@@ -109,25 +183,8 @@ public class ResourceService {
         eventRepository.save(event);
     }
 
-    // ── Legacy: kept for any internal use ────────────────────────────
+    // ── Legacy ────────────────────────────────────────────────────────
     public Resource addResource(Resource resource) {
         return resourceRepository.save(resource);
     }
-    public Resource markSentStatus(Long resourceId, String newStatus, String vendorUsername) {
-    Resource resource = resourceRepository.findById(resourceId)
-            .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
-
-    if (resource.getVendor() == null ||
-            !resource.getVendor().getUsername().equals(vendorUsername)) {
-        throw new RuntimeException("Unauthorized: this resource does not belong to you");
-    }
-
-    if (!"AVAILABLE".equals(newStatus) && !"DISPATCHED".equals(newStatus)) {
-        throw new RuntimeException("Invalid status. Must be AVAILABLE or DISPATCHED.");
-    }
-
-    resource.setDispatchStatus(newStatus);
-    return resourceRepository.save(resource);
-}
-
 }

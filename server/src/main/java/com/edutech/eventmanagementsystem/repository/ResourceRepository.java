@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
@@ -14,9 +15,17 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
     @Query("SELECT r FROM Resource r WHERE r.name = :name")
     Resource findByName(@Param("name") String name);
 
-    // Vendor fetches their own resources
     List<Resource> findByVendorUsername(String username);
 
-    // Planner fetches resources by vendor ID
     List<Resource> findByVendorId(Long vendorId);
+
+    // Check duplicate name per vendor (excluding a specific resource ID for update scenarios)
+    Optional<Resource> findByNameAndVendorId(String name, Long vendorId);
+
+    @Query("SELECT r FROM Resource r WHERE r.name = :name AND r.vendor.id = :vendorId AND r.resourceID != :excludeId")
+    Optional<Resource> findByNameAndVendorIdExcluding(
+            @Param("name") String name,
+            @Param("vendorId") Long vendorId,
+            @Param("excludeId") Long excludeId);
 }
+

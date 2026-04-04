@@ -8,8 +8,6 @@ import com.edutech.eventmanagementsystem.dto.VendorResourceDispatchDTO;
 import com.edutech.eventmanagementsystem.entity.Resource;
 import com.edutech.eventmanagementsystem.service.ResourceService;
 import com.edutech.eventmanagementsystem.service.UserService;
-import com.edutech.eventmanagementsystem.entity.User;
-
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -28,12 +26,16 @@ public class VendorController {
         this.userService = userService;
     }
 
-    // ── Add a new resource (vendor's own) ────────────────────────────
+    // ── Add a new resource ───────────────────────────────────────────
     @PostMapping("/resource")
     public ResponseEntity<?> addResource(@RequestBody Resource resource, Principal principal) {
         try {
             Resource saved = resourceService.addVendorResource(resource, principal.getName());
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        } catch (RuntimeException e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
         } catch (Exception e) {
             Map<String, String> err = new HashMap<>();
             err.put("message", "Failed to add resource: " + e.getMessage());
@@ -54,9 +56,46 @@ public class VendorController {
         }
     }
 
+    // ── Update a resource (name, type, totalQuantity) ────────────────
+    @PutMapping("/resource/{resourceId}/update")
+    public ResponseEntity<?> updateResource(@PathVariable Long resourceId,
+            @RequestBody Resource updates,
+            Principal principal) {
+        try {
+            Resource updated = resourceService.updateVendorResource(resourceId, updates, principal.getName());
+            return ResponseEntity.ok(updated);
+        } catch (RuntimeException e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        } catch (Exception e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", "Failed to update resource: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
+        }
+    }
+
+    // ── Delete a resource ─────────────────────────────────────────────
+    @DeleteMapping("/resource/{resourceId}")
+    public ResponseEntity<?> deleteResource(@PathVariable Long resourceId,
+            Principal principal) {
+        try {
+            resourceService.deleteVendorResource(resourceId, principal.getName());
+            Map<String, String> res = new HashMap<>();
+            res.put("message", "Resource deleted successfully");
+            return ResponseEntity.ok(res);
+        } catch (RuntimeException e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        } catch (Exception e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", "Failed to delete resource: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
+        }
+    }
+
     // ── Dispatch a resource ──────────────────────────────────────────
-    // Vendor dispatches a quantity of a specific resource.
-    // This reduces available quantity and sets dispatchStatus to DISPATCHED.
     @PutMapping("/resource/{resourceId}/dispatch")
     public ResponseEntity<?> dispatchResource(@PathVariable Long resourceId,
             @RequestBody VendorResourceDispatchDTO dto,
@@ -70,18 +109,20 @@ public class VendorController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
         }
     }
+
+    // ── Toggle sent status ───────────────────────────────────────────
     @PutMapping("/resource/{resourceId}/sent-status")
-public ResponseEntity<?> markSentStatus(@PathVariable Long resourceId,
-        @RequestBody Map<String, String> body,
-        Principal principal) {
-    try {
-        String newStatus = body.get("dispatchStatus");
-        Resource updated = resourceService.markSentStatus(resourceId, newStatus, principal.getName());
-        return ResponseEntity.ok(updated);
-    } catch (Exception e) {
-        Map<String, String> err = new HashMap<>();
-        err.put("message", e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    public ResponseEntity<?> markSentStatus(@PathVariable Long resourceId,
+            @RequestBody Map<String, String> body,
+            Principal principal) {
+        try {
+            String newStatus = body.get("dispatchStatus");
+            Resource updated = resourceService.markSentStatus(resourceId, newStatus, principal.getName());
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        }
     }
-}
 }
