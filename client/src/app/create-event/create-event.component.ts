@@ -13,19 +13,16 @@ export class CreateEventComponent implements OnInit {
 
   itemForm: FormGroup;
 
-  // Dropdowns
   staffList:    any[] = [];
   vendorList:   any[] = [];
   resourceList: any[] = [];
   eventList:    any[] = [];
 
-  // Auto-fill state
   prefillRequestId: number | null = null;
   isPrefilled = false;
 
-  // UI state
-  showMessage    = false;
-  showError      = false;
+  showMessage     = false;
+  showError       = false;
   responseMessage = '';
   errorMessage    = '';
   isSubmitting    = false;
@@ -83,8 +80,6 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
-  // ── Loaders ───────────────────────────────────────────────────────
-
   loadAvailableStaff(dateTime: string): void {
     this.httpService.getAvailableStaff(dateTime).subscribe({
       next: (res: any) => {
@@ -93,7 +88,7 @@ export class CreateEventComponent implements OnInit {
           this.showError    = true;
           this.errorMessage = 'No staff available on this date.';
         } else {
-          this.showError = false;
+          this.showError    = false;
           this.errorMessage = '';
         }
       },
@@ -117,13 +112,12 @@ export class CreateEventComponent implements OnInit {
   loadVendorResources(vendorId: number): void {
     this.httpService.getResourcesByVendor(vendorId).subscribe({
       next: (res: any) => {
-        // Only show resources that still have available quantity
         this.resourceList = res.filter((r: any) => r.totalQuantity - r.allocatedQuantity > 0);
         if (this.resourceList.length === 0) {
           this.showError    = true;
           this.errorMessage = 'This vendor has no available resources.';
         } else {
-          this.showError = false;
+          this.showError    = false;
           this.errorMessage = '';
         }
       },
@@ -141,16 +135,11 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
-  // ── Auto-fill from client request ─────────────────────────────────
-
   loadRequestAndPrefill(requestId: number): void {
     this.httpService.getEventRequestById(requestId).subscribe({
       next: (req: any) => {
-        // Format the date from the request to datetime-local format
         const dt = req.eventDate ? new Date(req.eventDate) : null;
-        const formatted = dt
-          ? dt.toISOString().slice(0, 16)   // "YYYY-MM-DDTHH:mm"
-          : '';
+        const formatted = dt ? dt.toISOString().slice(0, 16) : '';
 
         this.itemForm.patchValue({
           title:       req.eventTitle       || '',
@@ -168,8 +157,6 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
-  // ── Submit ────────────────────────────────────────────────────────
-
   onSubmit(): void {
     if (this.itemForm.invalid || this.isSubmitting) return;
 
@@ -184,25 +171,40 @@ export class CreateEventComponent implements OnInit {
       next: (createdEvent: any) => {
         const eventId = createdEvent.eventID;
 
-        // Step 2: Allocate the selected vendor resource to the event
+        // Step 2: Allocate the vendor resource to the event
         this.httpService.allocateResourceToEvent(eventId, +resourceId, +quantity).subscribe({
           next: () => {
-            this.isSubmitting    = false;
-            this.showMessage     = true;
-            this.showError       = false;
-            this.responseMessage = 'Event created and resource allocated successfully!';
-            this.itemForm.reset();
-            this.staffList    = [];
-            this.resourceList = [];
-            this.isPrefilled  = false;
-            this.prefillRequestId = null;
-            this.getEvent();
+            // Step 3: If this came from a client request, auto-approve it
+            if (this.prefillRequestId) {
+              this.httpService.approveEventRequest(this.prefillRequestId, { eventId }).subscribe({
+                next: () => {
+                  this.isSubmitting    = false;
+                  this.showMessage     = true;
+                  this.showError       = false;
+                  this.responseMessage = 'Event created, resource allocated and client request approved!';
+                  this.resetForm();
+                },
+                error: () => {
+                  // Event + allocation succeeded, only approval linking failed
+                  this.isSubmitting    = false;
+                  this.showMessage     = true;
+                  this.showError       = false;
+                  this.responseMessage = `Event created (ID: ${eventId}) and resource allocated. However, request approval linking failed — please approve manually from Client Requests.`;
+                  this.resetForm();
+                }
+              });
+            } else {
+              this.isSubmitting    = false;
+              this.showMessage     = true;
+              this.showError       = false;
+              this.responseMessage = 'Event created and resource allocated successfully!';
+              this.resetForm();
+            }
           },
           error: (err: any) => {
             this.isSubmitting = false;
             this.showError    = true;
-            // Event was created but allocation failed — tell the planner
-            this.errorMessage = `Event was created (ID: ${eventId}) but resource allocation failed: ${err?.error?.message || 'unknown error'}. Please allocate manually.`;
+            this.errorMessage = `Event created (ID: ${eventId}) but resource allocation failed: ${err?.error?.message || 'unknown error'}. Please allocate manually.`;
             this.getEvent();
           }
         });
@@ -215,7 +217,14 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
-  // ── Helpers ───────────────────────────────────────────────────────
+  private resetForm(): void {
+    this.itemForm.reset();
+    this.staffList        = [];
+    this.resourceList     = [];
+    this.isPrefilled      = false;
+    this.prefillRequestId = null;
+    this.getEvent();
+  }
 
   getSelectedResourceAvailable(): number {
     const resourceId = this.itemForm.get('resourceId')?.value;

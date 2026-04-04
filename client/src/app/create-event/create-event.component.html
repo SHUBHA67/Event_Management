@@ -14,7 +14,7 @@
       </div>
 
       <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-      <div class="error-msg"   *ngIf="showError">{{ errorMessage }}</div>
+      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
 
       <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
@@ -123,11 +123,7 @@
 
         <div class="form-group" style="max-width: 50%;" *ngIf="itemForm.get('resourceId')?.value">
           <label>Quantity *</label>
-          <input
-            type="number"
-            formControlName="quantity"
-            placeholder="Enter quantity"
-            min="1"
+          <input type="number" formControlName="quantity" placeholder="Enter quantity" min="1"
             [max]="getSelectedResourceAvailable()" />
           <small class="hint">
             Max available: {{ getSelectedResourceAvailable() }}
@@ -168,12 +164,20 @@
               <td>{{ event.eventID }}</td>
               <td>{{ event.title }}</td>
               <td>{{ event.location }}</td>
-              <td><span class="badge">{{ event.status }}</span></td>
+              <td>
+                <span [ngClass]="{
+        'badge badge-planned'  : event.status === 'PLANNED',
+        'badge badge-ongoing'  : event.status === 'ONGOING',
+        'badge badge-completed': event.status === 'COMPLETED',
+        'badge badge-cancelled': event.status === 'CANCELLED'
+      }">{{ event.status }}</span>
+              </td>
               <td>{{ event.dateTime | date:'short' }}</td>
               <td>{{ event.planner?.username || '—' }}</td>
               <td>{{ event.assignedStaff?.username || '—' }}</td>
             </tr>
           </tbody>
+
         </table>
       </div>
     </div>

@@ -134,6 +134,59 @@ $font: 'DM Sans', 'Segoe UI', sans-serif;
 
 .submit-hint { color: #94a3b8; font-size: 12px; margin-top: 8px; }
 
+.hint {
+  display: block;
+  color: #94a3b8;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 620px;
+
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+  }
+
+  th {
+    background: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  td { color: #334155; }
+
+  tr:hover td { background: #fafcff; }
+}
+
+// Status badges in the events table
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+// Give each status a distinct colour
+tr:has(td .badge) .badge { background: rgba(119,190,240,0.15); color: darken(#77BEF0, 20%); }
+
+.badge-planned   { background: rgba(119,190,240,0.15); color: darken(#77BEF0, 20%); }
+.badge-ongoing   { background: rgba(255,137,79,0.15);  color: darken(#FF894F, 10%); }
+.badge-completed { background: #f1f5f9;                color: #94a3b8; }
+.badge-cancelled { background: rgba(234,91,111,0.12);  color: darken(#EA5B6F, 8%); }
+
+
 @media (max-width: 600px) {
   .form-row { grid-template-columns: 1fr; }
   .staff-row { flex-direction: column; }
