@@ -9,9 +9,9 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './add-resource.component.html',
   styleUrls: ['./add-resource.component.scss']
 })
-
 export class AddResourceComponent implements OnInit {
-itemForm: FormGroup;
+
+  itemForm: FormGroup;
   resourceList: any[] = [];
   showMessage  = false;
   showError    = false;
@@ -27,7 +27,6 @@ itemForm: FormGroup;
     this.itemForm = this.formBuilder.group({
       name:          ['', Validators.required],
       type:          ['', Validators.required],
-      // totalQuantity replaces the old boolean availability toggle
       totalQuantity: ['', [Validators.required, Validators.min(1)]]
     });
   }
@@ -44,16 +43,15 @@ itemForm: FormGroup;
   onSubmit(): void {
     if (this.itemForm.invalid) return;
 
-    // Backend derives availability from totalQuantity automatically
     const payload = {
-      name:          this.itemForm.value.name,
-      type:          this.itemForm.value.type,
-      totalQuantity: +this.itemForm.value.totalQuantity,
-      allocatedQuantity: 0  // always starts at 0
+      name:              this.itemForm.value.name,
+      type:              this.itemForm.value.type,
+      totalQuantity:     +this.itemForm.value.totalQuantity,
+      allocatedQuantity: 0
     };
 
     this.httpService.addResource(payload).subscribe({
-      next: (res: any) => {
+      next: () => {
         this.showMessage     = true;
         this.responseMessage = 'Resource added successfully';
         this.itemForm.reset();
@@ -63,4 +61,3 @@ itemForm: FormGroup;
     });
   }
 }
-

@@ -46,6 +46,23 @@
           </div>
         </div>
 
+        <!-- CAPTCHA -->
+        <div class="captcha-group">
+          <label class="captcha-label">Security Check</label>
+          <div class="captcha-box">
+            <div class="captcha-question">
+              <span class="captcha-eq">{{ captchaQuestion }} = ?</span>
+              <button type="button" class="captcha-refresh" (click)="generateCaptcha()" title="Refresh">
+                &#8635;
+              </button>
+            </div>
+            <input type="number" class="captcha-input" [(ngModel)]="captchaInput" [ngModelOptions]="{standalone: true}"
+              placeholder="Your answer" />
+          </div>
+          <div class="error-text" *ngIf="captchaError">Incorrect answer. Please try again.</div>
+          <div class="captcha-success" *ngIf="captchaSuccess">✓ Verified</div>
+        </div>
+
         <div class="alert-error" *ngIf="showError">{{ errorMessage }}</div>
 
         <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Sign In</button>

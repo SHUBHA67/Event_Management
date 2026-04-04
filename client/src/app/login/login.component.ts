@@ -15,6 +15,13 @@ export class LoginComponent implements OnInit {
   errorMessage: any;
   showPassword: boolean = false;
 
+  // Captcha
+  captchaQuestion: string = '';
+  captchaAnswer: number = 0;
+  captchaInput: string = '';
+  captchaError: boolean = false;
+  captchaSuccess: boolean = false;
+
   constructor(
     public router: Router,
     public httpService: HttpService,
@@ -27,13 +34,49 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.generateCaptcha();
+  }
+
+  generateCaptcha(): void {
+    const operators = ['+', '-', '×'];
+    const op = operators[Math.floor(Math.random() * operators.length)];
+    let a = Math.floor(Math.random() * 9) + 1;
+    let b = Math.floor(Math.random() * 9) + 1;
+
+    // Avoid negative answers for subtraction
+    if (op === '-' && b > a) [a, b] = [b, a];
+
+    this.captchaQuestion = `${a}  ${op}  ${b}`;
+
+    if (op === '+') this.captchaAnswer = a + b;
+    else if (op === '-') this.captchaAnswer = a - b;
+    else this.captchaAnswer = a * b;
+
+    this.captchaInput = '';
+    this.captchaError = false;
+    this.captchaSuccess = false;
+  }
+
+  validateCaptcha(): boolean {
+    const parsed = parseInt(this.captchaInput, 10);
+    if (isNaN(parsed) || parsed !== this.captchaAnswer) {
+      this.captchaError = true;
+      this.captchaSuccess = false;
+      return false;
+    }
+    this.captchaError = false;
+    this.captchaSuccess = true;
+    return true;
+  }
 
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
 
   onLogin(): void {
+    if (!this.validateCaptcha()) return;
+
     if (this.itemForm.valid) {
       this.httpService.Login(this.itemForm.value).subscribe(
         (res: any) => {
@@ -45,6 +88,7 @@ export class LoginComponent implements OnInit {
         (err: any) => {
           this.showError = true;
           this.errorMessage = 'Invalid username or password';
+          this.generateCaptcha();
         }
       );
     }

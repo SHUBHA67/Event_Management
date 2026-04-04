@@ -11,6 +11,6 @@ import com.edutech.eventmanagementsystem.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
 
-    // Needed to populate staff dropdown in Create Event form
+    // Used for staff dropdown, vendor list, etc.
     List<User> findByRole(String role);
 }

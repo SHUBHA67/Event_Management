@@ -2,7 +2,7 @@ $blue:   #77BEF0;
 $yellow: #FFCB61;
 $orange: #FF894F;
 $red:    #EA5B6F;
-$page-bg: 
+$page-bg:
   radial-gradient(circle at 12% 18%, rgba(119, 190, 240, 0.35) 0%, transparent 70%),
   radial-gradient(circle at 88% 22%, rgba(255, 203, 97, 0.22) 0%, transparent 72%),
   radial-gradient(circle at 78% 92%, rgba(234, 91, 111, 0.22) 0%, transparent 72%),
@@ -10,41 +10,21 @@ $page-bg:
   linear-gradient(135deg, #F8FAFC 0%, #EEF2F7 55%, #E9EFFA 100%);
 $font: 'DM Sans', 'Segoe UI', sans-serif;
 
-.page-wrapper {
-  background: $page-bg;
-  min-height: 100vh;
-  padding: 24px;
-  font-family: $font;
-}
+.page-wrapper { background: $page-bg; min-height: 100vh; padding: 24px; font-family: $font; }
 
 .back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  color: #475569;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-bottom: 20px;
-  font-family: $font;
-  transition: all 0.2s;
-
+  display: inline-flex; align-items: center; gap: 6px; background: #fff;
+  border: 1px solid #e2e8f0; color: #475569; padding: 8px 16px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; cursor: pointer; margin-bottom: 20px;
+  font-family: $font; transition: all 0.2s;
   &:hover { background: $blue; color: #fff; border-color: $blue; }
 }
 
 .page-container { max-width: 860px; margin: 0 auto; }
 
 .card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 28px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-  border-top: 4px solid $yellow;
+  background: #fff; border-radius: 14px; padding: 28px; margin-bottom: 24px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06); border-top: 4px solid $yellow;
 }
 
 .card-header {
@@ -52,126 +32,132 @@ $font: 'DM Sans', 'Segoe UI', sans-serif;
   h2, h3 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; }
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
 .form-group {
   margin-bottom: 16px;
-
-  label {
-    display: block;
-    color: #475569;
-    font-weight: 600;
-    font-size: 13px;
-    margin-bottom: 6px;
-  }
-
+  label { display: block; color: #475569; font-weight: 600; font-size: 13px; margin-bottom: 6px; }
   input, select, textarea {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: $font;
-    box-sizing: border-box;
-    color: #1e293b;
-    transition: border-color 0.2s;
-
+    width: 100%; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+    font-size: 14px; font-family: $font; box-sizing: border-box; color: #1e293b; transition: border-color 0.2s;
     &:focus { outline: none; border-color: $yellow; }
   }
 }
 
 .optional { color: #94a3b8; font-weight: 400; font-size: 12px; }
-
-.hint {
-  display: block;
-  color: #94a3b8;
-  font-size: 12px;
-  margin-top: 4px;
-}
-
+.hint     { display: block; color: #94a3b8; font-size: 12px; margin-top: 4px; }
 .error-text { color: $red; font-size: 12px; margin-top: 4px; }
 
 .success-msg {
-  background: rgba(119,190,240,0.12);
-  color: darken($blue, 20%);
-  border: 1px solid rgba(119,190,240,0.4);
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  background: rgba(119,190,240,0.12); color: darken($blue,20%);
+  border: 1px solid rgba(119,190,240,0.4); padding: 10px 14px;
+  border-radius: 8px; margin-bottom: 16px; font-size: 14px;
 }
-
 .error-msg {
-  background: rgba(234,91,111,0.1);
-  color: darken($red, 10%);
-  border: 1px solid rgba(234,91,111,0.3);
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  background: rgba(234,91,111,0.1); color: darken($red,10%);
+  border: 1px solid rgba(234,91,111,0.3); padding: 10px 14px;
+  border-radius: 8px; margin-bottom: 16px; font-size: 14px;
 }
 
 .btn-primary {
-  padding: 11px 28px;
-  background: $yellow;
-  color: #1e293b;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: $font;
-  transition: opacity 0.2s;
-
+  padding: 11px 28px; background: $yellow; color: #1e293b; border: none;
+  border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer;
+  font-family: $font; transition: opacity 0.2s;
   &:disabled { background: #cbd5e1; color: #fff; cursor: not-allowed; }
   &:hover:not(:disabled) { opacity: 0.88; }
 }
 
-.table-responsive { width: 100%; overflow-x: auto; }
+// ── Request Items ─────────────────────────────────────────────────
+.request-item {
+  border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 16px;
+  transition: box-shadow 0.2s;
+  &:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.07); }
+}
 
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 580px;
+.req-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 12px; margin-bottom: 10px;
+  h4 { margin: 0 0 6px; color: #1e293b; font-size: 15px; font-weight: 700; }
+}
 
-  th, td {
-    padding: 12px 14px;
-    text-align: left;
-    border-bottom: 1px solid #f1f5f9;
-    font-size: 13px;
+.req-info { flex: 1; }
+
+.req-meta {
+  display: flex; flex-wrap: wrap; gap: 12px; color: #94a3b8; font-size: 12px;
+  i { margin-right: 3px; }
+}
+
+.rejection-note {
+  background: rgba(234,91,111,0.08); border: 1px solid rgba(234,91,111,0.22);
+  border-radius: 8px; padding: 9px 13px; font-size: 13px; color: darken($red,12%);
+  margin-bottom: 10px; display: flex; align-items: flex-start; gap: 7px;
+}
+
+.cancellation-note {
+  background: rgba(148,163,184,0.1); border: 1px solid rgba(148,163,184,0.28);
+  border-radius: 8px; padding: 9px 13px; font-size: 13px; color: #475569;
+  margin-bottom: 10px; display: flex; align-items: flex-start; gap: 7px;
+}
+
+.req-actions { margin-top: 10px; }
+
+.btn-cancel-req {
+  padding: 7px 16px; background: rgba(234,91,111,0.1); color: darken($red,8%);
+  border: 1.5px solid rgba(234,91,111,0.3); border-radius: 8px;
+  font-size: 13px; font-weight: 600; cursor: pointer; font-family: $font;
+  display: inline-flex; align-items: center; gap: 5px; transition: all 0.2s;
+  &:hover { background: $red; color: #fff; border-color: $red; }
+}
+
+// ── Cancel Panel ─────────────────────────────────────────────────
+.cancel-panel {
+  background: #fff8f8; border: 1.5px solid rgba(234,91,111,0.25);
+  border-radius: 10px; padding: 18px; margin-top: 12px;
+
+  h5 { color: #1e293b; font-size: 14px; font-weight: 700; margin: 0 0 10px; }
+
+  textarea {
+    width: 100%; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+    font-size: 14px; font-family: $font; box-sizing: border-box; resize: vertical;
+    color: #1e293b; transition: border-color 0.2s;
+    &:focus { outline: none; border-color: $red; }
   }
-
-  th { background: #f8fafc; color: #64748b; font-weight: 600; }
-  td { color: #334155; }
 }
 
-.badge-yellow {
-  padding: 3px 10px; border-radius: 20px;
-  background: rgba(255,203,97,0.2); color: darken($yellow, 30%);
-  font-size: 11px; font-weight: 600;
+.panel-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+
+.btn-confirm-cancel {
+  padding: 9px 20px; background: $red; color: #fff; border: none;
+  border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;
+  font-family: $font; transition: opacity 0.2s;
+  &:disabled { background: #cbd5e1; cursor: not-allowed; }
+  &:hover:not(:disabled) { opacity: 0.88; }
 }
-.badge-blue {
-  padding: 3px 10px; border-radius: 20px;
-  background: rgba(119,190,240,0.15); color: darken($blue, 20%);
-  font-size: 11px; font-weight: 600;
+
+.btn-keep {
+  padding: 9px 18px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
+  border-radius: 8px; font-size: 13px; cursor: pointer; font-family: $font;
+  &:hover { background: #e2e8f0; }
 }
-.badge-green {
-  padding: 3px 10px; border-radius: 20px;
-  background: rgba(119,190,240,0.15); color: darken($blue, 20%);
-  font-size: 11px; font-weight: 600;
-}
-.badge-red {
-  padding: 3px 10px; border-radius: 20px;
-  background: rgba(234,91,111,0.12); color: darken($red, 8%);
-  font-size: 11px; font-weight: 600;
+
+// ── Badges ─────────────────────────────────────────────────────────
+.badge-yellow { padding: 3px 10px; border-radius: 20px; background: rgba(255,203,97,0.2);   color: darken($yellow,30%); font-size: 11px; font-weight: 600; white-space: nowrap; }
+.badge-blue   { padding: 3px 10px; border-radius: 20px; background: rgba(119,190,240,0.15); color: darken($blue,20%);   font-size: 11px; font-weight: 600; white-space: nowrap; }
+.badge-green  { padding: 3px 10px; border-radius: 20px; background: rgba(119,190,240,0.15); color: darken($blue,20%);   font-size: 11px; font-weight: 600; white-space: nowrap; }
+.badge-red    { padding: 3px 10px; border-radius: 20px; background: rgba(234,91,111,0.12);  color: darken($red,8%);     font-size: 11px; font-weight: 600; white-space: nowrap; }
+.badge-grey   { padding: 3px 10px; border-radius: 20px; background: #f1f5f9;                color: #94a3b8;             font-size: 11px; font-weight: 600; white-space: nowrap; }
+
+.empty-state {
+  text-align: center; padding: 60px 20px; color: #94a3b8;
+  i { font-size: 2.5rem; display: block; margin-bottom: 12px; }
+  p { font-size: 15px; }
 }
 
 @media (max-width: 600px) {
   .form-row { grid-template-columns: 1fr; }
   .btn-primary { width: 100%; }
+  .req-row { flex-direction: column; }
+  .panel-actions { flex-direction: column; }
+  .btn-confirm-cancel, .btn-keep { width: 100%; text-align: center; }
   .page-wrapper { padding: 16px; }
 }

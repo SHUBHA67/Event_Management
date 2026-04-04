@@ -58,11 +58,12 @@ import { Router } from '@angular/router';
 })
 export class DashbaordComponent implements OnInit {
 
+
   roleName: string | null = null;
   username: string | null = null;
   sidebarOpen: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.roleName = this.authService.getRole;
@@ -74,7 +75,7 @@ export class DashbaordComponent implements OnInit {
   }
 
   toggleSidebar(): void { this.sidebarOpen = !this.sidebarOpen; }
-  closeSidebar(): void { this.sidebarOpen = false; }
+  closeSidebar():  void { this.sidebarOpen = false; }
 
   navigateTo(path: string): void {
     this.router.navigate([path]);
@@ -86,3 +87,4 @@ export class DashbaordComponent implements OnInit {
     window.location.reload();
   }
 }
+

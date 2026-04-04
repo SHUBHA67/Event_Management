@@ -1,0 +1,165 @@
+$blue:   #77BEF0;
+$yellow: #FFCB61;
+$orange: #FF894F;
+$red:    #EA5B6F;
+$green:  #4CAF82;
+$page-bg:
+  radial-gradient(circle at 12% 18%, rgba(119, 190, 240, 0.35) 0%, transparent 70%),
+  radial-gradient(circle at 88% 22%, rgba(255, 203, 97, 0.22) 0%, transparent 72%),
+  radial-gradient(circle at 78% 92%, rgba(234, 91, 111, 0.22) 0%, transparent 72%),
+  radial-gradient(circle at 18% 88%, rgba(255, 137, 79, 0.20) 0%, transparent 72%),
+  linear-gradient(135deg, #F8FAFC 0%, #EEF2F7 55%, #E9EFFA 100%);
+$font: 'DM Sans', 'Segoe UI', sans-serif;
+
+.page-wrapper { background: $page-bg; min-height: 100vh; padding: 24px; font-family: $font; }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px; background: #fff;
+  border: 1px solid #e2e8f0; color: #475569; padding: 8px 16px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; cursor: pointer; margin-bottom: 20px;
+  font-family: $font; transition: all 0.2s;
+  &:hover { background: $yellow; color: #1e293b; border-color: $yellow; }
+}
+
+.page-container { max-width: 900px; margin: 0 auto; }
+
+.card {
+  background: #fff; border-radius: 14px; padding: 28px; margin-bottom: 24px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06); border-top: 4px solid $yellow;
+}
+
+.card-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;
+  h2, h3 {
+    font-size: 18px; font-weight: 700; color: #1e293b; margin: 0;
+    display: flex; align-items: center; gap: 8px;
+    i { color: $yellow; }
+  }
+}
+
+.count-badge {
+  background: rgba(255,203,97,0.18); color: darken($yellow,28%);
+  padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.form-group {
+  margin-bottom: 16px;
+  &.half { max-width: 50%; }
+  label { display: block; color: #475569; font-weight: 600; font-size: 13px; margin-bottom: 6px; }
+  input {
+    width: 100%; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+    font-size: 14px; font-family: $font; box-sizing: border-box; color: #1e293b; transition: border-color 0.2s;
+    &:focus { outline: none; border-color: $yellow; }
+  }
+}
+
+.hint { display: block; color: #94a3b8; font-size: 12px; margin-top: 4px; }
+.error-text { color: $red; font-size: 12px; margin-top: 4px; }
+
+.success-msg {
+  background: rgba(76,175,130,0.1); color: darken($green,10%);
+  border: 1px solid rgba(76,175,130,0.3); padding: 10px 14px;
+  border-radius: 8px; margin-bottom: 16px; font-size: 14px;
+}
+.error-msg {
+  background: rgba(234,91,111,0.1); color: darken($red,10%);
+  border: 1px solid rgba(234,91,111,0.3); padding: 10px 14px;
+  border-radius: 8px; margin-bottom: 16px; font-size: 14px;
+}
+
+.btn-primary {
+  padding: 11px 28px; background: $yellow; color: #1e293b; border: none;
+  border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer;
+  font-family: $font; transition: opacity 0.2s; display: inline-flex; align-items: center; gap: 6px;
+  &:hover { opacity: 0.88; }
+  &:disabled { background: #cbd5e1; color: #fff; cursor: not-allowed; }
+}
+
+.resources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+
+.resource-card {
+  border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px;
+  transition: box-shadow 0.2s;
+  &:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+}
+
+.res-top {
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px;
+  h4 { margin: 0; color: #1e293b; font-size: 15px; font-weight: 700; }
+  .res-type { color: #94a3b8; font-size: 12px; margin-top: 3px; }
+}
+
+.res-qty-row {
+  display: flex; gap: 12px; margin-bottom: 14px;
+}
+
+.qty-block {
+  flex: 1; background: #f8fafc; border-radius: 8px; padding: 8px 10px; text-align: center;
+  .qty-label { display: block; color: #94a3b8; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .qty-val { font-size: 18px; font-weight: 700; color: #1e293b; }
+  .qty-val.avail { color: darken($green, 5%); }
+}
+
+.btn-dispatch {
+  width: 100%; padding: 9px; background: rgba(255,137,79,0.12); color: $orange;
+  border: 1.5px solid rgba(255,137,79,0.35); border-radius: 8px; font-size: 13px;
+  font-weight: 700; cursor: pointer; font-family: $font; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  &:hover { background: $orange; color: #fff; border-color: $orange; }
+}
+
+.dispatch-panel {
+  background: #f8fafc; border-radius: 10px; padding: 14px; margin-top: 12px;
+  label { display: block; color: #475569; font-weight: 600; font-size: 12px; margin-bottom: 8px; }
+}
+
+.dispatch-row {
+  display: flex; gap: 8px; align-items: center;
+  input {
+    flex: 1; padding: 8px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+    font-size: 14px; font-family: $font; color: #1e293b; box-sizing: border-box;
+    &:focus { outline: none; border-color: $orange; }
+  }
+}
+
+.btn-confirm {
+  padding: 8px 14px; background: $orange; color: #fff; border: none;
+  border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;
+  font-family: $font; white-space: nowrap;
+  &:disabled { background: #cbd5e1; cursor: not-allowed; }
+  &:hover:not(:disabled) { opacity: 0.88; }
+}
+
+.btn-cancel {
+  padding: 8px 12px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
+  border-radius: 8px; font-size: 13px; cursor: pointer; font-family: $font;
+  &:hover { background: #e2e8f0; }
+}
+
+.badge-green {
+  padding: 3px 10px; border-radius: 20px;
+  background: rgba(76,175,130,0.15); color: darken($green,12%);
+  font-size: 11px; font-weight: 600;
+}
+.badge-orange {
+  padding: 3px 10px; border-radius: 20px;
+  background: rgba(255,137,79,0.15); color: darken($orange,10%);
+  font-size: 11px; font-weight: 600;
+}
+
+.empty-state {
+  text-align: center; padding: 60px 20px; color: #94a3b8;
+  i { font-size: 3rem; display: block; margin-bottom: 14px; }
+  p { font-size: 15px; }
+}
+
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+  .form-group.half { max-width: 100%; }
+  .btn-primary { width: 100%; }
+  .page-wrapper { padding: 16px; }
+  .resources-grid { grid-template-columns: 1fr; }
+  .dispatch-row { flex-wrap: wrap; input { min-width: 0; } }
+}

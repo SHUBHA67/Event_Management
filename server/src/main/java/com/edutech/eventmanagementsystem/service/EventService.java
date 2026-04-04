@@ -1,19 +1,19 @@
 package com.edutech.eventmanagementsystem.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edutech.eventmanagementsystem.dto.StaffAvailabilityResponse;
 import com.edutech.eventmanagementsystem.entity.Allocation;
 import com.edutech.eventmanagementsystem.entity.Event;
-import com.edutech.eventmanagementsystem.repository.EventRepository;
-
-import java.util.List;
-import java.util.Optional;
-
 import com.edutech.eventmanagementsystem.entity.Resource;
 import com.edutech.eventmanagementsystem.entity.User;
+import com.edutech.eventmanagementsystem.repository.EventRepository;
 import com.edutech.eventmanagementsystem.repository.ResourceRepository;
 import com.edutech.eventmanagementsystem.repository.UserRepository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -30,15 +30,38 @@ public class EventService {
         this.userRepository = userRepository;
     }
 
+    // ── PLANNER: Check staff availability at a given datetime ────────
+    // Checks for any active event assigned to that staff within a ±2hr window
+    public StaffAvailabilityResponse checkStaffAvailability(Long staffId, Date dateTime) {
+        User staff = userRepository.findById(staffId)
+                .orElseThrow(() -> new RuntimeException("Staff not found"));
+
+        // 2-hour window: 2hrs before and 2hrs after the target time
+        long TWO_HOURS = 2 * 60 * 60 * 1000L;
+        Date windowStart = new Date(dateTime.getTime() - TWO_HOURS);
+        Date windowEnd   = new Date(dateTime.getTime() + TWO_HOURS);
+
+        List<Event> conflicts = eventRepository.findConflictingEvents(staffId, windowStart, windowEnd);
+
+        if (conflicts.isEmpty()) {
+            return new StaffAvailabilityResponse(true,
+                    staff.getUsername() + " is available at this time.", null);
+        } else {
+            Event conflict = conflicts.get(0);
+            return new StaffAvailabilityResponse(false,
+                    staff.getUsername() + " is already assigned to '" +
+                            conflict.getTitle() + "' around that time.",
+                    conflict);
+        }
+    }
+
     // ── PLANNER: Create event ────────────────────────────────────────
-    // plannerUsername is auto-captured from logged-in user via Principal
-    // staffId is selected by planner from the dropdown
+    // plannerUsername auto-captured from Principal
+    // staffId is selected only after availability is confirmed on the frontend
     public Event createEvent(Event event, String plannerUsername, Long staffId) {
-        // Auto-capture planner
         User planner = userRepository.findByUsername(plannerUsername);
         event.setPlanner(planner);
 
-        // Assign selected staff
         if (staffId != null) {
             User staff = userRepository.findById(staffId)
                     .orElseThrow(() -> new RuntimeException("Staff not found"));
@@ -53,7 +76,7 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    // ── PLANNER / CLIENT: Get single event details ───────────────────
+    // ── Get single event details ─────────────────────────────────────
     public Event getEventDetails(Long eventId) {
         return eventRepository.findById(eventId).orElse(null);
     }
@@ -64,15 +87,12 @@ public class EventService {
     }
 
     // ── STAFF: Update status ONLY ────────────────────────────────────
-    // Staff cannot change title, description, location, dateTime
-    // Only status can be updated
-    // Auto-releases resources back to pool when status becomes COMPLETED
+    // Auto-releases resources back to pool when event is COMPLETED
     public Event updateEventStatus(Long eventId, String newStatus) {
         Optional<Event> existingOpt = eventRepository.findById(eventId);
         if (existingOpt.isPresent()) {
             Event existing = existingOpt.get();
 
-            // Auto-release resources when event is marked COMPLETED
             if ("COMPLETED".equals(newStatus) && !"COMPLETED".equals(existing.getStatus())) {
                 for (Allocation allocation : existing.getAllocations()) {
                     Resource resource = allocation.getResource();

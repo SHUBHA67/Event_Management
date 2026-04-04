@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpService } from '../../services/http.service';
@@ -10,37 +9,25 @@ import { HttpService } from '../../services/http.service';
 })
 export class BrowseEventsComponent implements OnInit {
 
-  allEvents: any[] = [];
+  allEvents:      any[] = [];
   filteredEvents: any[] = [];
 
   activeFilter = 'ALL';
-  searchTerm = '';
+  searchTerm   = '';
 
-  showError = false;
+  showError    = false;
   errorMessage = '';
 
-  constructor(
-    private httpService: HttpService,
-    private router: Router
-  ) {}
+  constructor(private httpService: HttpService, private router: Router) {}
 
   ngOnInit(): void {
     this.httpService.browseEvents().subscribe({
-      next: (res: any) => {
-        this.allEvents = res;
-        this.applyFilter();
-      },
-      error: () => {
-        this.showError = true;
-        this.errorMessage = 'Failed to load events.';
-      }
+      next: (res: any) => { this.allEvents = res; this.applyFilter(); },
+      error: () => { this.showError = true; this.errorMessage = 'Failed to load events.'; }
     });
   }
 
-  filterBy(status: string): void {
-    this.activeFilter = status;
-    this.applyFilter();
-  }
+  filterBy(status: string): void { this.activeFilter = status; this.applyFilter(); }
 
   applyFilter(): void {
     let results = this.allEvents;
@@ -60,11 +47,5 @@ export class BrowseEventsComponent implements OnInit {
     this.filteredEvents = results;
   }
 
-  goToRequest(): void {
-    this.router.navigate(['/submit-request']);
-  }
-
-  goBackToDashboard(): void {
-    this.router.navigate(['/dashboard']);
-  }
+  goBackToDashboard(): void { this.router.navigate(['/dashboard']); }
 }

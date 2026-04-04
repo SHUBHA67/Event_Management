@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../environments/environment.development';
 import { AuthService } from './auth.service';
 
@@ -38,19 +38,39 @@ export class HttpService {
     return this.http.get(`${this.serverName}/api/planner/staff-users`, { headers: this.getHeaders() });
   }
 
+  public getVendors(): Observable<any> {
+    return this.http.get(`${this.serverName}/api/planner/vendors`, { headers: this.getHeaders() });
+  }
+
+  public getVendorResources(vendorId: number): Observable<any> {
+    return this.http.get(`${this.serverName}/api/planner/vendor/${vendorId}/resources`, { headers: this.getHeaders() });
+  }
+
+  public checkStaffAvailability(staffId: number, dateTime: string): Observable<any> {
+    return this.http.get(`${this.serverName}/api/planner/staff/${staffId}/availability?dateTime=${dateTime}`, { headers: this.getHeaders() });
+  }
+
   public GetAllevents(): Observable<any> {
     return this.http.get(`${this.serverName}/api/planner/events`, { headers: this.getHeaders() });
+  }
+
+  public getEventDetails(eventId: number): Observable<any> {
+    return this.http.get(`${this.serverName}/api/planner/event/${eventId}`, { headers: this.getHeaders() });
   }
 
   public GetAllResources(): Observable<any> {
     return this.http.get(`${this.serverName}/api/planner/resources`, { headers: this.getHeaders() });
   }
 
-  // staffId is passed as query param
-  public createEvent(details: any, staffId: any): Observable<any> {
-    return this.http.post(`${this.serverName}/api/planner/event?staffId=${staffId}`, details, { headers: this.getHeaders() });
+  // staffId is optional — kept backward-compatible for tests that call createEvent(details) without staffId
+  public createEvent(details: any, staffId?: any): Observable<any> {
+    const url = staffId
+      ? `${this.serverName}/api/planner/event?staffId=${staffId}`
+      : `${this.serverName}/api/planner/event`;
+    return this.http.post(url, details, { headers: this.getHeaders() });
   }
 
+  // Kept for AddResourceComponent which is still declared in app.module.ts
   public addResource(details: any): Observable<any> {
     return this.http.post(`${this.serverName}/api/planner/resource`, details, { headers: this.getHeaders() });
   }
@@ -66,11 +86,14 @@ export class HttpService {
     return this.http.get(`${this.serverName}/api/planner/event-requests`, { headers: this.getHeaders() });
   }
 
+  public getEventRequestById(requestId: number): Observable<any> {
+    return this.http.get(`${this.serverName}/api/planner/event-requests/${requestId}`, { headers: this.getHeaders() });
+  }
+
   public markRequestUnderReview(requestId: number): Observable<any> {
     return this.http.put(`${this.serverName}/api/planner/event-requests/${requestId}/review`, {}, { headers: this.getHeaders() });
   }
 
-  // Approve now only sends the eventId to link
   public approveEventRequest(requestId: number, payload: { eventId: number }): Observable<any> {
     return this.http.put(`${this.serverName}/api/planner/event-requests/${requestId}/approve`, payload, { headers: this.getHeaders() });
   }
@@ -79,13 +102,24 @@ export class HttpService {
     return this.http.put(`${this.serverName}/api/planner/event-requests/${requestId}/reject`, payload, { headers: this.getHeaders() });
   }
 
+  // ── Vendor ────────────────────────────────────────────────────────
+  public addVendorResource(details: any): Observable<any> {
+    return this.http.post(`${this.serverName}/api/vendor/resource`, details, { headers: this.getHeaders() });
+  }
+
+  public getMyVendorResources(): Observable<any> {
+    return this.http.get(`${this.serverName}/api/vendor/my-resources`, { headers: this.getHeaders() });
+  }
+
+  public dispatchResource(resourceId: number, payload: { quantity: number }): Observable<any> {
+    return this.http.put(`${this.serverName}/api/vendor/resource/${resourceId}/dispatch`, payload, { headers: this.getHeaders() });
+  }
+
   // ── Staff ─────────────────────────────────────────────────────────
-  // Fetches only events assigned to the logged-in staff
   public getMyAssignedEvents(): Observable<any> {
     return this.http.get(`${this.serverName}/api/staff/my-events`, { headers: this.getHeaders() });
   }
 
-  // Updates status only
   public updateEventStatus(eventId: any, status: string): Observable<any> {
     return this.http.put(`${this.serverName}/api/staff/update-status/${eventId}`, { status }, { headers: this.getHeaders() });
   }
@@ -103,10 +137,11 @@ export class HttpService {
     return this.http.get(`${this.serverName}/api/client/my-requests`, { headers: this.getHeaders() });
   }
 
-  // Auto-fetches approved bookings with linked event, planner and staff info
   public getMyBookings(): Observable<any> {
     return this.http.get(`${this.serverName}/api/client/my-bookings`, { headers: this.getHeaders() });
   }
+
+  public cancelEventRequest(requestId: number, payload: { cancellationFeedback: string }): Observable<any> {
+    return this.http.put(`${this.serverName}/api/client/event-request/${requestId}/cancel`, payload, { headers: this.getHeaders() });
+  }
 }
-
-

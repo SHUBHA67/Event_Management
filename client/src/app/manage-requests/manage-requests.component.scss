@@ -2,7 +2,7 @@ $blue:   #77BEF0;
 $yellow: #FFCB61;
 $orange: #FF894F;
 $red:    #EA5B6F;
-$page-bg: 
+$page-bg:
   radial-gradient(circle at 12% 18%, rgba(119, 190, 240, 0.35) 0%, transparent 70%),
   radial-gradient(circle at 88% 22%, rgba(255, 203, 97, 0.22) 0%, transparent 72%),
   radial-gradient(circle at 78% 92%, rgba(234, 91, 111, 0.22) 0%, transparent 72%),
@@ -18,32 +18,18 @@ $font: 'DM Sans', 'Segoe UI', sans-serif;
 }
 
 .back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  color: #475569;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-bottom: 20px;
-  font-family: $font;
-  transition: all 0.2s;
-
+  display: inline-flex; align-items: center; gap: 6px; background: #fff;
+  border: 1px solid #e2e8f0; color: #475569; padding: 8px 16px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; cursor: pointer; margin-bottom: 20px;
+  font-family: $font; transition: all 0.2s;
   &:hover { background: $blue; color: #fff; border-color: $blue; }
 }
 
 .page-container { max-width: 860px; margin: 0 auto; }
 
 .card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 28px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-  border-top: 4px solid $red;
+  background: #fff; border-radius: 14px; padding: 28px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06); border-top: 4px solid $red;
 }
 
 .card-header {
@@ -52,269 +38,118 @@ $font: 'DM Sans', 'Segoe UI', sans-serif;
 }
 
 .filter-tabs {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
   button {
-    padding: 7px 16px;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 20px;
-    background: #f8fafc;
-    color: #64748b;
-    cursor: pointer;
-    font-size: 13px;
-    font-family: $font;
-    font-weight: 500;
-    transition: all 0.2s;
-
+    padding: 7px 16px; border: 1.5px solid #e2e8f0; border-radius: 20px;
+    background: #f8fafc; color: #64748b; cursor: pointer;
+    font-size: 13px; font-family: $font; font-weight: 500; transition: all 0.2s;
     &.active { background: $blue; color: #fff; border-color: $blue; }
     &:hover:not(.active) { background: #e2e8f0; }
   }
 }
 
 .empty-state {
-  color: #94a3b8;
-  text-align: center;
-  padding: 48px 0;
-  font-size: 15px;
+  color: #94a3b8; text-align: center; padding: 48px 0; font-size: 15px;
 }
 
 .request-card {
-  border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
+  border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px;
 }
 
 .request-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 10px;
-
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;
   h3 { margin: 0; color: #1e293b; font-size: 17px; font-weight: 700; }
   .client-name { color: #94a3b8; font-size: 13px; }
 }
 
 .req-desc {
-  color: #64748b;
-  font-size: 14px;
-  margin-bottom: 10px;
-  line-height: 1.6;
+  color: #64748b; font-size: 14px; margin-bottom: 10px; line-height: 1.6;
 }
 
 .req-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  color: #94a3b8;
-  font-size: 13px;
-  margin-bottom: 10px;
-
+  display: flex; flex-wrap: wrap; gap: 14px; color: #94a3b8; font-size: 13px; margin-bottom: 10px;
   i { margin-right: 4px; }
 }
 
 .req-resources {
-  background: #f8fafc;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #475569;
-  margin-bottom: 12px;
+  background: #f8fafc; padding: 10px 14px; border-radius: 8px;
+  font-size: 13px; color: #475569; margin-bottom: 12px;
+}
+
+.cancellation-note {
+  background: rgba(148,163,184,0.1); border: 1px solid rgba(148,163,184,0.3);
+  border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #475569; margin-bottom: 12px;
 }
 
 .linked-event-info {
-  background: rgba(119,190,240,0.1);
-  border: 1px solid rgba(119,190,240,0.3);
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-size: 13px;
-  color: darken($blue, 25%);
-  margin-bottom: 12px;
+  background: rgba(119,190,240,0.1); border: 1px solid rgba(119,190,240,0.3);
+  border-radius: 8px; padding: 10px 14px; font-size: 13px;
+  color: darken($blue, 25%); margin-bottom: 12px;
 }
 
 .rejection-reason {
-  background: rgba(234,91,111,0.08);
-  border: 1px solid rgba(234,91,111,0.25);
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-size: 13px;
-  color: darken($red, 10%);
-  margin-bottom: 12px;
+  background: rgba(234,91,111,0.08); border: 1px solid rgba(234,91,111,0.25);
+  border-radius: 8px; padding: 10px 14px; font-size: 13px;
+  color: darken($red, 10%); margin-bottom: 12px;
 }
 
 .action-row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 12px;
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px;
 }
 
-.approve-panel, .reject-panel {
-  background: #f8fafc;
-  border-radius: 10px;
-  padding: 18px;
-  margin-top: 14px;
-
+.reject-panel {
+  background: #f8fafc; border-radius: 10px; padding: 18px; margin-top: 14px;
   h4 { color: #1e293b; font-size: 15px; font-weight: 700; margin-bottom: 10px; }
-
-  .hint {
-    color: #94a3b8;
-    font-size: 13px;
-    margin-bottom: 14px;
-    line-height: 1.5;
-  }
-
   textarea {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: $font;
-    box-sizing: border-box;
-    resize: vertical;
-    color: #1e293b;
-
+    width: 100%; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+    font-size: 14px; font-family: $font; box-sizing: border-box; resize: vertical; color: #1e293b;
     &:focus { outline: none; border-color: $red; }
   }
 }
 
-.form-group {
-  margin-bottom: 14px;
-
-  label {
-    display: block;
-    color: #475569;
-    font-weight: 600;
-    font-size: 13px;
-    margin-bottom: 6px;
-  }
-
-  select {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: $font;
-    box-sizing: border-box;
-    color: #1e293b;
-
-    &:focus { outline: none; border-color: $blue; }
-  }
-}
-
-.panel-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
+.panel-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
 
 // Badges
-.badge-yellow {
-  padding: 3px 10px; border-radius: 20px;
-  background: rgba(255,203,97,0.2); color: darken($yellow, 30%);
-  font-size: 12px; font-weight: 600;
-}
-.badge-blue {
-  padding: 3px 10px; border-radius: 20px;
-  background: rgba(119,190,240,0.15); color: darken($blue, 20%);
-  font-size: 12px; font-weight: 600;
-}
-.badge-green {
-  padding: 3px 10px; border-radius: 20px;
-  background: rgba(119,190,240,0.15); color: darken($blue, 20%);
-  font-size: 12px; font-weight: 600;
-}
-.badge-red {
-  padding: 3px 10px; border-radius: 20px;
-  background: rgba(234,91,111,0.12); color: darken($red, 8%);
-  font-size: 12px; font-weight: 600;
-}
+.badge-yellow { padding: 3px 10px; border-radius: 20px; background: rgba(255,203,97,0.2);   color: darken($yellow,30%); font-size: 12px; font-weight: 600; }
+.badge-blue   { padding: 3px 10px; border-radius: 20px; background: rgba(119,190,240,0.15); color: darken($blue,20%);   font-size: 12px; font-weight: 600; }
+.badge-green  { padding: 3px 10px; border-radius: 20px; background: rgba(119,190,240,0.15); color: darken($blue,20%);   font-size: 12px; font-weight: 600; }
+.badge-red    { padding: 3px 10px; border-radius: 20px; background: rgba(234,91,111,0.12);  color: darken($red,8%);     font-size: 12px; font-weight: 600; }
+.badge-grey   { padding: 3px 10px; border-radius: 20px; background: #f1f5f9;                color: #94a3b8;             font-size: 12px; font-weight: 600; }
 
-// Feedback
 .success-msg {
-  background: rgba(119,190,240,0.12);
-  color: darken($blue, 20%);
-  border: 1px solid rgba(119,190,240,0.4);
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  background: rgba(119,190,240,0.12); color: darken($blue,20%);
+  border: 1px solid rgba(119,190,240,0.4); padding: 10px 14px;
+  border-radius: 8px; margin-bottom: 16px; font-size: 14px;
 }
-
 .error-msg {
-  background: rgba(234,91,111,0.1);
-  color: darken($red, 10%);
-  border: 1px solid rgba(234,91,111,0.3);
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  background: rgba(234,91,111,0.1); color: darken($red,10%);
+  border: 1px solid rgba(234,91,111,0.3); padding: 10px 14px;
+  border-radius: 8px; margin-bottom: 16px; font-size: 14px;
 }
 
-// Action buttons
 .btn-review {
-  padding: 8px 18px;
-  background: $yellow;
-  color: #1e293b;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: $font;
-  transition: opacity 0.2s;
-
+  padding: 8px 18px; background: $yellow; color: #1e293b; border: none;
+  border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;
+  font-family: $font; transition: opacity 0.2s;
   &:hover { opacity: 0.88; }
 }
-
 .btn-approve {
-  padding: 8px 18px;
-  background: $blue;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: $font;
-  transition: opacity 0.2s;
-
-  &:disabled { background: #cbd5e1; cursor: not-allowed; }
-  &:hover:not(:disabled) { opacity: 0.88; }
+  padding: 8px 18px; background: $blue; color: #fff; border: none;
+  border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: $font; transition: opacity 0.2s;
+  display: inline-flex; align-items: center; gap: 6px;
+  &:hover { opacity: 0.88; }
 }
-
 .btn-reject {
-  padding: 8px 18px;
-  background: $red;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: $font;
-  transition: opacity 0.2s;
-
+  padding: 8px 18px; background: $red; color: #fff; border: none;
+  border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: $font; transition: opacity 0.2s;
   &:disabled { background: #cbd5e1; cursor: not-allowed; }
   &:hover:not(:disabled) { opacity: 0.88; }
 }
-
 .btn-cancel {
-  padding: 8px 18px;
-  background: #f1f5f9;
-  color: #475569;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 13px;
-  cursor: pointer;
-  font-family: $font;
-
+  padding: 8px 18px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
+  border-radius: 8px; font-size: 13px; cursor: pointer; font-family: $font;
   &:hover { background: #e2e8f0; }
 }
 

@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <div class="page-wrapper">
 
   <button class="back-btn" (click)="goBackToDashboard()">
@@ -6,13 +8,14 @@
 
   <div class="page-container">
 
+    <!-- Submit Request Form -->
     <div class="card">
       <div class="card-header">
         <h2>Submit Event Request</h2>
       </div>
 
       <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+      <div class="error-msg"   *ngIf="showError">{{ errorMessage }}</div>
 
       <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
 
@@ -43,7 +46,7 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label>Preferred Date & Time *</label>
+            <label>Preferred Date &amp; Time *</label>
             <input type="datetime-local" formControlName="eventDate" />
             <div class="error-text" *ngIf="requestForm.get('eventDate')?.invalid && requestForm.get('eventDate')?.touched">
               Date is required.
@@ -60,8 +63,9 @@
 
         <div class="form-group">
           <label>Resource Requirements <span class="optional">(optional)</span></label>
-          <textarea formControlName="resourceRequirements" rows="2" placeholder="e.g. 2 projectors, 50 chairs, 1 microphone"></textarea>
-          <small class="hint">Tell the planner what you think you'll need. They'll confirm availability.</small>
+          <textarea formControlName="resourceRequirements" rows="2"
+            placeholder="e.g. 2 projectors, 50 chairs, 1 microphone"></textarea>
+          <small class="hint">Tell the planner what you think you'll need.</small>
         </div>
 
         <button type="submit" class="btn-primary" [disabled]="requestForm.invalid || isSubmitting">
@@ -76,37 +80,63 @@
       <div class="card-header">
         <h3>My Event Requests</h3>
       </div>
-      <div class="table-responsive">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Date</th>
-              <th>Attendees</th>
-              <th>Status</th>
-              <th>Rejection Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let req of myRequests">
-              <td>{{ req.requestId }}</td>
-              <td>{{ req.eventTitle }}</td>
-              <td>{{ req.eventDate | date:'mediumDate' }}</td>
-              <td>{{ req.expectedAttendees }}</td>
-              <td>
-                <span [ngClass]="{
-                  'badge-yellow': req.status === 'PENDING',
-                  'badge-blue'  : req.status === 'UNDER_REVIEW',
-                  'badge-green' : req.status === 'APPROVED',
-                  'badge-red'   : req.status === 'REJECTED'
-                }">{{ req.status }}</span>
-              </td>
-              <td>{{ req.rejectionReason || '—' }}</td>
-            </tr>
-          </tbody>
-        </table>
+
+      <div *ngFor="let req of myRequests" class="request-item">
+
+        <div class="req-row">
+          <div class="req-info">
+            <h4>{{ req.eventTitle }}</h4>
+            <div class="req-meta">
+              <span><i class="bi bi-geo-alt"></i> {{ req.eventLocation }}</span>
+              <span><i class="bi bi-calendar3"></i> {{ req.eventDate | date:'mediumDate' }}</span>
+              <span><i class="bi bi-people"></i> {{ req.expectedAttendees }} attendees</span>
+            </div>
+          </div>
+          <span [ngClass]="{
+            'badge-yellow': req.status === 'PENDING',
+            'badge-blue'  : req.status === 'UNDER_REVIEW',
+            'badge-green' : req.status === 'APPROVED',
+            'badge-red'   : req.status === 'REJECTED',
+            'badge-grey'  : req.status === 'CANCELLED'
+          }">{{ req.status }}</span>
+        </div>
+
+        <div *ngIf="req.rejectionReason" class="rejection-note">
+          <i class="bi bi-info-circle"></i> <strong>Rejected:</strong> {{ req.rejectionReason }}
+        </div>
+
+        <div *ngIf="req.cancellationFeedback" class="cancellation-note">
+          <i class="bi bi-chat-left-text"></i> <strong>Your feedback:</strong> {{ req.cancellationFeedback }}
+        </div>
+
+        <!-- Cancel Button - only for PENDING or UNDER_REVIEW -->
+        <div class="req-actions" *ngIf="req.status === 'PENDING' || req.status === 'UNDER_REVIEW'">
+          <button class="btn-cancel-req" (click)="openCancelPanel(req)"
+            *ngIf="cancellingRequestId !== req.requestId">
+            <i class="bi bi-x-circle"></i> Cancel Request
+          </button>
+        </div>
+
+        <!-- Cancel Feedback Panel -->
+        <div class="cancel-panel" *ngIf="cancellingRequestId === req.requestId">
+          <h5>Why are you cancelling?</h5>
+          <textarea [(ngModel)]="cancellationFeedback" rows="3"
+            placeholder="Let the planner know why you're cancelling..."></textarea>
+          <div class="panel-actions">
+            <button class="btn-confirm-cancel" (click)="submitCancellation(req.requestId)"
+              [disabled]="!cancellationFeedback.trim()">
+              Confirm Cancellation
+            </button>
+            <button class="btn-keep" (click)="closeCancelPanel()">Keep Request</button>
+          </div>
+        </div>
+
       </div>
+    </div>
+
+    <div class="empty-state" *ngIf="myRequests.length === 0 && !showError">
+      <i class="bi bi-send"></i>
+      <p>You haven't submitted any requests yet.</p>
     </div>
 
   </div>

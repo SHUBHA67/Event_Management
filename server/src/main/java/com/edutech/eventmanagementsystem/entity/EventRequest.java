@@ -11,12 +11,10 @@ public class EventRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long requestId;
 
-    // Client who submitted the request
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
 
-    // Basic event info submitted by client
     private String eventTitle;
     private String eventDescription;
     private String eventLocation;
@@ -25,18 +23,16 @@ public class EventRequest {
     private Date eventDate;
 
     private int expectedAttendees;
+    private String resourceRequirements;
 
-    // Resources the client says they need
-    private String resourceRequirements; // e.g. "2 projectors, 50 chairs, 1 mic"
+    // PENDING -> UNDER_REVIEW -> APPROVED / REJECTED / CANCELLED
+    private String status;
 
-    // Request lifecycle status
-    // PENDING -> UNDER_REVIEW -> APPROVED / REJECTED
-    private String status; // PENDING, UNDER_REVIEW, APPROVED, REJECTED
-
-    // Planner fills this on rejection
     private String rejectionReason;
 
-    // When approved, link to the actual created event
+    // Client fills this when cancelling
+    private String cancellationFeedback;
+
     @OneToOne
     @JoinColumn(name = "event_id")
     private Event linkedEvent;
@@ -47,110 +43,47 @@ public class EventRequest {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    // ─── Getters & Setters ───────────────────────────────────────────
+    // ── Getters & Setters ────────────────────────────────────────────
 
-    public Long getRequestId() {
-        return requestId;
-    }
+    public Long getRequestId() { return requestId; }
+    public void setRequestId(Long requestId) { this.requestId = requestId; }
 
-    public void setRequestId(Long requestId) {
-        this.requestId = requestId;
-    }
+    public User getClient() { return client; }
+    public void setClient(User client) { this.client = client; }
 
-    public User getClient() {
-        return client;
-    }
+    public String getEventTitle() { return eventTitle; }
+    public void setEventTitle(String eventTitle) { this.eventTitle = eventTitle; }
 
-    public void setClient(User client) {
-        this.client = client;
-    }
+    public String getEventDescription() { return eventDescription; }
+    public void setEventDescription(String eventDescription) { this.eventDescription = eventDescription; }
 
-    public String getEventTitle() {
-        return eventTitle;
-    }
+    public String getEventLocation() { return eventLocation; }
+    public void setEventLocation(String eventLocation) { this.eventLocation = eventLocation; }
 
-    public void setEventTitle(String eventTitle) {
-        this.eventTitle = eventTitle;
-    }
+    public Date getEventDate() { return eventDate; }
+    public void setEventDate(Date eventDate) { this.eventDate = eventDate; }
 
-    public String getEventDescription() {
-        return eventDescription;
-    }
+    public int getExpectedAttendees() { return expectedAttendees; }
+    public void setExpectedAttendees(int expectedAttendees) { this.expectedAttendees = expectedAttendees; }
 
-    public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
-    }
+    public String getResourceRequirements() { return resourceRequirements; }
+    public void setResourceRequirements(String resourceRequirements) { this.resourceRequirements = resourceRequirements; }
 
-    public String getEventLocation() {
-        return eventLocation;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public void setEventLocation(String eventLocation) {
-        this.eventLocation = eventLocation;
-    }
+    public String getRejectionReason() { return rejectionReason; }
+    public void setRejectionReason(String rejectionReason) { this.rejectionReason = rejectionReason; }
 
-    public Date getEventDate() {
-        return eventDate;
-    }
+    public String getCancellationFeedback() { return cancellationFeedback; }
+    public void setCancellationFeedback(String cancellationFeedback) { this.cancellationFeedback = cancellationFeedback; }
 
-    public void setEventDate(Date eventDate) {
-        this.eventDate = eventDate;
-    }
+    public Event getLinkedEvent() { return linkedEvent; }
+    public void setLinkedEvent(Event linkedEvent) { this.linkedEvent = linkedEvent; }
 
-    public int getExpectedAttendees() {
-        return expectedAttendees;
-    }
+    public Date getSubmittedAt() { return submittedAt; }
+    public void setSubmittedAt(Date submittedAt) { this.submittedAt = submittedAt; }
 
-    public void setExpectedAttendees(int expectedAttendees) {
-        this.expectedAttendees = expectedAttendees;
-    }
-
-    public String getResourceRequirements() {
-        return resourceRequirements;
-    }
-
-    public void setResourceRequirements(String resourceRequirements) {
-        this.resourceRequirements = resourceRequirements;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getRejectionReason() {
-        return rejectionReason;
-    }
-
-    public void setRejectionReason(String rejectionReason) {
-        this.rejectionReason = rejectionReason;
-    }
-
-    public Event getLinkedEvent() {
-        return linkedEvent;
-    }
-
-    public void setLinkedEvent(Event linkedEvent) {
-        this.linkedEvent = linkedEvent;
-    }
-
-    public Date getSubmittedAt() {
-        return submittedAt;
-    }
-
-    public void setSubmittedAt(Date submittedAt) {
-        this.submittedAt = submittedAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public Date getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 }
-

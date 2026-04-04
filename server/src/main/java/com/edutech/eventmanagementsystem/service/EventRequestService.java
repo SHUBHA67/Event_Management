@@ -1,6 +1,7 @@
 package com.edutech.eventmanagementsystem.service;
 
 import com.edutech.eventmanagementsystem.dto.ApproveRequestDTO;
+import com.edutech.eventmanagementsystem.dto.CancelRequestDTO;
 import com.edutech.eventmanagementsystem.dto.RejectRequestDTO;
 import com.edutech.eventmanagementsystem.entity.*;
 import com.edutech.eventmanagementsystem.repository.*;
@@ -40,17 +41,42 @@ public class EventRequestService {
         return eventRequestRepository.findByClientId(client.getId());
     }
 
-    // ── CLIENT: Get approved bookings with linked event details ─────
-    // Returns only APPROVED requests for the logged-in client
-    // The linkedEvent on each request carries event + planner + staff info
+    // ── CLIENT: Get approved bookings ───────────────────────────────
     public List<EventRequest> getClientBookings(String clientUsername) {
         User client = userRepository.findByUsername(clientUsername);
         return eventRequestRepository.findByClientIdAndStatus(client.getId(), "APPROVED");
     }
 
-    // ── PLANNER: View all requests regardless of status ─────────────
+    // ── CLIENT: Cancel a request with feedback ───────────────────────
+    // Only PENDING or UNDER_REVIEW requests can be cancelled
+    public EventRequest cancelRequest(Long requestId, CancelRequestDTO dto, String clientUsername) {
+        EventRequest req = eventRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Request not found"));
+
+        // Ensure the request belongs to the calling client
+        if (!req.getClient().getUsername().equals(clientUsername)) {
+            throw new RuntimeException("Unauthorized: this request does not belong to you");
+        }
+
+        if (!"PENDING".equals(req.getStatus()) && !"UNDER_REVIEW".equals(req.getStatus())) {
+            throw new RuntimeException("Only PENDING or UNDER_REVIEW requests can be cancelled");
+        }
+
+        req.setStatus("CANCELLED");
+        req.setCancellationFeedback(dto.getCancellationFeedback());
+        req.setUpdatedAt(new Date());
+        return eventRequestRepository.save(req);
+    }
+
+    // ── PLANNER: View all requests ───────────────────────────────────
     public List<EventRequest> getAllRequests() {
         return eventRequestRepository.findAll();
+    }
+
+    // ── PLANNER: Get a single request by ID (for auto-fill) ──────────
+    public EventRequest getRequestById(Long requestId) {
+        return eventRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Request not found"));
     }
 
     // ── PLANNER: Mark request as UNDER_REVIEW ───────────────────────
@@ -62,19 +88,14 @@ public class EventRequestService {
         return eventRequestRepository.save(req);
     }
 
-    // ── PLANNER: Approve request ─────────────────────────────────────
-    // Planner has already manually created the event and allocated resources
-    // This action simply links the chosen event to the request and marks it
-    // APPROVED
+    // ── PLANNER: Approve request — links an existing event ───────────
     public EventRequest approveRequest(Long requestId, ApproveRequestDTO dto) {
         EventRequest req = eventRequestRepository.findById(requestId)
                 .orElseThrow(() -> new RuntimeException("Request not found"));
 
-        // Find the event the planner created and wants to link
         Event linkedEvent = eventRepository.findById(dto.getEventId())
                 .orElseThrow(() -> new RuntimeException("Event not found. Please create the event first."));
 
-        // Link the event and approve
         req.setLinkedEvent(linkedEvent);
         req.setStatus("APPROVED");
         req.setUpdatedAt(new Date());

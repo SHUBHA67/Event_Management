@@ -31,7 +31,7 @@ export class AppComponent {
   }
 
   toggleMenu() { this.menuOpen = !this.menuOpen; }
-  closeMenu() { this.menuOpen = false; }
+  closeMenu()  { this.menuOpen = false; }
 
   goToDashboard(): void {
     this.router.navigateByUrl('/dashboard');

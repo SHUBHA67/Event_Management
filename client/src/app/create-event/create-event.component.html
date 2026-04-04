@@ -1,6 +1,7 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <div class="page-wrapper">
 
-  <!-- Back Button -->
   <button class="back-btn" (click)="router.navigate(['/dashboard'])">
     <i class="bi bi-arrow-left"></i> Back to Dashboard
   </button>
@@ -9,45 +10,43 @@
     <div class="card">
       <div class="card-header">
         <h2>Create New Event</h2>
+        <span class="autofill-badge" *ngIf="autoFilledFromRequest">
+          <i class="bi bi-magic"></i> Auto-filled from client request #{{ fromRequestId }}
+        </span>
       </div>
 
       <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+      <div class="error-msg"   *ngIf="showError">{{ errorMessage }}</div>
 
       <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
+        <!-- Basic Info -->
+        <div class="section-label">Event Details</div>
 
         <div class="form-row">
           <div class="form-group">
             <label>Title *</label>
             <input type="text" formControlName="title" placeholder="Event title" />
-            <div class="error-text" *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">
-              Title is required.
-            </div>
+            <div class="error-text" *ngIf="itemForm.get('title')?.invalid && itemForm.get('title')?.touched">Title is required.</div>
           </div>
           <div class="form-group">
             <label>Location *</label>
             <input type="text" formControlName="location" placeholder="Event location" />
-            <div class="error-text" *ngIf="itemForm.get('location')?.invalid && itemForm.get('location')?.touched">
-              Location is required.
-            </div>
+            <div class="error-text" *ngIf="itemForm.get('location')?.invalid && itemForm.get('location')?.touched">Location is required.</div>
           </div>
         </div>
 
         <div class="form-group">
           <label>Description *</label>
           <textarea formControlName="description" placeholder="Event description" rows="3"></textarea>
-          <div class="error-text" *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">
-            Description is required.
-          </div>
+          <div class="error-text" *ngIf="itemForm.get('description')?.invalid && itemForm.get('description')?.touched">Description is required.</div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Date & Time *</label>
-            <input type="datetime-local" formControlName="dateTime" />
-            <div class="error-text" *ngIf="itemForm.get('dateTime')?.invalid && itemForm.get('dateTime')?.touched">
-              Date & Time is required.
-            </div>
+            <label>Date &amp; Time *</label>
+            <input type="datetime-local" formControlName="dateTime" (change)="onDateTimeChange()" />
+            <div class="error-text" *ngIf="itemForm.get('dateTime')?.invalid && itemForm.get('dateTime')?.touched">Date &amp; Time is required.</div>
           </div>
           <div class="form-group">
             <label>Status *</label>
@@ -58,60 +57,92 @@
               <option value="COMPLETED">Completed</option>
               <option value="CANCELLED">Cancelled</option>
             </select>
-            <div class="error-text" *ngIf="itemForm.get('status')?.invalid && itemForm.get('status')?.touched">
-              Status is required.
-            </div>
+            <div class="error-text" *ngIf="itemForm.get('status')?.invalid && itemForm.get('status')?.touched">Status is required.</div>
           </div>
         </div>
+
+        <!-- Staff Assignment with Availability Check -->
+        <div class="section-label">Staff Assignment</div>
 
         <div class="form-group">
-          <label>Assign Staff *</label>
-          <select formControlName="staffId">
-            <option value="">-- Select Staff Member --</option>
-            <option *ngFor="let staff of staffList" [value]="staff.id">{{ staff.username }}</option>
-          </select>
-          <div class="error-text" *ngIf="itemForm.get('staffId')?.invalid && itemForm.get('staffId')?.touched">
-            Staff assignment is required.
+          <label>Select Staff Member *</label>
+          <div class="staff-row">
+            <select formControlName="staffId" (change)="resetAvailability()">
+              <option value="">-- Select Staff Member --</option>
+              <option *ngFor="let staff of staffList" [value]="staff.id">{{ staff.username }}</option>
+            </select>
+            <button type="button" class="btn-check-avail"
+              [disabled]="!itemForm.get('staffId')?.value || !itemForm.get('dateTime')?.value || checkingAvail"
+              (click)="checkAvailability()">
+              <i class="bi bi-person-check"></i>
+              {{ checkingAvail ? 'Checking...' : 'Check Availability' }}
+            </button>
+          </div>
+          <div class="error-text" *ngIf="itemForm.get('staffId')?.invalid && itemForm.get('staffId')?.touched">Staff selection is required.</div>
+        </div>
+
+        <!-- Availability Result -->
+        <div class="avail-result avail-ok" *ngIf="availabilityResult?.available === true">
+          <i class="bi bi-check-circle-fill"></i> {{ availabilityResult.message }}
+        </div>
+        <div class="avail-result avail-conflict" *ngIf="availabilityResult?.available === false">
+          <i class="bi bi-x-circle-fill"></i> {{ availabilityResult.message }}
+        </div>
+
+        <!-- Vendor Resource Selection -->
+        <div class="section-label">Resources from Vendor</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Select Vendor</label>
+            <select [(ngModel)]="selectedVendorId" [ngModelOptions]="{standalone: true}" (change)="onVendorChange()">
+              <option value="">-- Select Vendor --</option>
+              <option *ngFor="let vendor of vendorList" [value]="vendor.id">{{ vendor.username }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Select Resource</label>
+            <select [(ngModel)]="selectedResourceId" [ngModelOptions]="{standalone: true}" [disabled]="!selectedVendorId">
+              <option value="">-- Select Resource --</option>
+              <option *ngFor="let res of vendorResources" [value]="res.resourceID"
+                [disabled]="res.totalQuantity - res.allocatedQuantity <= 0">
+                {{ res.name }} ({{ res.type }}) — {{ res.totalQuantity - res.allocatedQuantity }} available
+              </option>
+            </select>
           </div>
         </div>
 
-        <button type="submit" class="btn-primary" [disabled]="itemForm.invalid">Create Event</button>
+        <div class="form-row" *ngIf="selectedResourceId">
+          <div class="form-group">
+            <label>Quantity to Allocate</label>
+            <input type="number" [(ngModel)]="allocateQty" [ngModelOptions]="{standalone: true}" min="1" placeholder="e.g. 5" />
+          </div>
+          <div class="form-group flex-end">
+            <button type="button" class="btn-add-resource" (click)="addResourceToList()"
+              [disabled]="!allocateQty || allocateQty < 1">
+              <i class="bi bi-plus-lg"></i> Add to Event
+            </button>
+          </div>
+        </div>
+
+        <!-- Selected Resources Preview -->
+        <div class="resource-chips" *ngIf="selectedResources.length > 0">
+          <div class="chip" *ngFor="let r of selectedResources; let i = index">
+            <span>{{ r.name }} &times; {{ r.quantity }}</span>
+            <button type="button" class="chip-remove" (click)="removeResource(i)">&times;</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary"
+          [disabled]="itemForm.invalid || !availabilityResult?.available">
+          <i class="bi bi-calendar-check"></i> Create Event
+        </button>
+
+        <p class="submit-hint" *ngIf="!availabilityResult?.available && itemForm.get('staffId')?.value">
+          Please check staff availability before creating the event.
+        </p>
 
       </form>
     </div>
-
-    <!-- All Events Table -->
-    <div class="card" *ngIf="eventList.length > 0">
-      <div class="card-header">
-        <h3>All Events</h3>
-      </div>
-      <div class="table-responsive">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Location</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Planner</th>
-              <th>Staff</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let event of eventList">
-              <td>{{ event.eventID }}</td>
-              <td>{{ event.title }}</td>
-              <td>{{ event.location }}</td>
-              <td><span class="badge">{{ event.status }}</span></td>
-              <td>{{ event.dateTime | date:'short' }}</td>
-              <td>{{ event.planner?.username || '—' }}</td>
-              <td>{{ event.assignedStaff?.username || '—' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
   </div>
 </div>

@@ -3,8 +3,9 @@ package com.edutech.eventmanagementsystem.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "resources") // do not change table name
+@Table(name = "resources")
 public class Resource {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resourceID;
@@ -12,17 +13,19 @@ public class Resource {
     private String name;
     private String type;
 
-    // ── NEW: quantity tracking ──────────────────────────────────────
-    private int totalQuantity; // total stock added by planner
-    private int allocatedQuantity; // how many are currently in use
-
-    // availability = true when (totalQuantity - allocatedQuantity) > 0
-    // availability = false when allocatedQuantity >= totalQuantity
+    private int totalQuantity;
+    private int allocatedQuantity;
     private boolean availability;
 
-    // ── Constructors ────────────────────────────────────────────────
-    public Resource() {
-    }
+    // Dispatch status: AVAILABLE, DISPATCHED
+    private String dispatchStatus = "AVAILABLE";
+
+    // Vendor who owns this resource
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private User vendor;
+
+    public Resource() {}
 
     public Resource(Long resourceID, String name, String type,
             int totalQuantity, boolean availability) {
@@ -32,63 +35,37 @@ public class Resource {
         this.totalQuantity = totalQuantity;
         this.allocatedQuantity = 0;
         this.availability = availability;
+        this.dispatchStatus = "AVAILABLE";
     }
 
-    // ── Helper: recalculate availability after every change ─────────
     public void recalculateAvailability() {
         this.availability = (this.totalQuantity - this.allocatedQuantity) > 0;
     }
 
-    // ── Getters & Setters ───────────────────────────────────────────
-    public Long getResourceID() {
-        return resourceID;
-    }
+    public Long getResourceID() { return resourceID; }
+    public void setResourceID(Long resourceID) { this.resourceID = resourceID; }
 
-    public void setResourceID(Long resourceID) {
-        this.resourceID = resourceID;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public int getTotalQuantity() { return totalQuantity; }
+    public void setTotalQuantity(int totalQuantity) { this.totalQuantity = totalQuantity; }
 
-    public String getType() {
-        return type;
-    }
+    public int getAllocatedQuantity() { return allocatedQuantity; }
+    public void setAllocatedQuantity(int allocatedQuantity) { this.allocatedQuantity = allocatedQuantity; }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public boolean isAvailability() { return availability; }
+    public void setAvailability(boolean availability) { this.availability = availability; }
 
-    public int getTotalQuantity() {
-        return totalQuantity;
-    }
+    public String getDispatchStatus() { return dispatchStatus; }
+    public void setDispatchStatus(String dispatchStatus) { this.dispatchStatus = dispatchStatus; }
 
-    public void setTotalQuantity(int totalQuantity) {
-        this.totalQuantity = totalQuantity;
-    }
+    public User getVendor() { return vendor; }
+    public void setVendor(User vendor) { this.vendor = vendor; }
 
-    public int getAllocatedQuantity() {
-        return allocatedQuantity;
-    }
-
-    public void setAllocatedQuantity(int allocatedQuantity) {
-        this.allocatedQuantity = allocatedQuantity;
-    }
-
-    public boolean isAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(boolean availability) {
-        this.availability = availability;
-    }
-
-    // Convenience: how many units are still free
     public int getAvailableQuantity() {
         return this.totalQuantity - this.allocatedQuantity;
     }

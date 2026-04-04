@@ -1,8 +1,12 @@
 com/edutech/eventmanagementsystem/repository/ResourceRepository.class
+com/edutech/eventmanagementsystem/dto/CancelRequestDTO.class
 com/edutech/eventmanagementsystem/jwt/JwtUtil.class
 com/edutech/eventmanagementsystem/repository/AllocationRepository.class
 com/edutech/eventmanagementsystem/repository/EventRepository.class
 com/edutech/eventmanagementsystem/EventManagementSystemApplication.class
+com/edutech/eventmanagementsystem/dto/VendorResourceDispatchDTO.class
 com/edutech/eventmanagementsystem/service/ResourceService.class
 com/edutech/eventmanagementsystem/repository/UserRepository.class
+com/edutech/eventmanagementsystem/controller/VendorController.class
+com/edutech/eventmanagementsystem/dto/StaffAvailabilityResponse.class
 com/edutech/eventmanagementsystem/service/EventService.class

@@ -3,10 +3,12 @@ package com.edutech.eventmanagementsystem.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.edutech.eventmanagementsystem.dto.CancelRequestDTO;
 import com.edutech.eventmanagementsystem.entity.Event;
 import com.edutech.eventmanagementsystem.entity.EventRequest;
-import com.edutech.eventmanagementsystem.service.EventService;
 import com.edutech.eventmanagementsystem.service.EventRequestService;
+import com.edutech.eventmanagementsystem.service.EventService;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ public class ClientController {
         this.eventRequestService = eventRequestService;
     }
 
-    // ── Browse all events (public listing for all clients) ───────────
+    // ── Browse all events ────────────────────────────────────────────
     @GetMapping("/events")
     public ResponseEntity<List<Event>> browseEvents() {
         return ResponseEntity.ok(eventService.getAllEvents());
@@ -46,18 +48,31 @@ public class ClientController {
         }
     }
 
-    // ── View all own requests and their statuses ─────────────────────
+    // ── View all own requests ────────────────────────────────────────
     @GetMapping("/my-requests")
     public ResponseEntity<List<EventRequest>> getMyRequests(Principal principal) {
         return ResponseEntity.ok(eventRequestService.getClientRequests(principal.getName()));
     }
 
-    // ── View only APPROVED bookings with linked event details ────────
-    // Each approved request carries the linkedEvent which has
-    // title, location, dateTime, status, planner name, staff name, allocations
-    // No manual event ID search needed — auto-fetched by logged-in client identity
+    // ── View only APPROVED bookings ──────────────────────────────────
     @GetMapping("/my-bookings")
     public ResponseEntity<List<EventRequest>> getMyBookings(Principal principal) {
         return ResponseEntity.ok(eventRequestService.getClientBookings(principal.getName()));
+    }
+
+    // ── Cancel a request with feedback ──────────────────────────────
+    // Only PENDING or UNDER_REVIEW requests can be cancelled
+    @PutMapping("/event-request/{requestId}/cancel")
+    public ResponseEntity<?> cancelRequest(@PathVariable Long requestId,
+            @RequestBody CancelRequestDTO dto,
+            Principal principal) {
+        try {
+            EventRequest updated = eventRequestService.cancelRequest(requestId, dto, principal.getName());
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.edutech.eventmanagementsystem.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.edutech.eventmanagementsystem.entity.User;
 import com.edutech.eventmanagementsystem.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +36,11 @@ public class UserService implements UserDetailsService {
     // Returns all users with STAFF role for the dropdown in Create Event
     public List<User> getStaffUsers() {
         return userRepository.findByRole("STAFF");
+    }
+
+    // Returns all users with VENDOR role for the planner dropdown
+    public List<User> getVendorUsers() {
+        return userRepository.findByRole("VENDOR");
     }
 
     @Override
