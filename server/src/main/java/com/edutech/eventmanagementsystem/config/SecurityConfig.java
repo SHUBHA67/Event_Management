@@ -45,24 +45,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()
 
                 // ── PLANNER ─────────────────────────────────────────
-
                 .antMatchers(HttpMethod.GET,
-        "/api/planner/events",
-        "/api/planner/resources",
-        "/api/planner/staff-users",
-        "/api/planner/available-staff",
-        "/api/planner/event-requests",
-        "/api/planner/event-requests/*",
-        "/api/planner/vendors",
-        "/api/planner/vendor/*/resources")   // ← add these
-        .hasAuthority("PLANNER")
+                        "/api/planner/events",
+                        "/api/planner/resources",
+                        "/api/planner/staff-users",
+                        "/api/planner/available-staff",
+                        "/api/planner/event-requests",
+                        "/api/planner/event-requests/*",
+                        "/api/planner/vendors",
+                        "/api/planner/vendor/*/resources")
+                .hasAuthority("PLANNER")
 
-        
                 .antMatchers(HttpMethod.POST,
                         "/api/planner/event",
                         "/api/planner/resource",
                         "/api/planner/allocate-resources")
                 .hasAuthority("PLANNER")
+
                 .antMatchers(HttpMethod.PUT,
                         "/api/planner/event-requests/*/review",
                         "/api/planner/event-requests/*/approve",
@@ -80,18 +79,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/client/my-bookings")
                 .hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.POST, "/api/client/event-request").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.PUT, "/api/client/event-request/*/cancel").hasAuthority("CLIENT")
 
-                // ── VENDOR ──────────────────────────────────────────────────────────
-    .antMatchers(HttpMethod.GET,  "/api/vendor/my-resources").hasAuthority("VENDOR")
-.antMatchers(HttpMethod.POST, "/api/vendor/resource").hasAuthority("VENDOR")
-.antMatchers(HttpMethod.PUT,
-        "/api/vendor/resource/*/dispatch",
-        "/api/vendor/resource/*/sent-status",
-        "/api/vendor/resource/*/update")
-.hasAuthority("VENDOR")
-.antMatchers(HttpMethod.DELETE, "/api/vendor/resource/*").hasAuthority("VENDOR")
+                // ── VENDOR ───────────────────────────────────────────
+                .antMatchers(HttpMethod.GET,
+                        "/api/vendor/my-resources",
+                        "/api/vendor/my-events")           // ← new endpoint
+                .hasAuthority("VENDOR")
 
+                .antMatchers(HttpMethod.POST, "/api/vendor/resource").hasAuthority("VENDOR")
 
+                .antMatchers(HttpMethod.PUT,
+                        "/api/vendor/resource/*/dispatch",
+                        "/api/vendor/resource/*/sent-status",
+                        "/api/vendor/resource/*/update")
+                .hasAuthority("VENDOR")
+
+                .antMatchers(HttpMethod.DELETE, "/api/vendor/resource/*").hasAuthority("VENDOR")
 
                 .anyRequest().authenticated()
                 .and()

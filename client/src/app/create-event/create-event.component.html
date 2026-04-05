@@ -14,7 +14,7 @@
       </div>
 
       <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+      <div class="error-msg"   *ngIf="showError">{{ errorMessage }}</div>
 
       <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
@@ -91,52 +91,85 @@
           </div>
         </div>
 
-        <!-- ── Vendor Resource ───────────────────────────────────── -->
-        <p class="section-label">Vendor &amp; Resource</p>
+        <!-- ── Vendor Resources ──────────────────────────────────── -->
+        <p class="section-label">Vendor Resources</p>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Select Vendor *</label>
-            <select formControlName="vendorId">
-              <option value="">-- Select Vendor --</option>
-              <option *ngFor="let vendor of vendorList" [value]="vendor.id">{{ vendor.username }}</option>
-            </select>
-            <div class="error-text" *ngIf="itemForm.get('vendorId')?.invalid && itemForm.get('vendorId')?.touched">
-              Vendor is required.
+        <!-- Resource staging error -->
+        <div class="error-msg" *ngIf="stagingError">{{ stagingError }}</div>
+
+        <!-- Staged resources list -->
+        <div class="staged-list" *ngIf="stagedResources.length > 0">
+          <div class="staged-item" *ngFor="let item of stagedResources; let i = index">
+            <div class="staged-icon"><i class="bi bi-box-seam"></i></div>
+            <div class="staged-details">
+              <span class="staged-name">{{ item.resourceName }}</span>
+              <span class="staged-meta">{{ item.vendorName }} &nbsp;·&nbsp; {{ item.resourceType }}</span>
             </div>
-          </div>
-          <div class="form-group">
-            <label>Select Resource *</label>
-            <select formControlName="resourceId" [attr.disabled]="!itemForm.get('vendorId')?.value ? true : null">
-              <option value="">
-                {{ itemForm.get('vendorId')?.value ? '-- Select Resource --' : '-- Pick a vendor first --' }}
-              </option>
-              <option *ngFor="let res of resourceList" [value]="res.resourceID">
-                {{ res.name }} ({{ res.type }}) — {{ res.totalQuantity - res.allocatedQuantity }} available
-              </option>
-            </select>
-            <div class="error-text" *ngIf="itemForm.get('resourceId')?.invalid && itemForm.get('resourceId')?.touched">
-              Resource is required.
-            </div>
+            <span class="staged-qty">&times;{{ item.quantity }}</span>
+            <button type="button" class="staged-remove" (click)="removeFromStaged(i)" title="Remove">
+              <i class="bi bi-x"></i>
+            </button>
           </div>
         </div>
 
-        <div class="form-group" style="max-width: 50%;" *ngIf="itemForm.get('resourceId')?.value">
-          <label>Quantity *</label>
-          <input type="number" formControlName="quantity" placeholder="Enter quantity" min="1"
-            [max]="getSelectedResourceAvailable()" />
-          <small class="hint">
-            Max available: {{ getSelectedResourceAvailable() }}
-          </small>
-          <div class="error-text" *ngIf="itemForm.get('quantity')?.invalid && itemForm.get('quantity')?.touched">
-            Quantity is required (min 1).
-          </div>
+        <!-- Empty staged hint -->
+        <div class="staged-empty" *ngIf="stagedResources.length === 0">
+          <i class="bi bi-info-circle"></i> No resources added yet. Use the form below to add at least one.
         </div>
 
-        <button type="submit" class="btn-primary" [disabled]="itemForm.invalid || isSubmitting">
+        <!-- Resource builder row -->
+        <div class="resource-builder">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Select Vendor</label>
+              <select [(ngModel)]="stagingVendorId" [ngModelOptions]="{standalone: true}"
+                (change)="onStagingVendorChange()">
+                <option value="">-- Select Vendor --</option>
+                <option *ngFor="let vendor of vendorList" [value]="vendor.id">{{ vendor.username }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Select Resource</label>
+              <select [(ngModel)]="stagingResourceId" [ngModelOptions]="{standalone: true}"
+                [attr.disabled]="!stagingVendorId ? true : null"
+                (change)="onStagingResourceChange()">
+                <option value="">
+                  {{ stagingVendorId ? '-- Select Resource --' : '-- Pick a vendor first --' }}
+                </option>
+                <option *ngFor="let res of stagingResourceList" [value]="res.resourceID">
+                  {{ res.name }} ({{ res.type }}) — {{ res.totalQuantity - res.allocatedQuantity }} available
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="resource-builder-bottom">
+            <div class="form-group qty-group" *ngIf="stagingResourceId">
+              <label>Quantity</label>
+              <input type="number" [(ngModel)]="stagingQuantity" [ngModelOptions]="{standalone: true}"
+                placeholder="Qty" min="1" [max]="stagingMaxAvailable" />
+              <small class="hint">Max available: {{ stagingMaxAvailable }}</small>
+            </div>
+            <button type="button" class="btn-add-resource"
+              [disabled]="!stagingVendorId || !stagingResourceId || !stagingQuantity || stagingQuantity < 1"
+              (click)="addToStaged()">
+              <i class="bi bi-plus-lg"></i> Add Resource
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-primary"
+          [disabled]="itemForm.invalid || isSubmitting || stagedResources.length === 0">
           <i class="bi bi-calendar-check"></i>
           {{ isSubmitting ? 'Creating...' : 'Create Event' }}
         </button>
+
+        <small class="submit-hint" *ngIf="stagedResources.length === 0">
+          Add at least one resource before creating the event.
+        </small>
 
       </form>
     </div>
@@ -166,18 +199,17 @@
               <td>{{ event.location }}</td>
               <td>
                 <span [ngClass]="{
-        'badge badge-planned'  : event.status === 'PLANNED',
-        'badge badge-ongoing'  : event.status === 'ONGOING',
-        'badge badge-completed': event.status === 'COMPLETED',
-        'badge badge-cancelled': event.status === 'CANCELLED'
-      }">{{ event.status }}</span>
+                  'badge badge-planned'  : event.status === 'PLANNED',
+                  'badge badge-ongoing'  : event.status === 'ONGOING',
+                  'badge badge-completed': event.status === 'COMPLETED',
+                  'badge badge-cancelled': event.status === 'CANCELLED'
+                }">{{ event.status }}</span>
               </td>
               <td>{{ event.dateTime | date:'short' }}</td>
               <td>{{ event.planner?.username || '—' }}</td>
               <td>{{ event.assignedStaff?.username || '—' }}</td>
             </tr>
           </tbody>
-
         </table>
       </div>
     </div>

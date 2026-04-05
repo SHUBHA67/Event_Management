@@ -4,6 +4,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from '../../services/http.service';
 import { AuthService } from '../../services/auth.service';
 
+interface StagedResource {
+  vendorId:     number;
+  vendorName:   string;
+  resourceId:   number;
+  resourceName: string;
+  resourceType: string;
+  quantity:     number;
+  maxAvailable: number;
+}
+
 @Component({
   selector: 'app-create-event',
   templateUrl: './create-event.component.html',
@@ -13,11 +23,23 @@ export class CreateEventComponent implements OnInit {
 
   itemForm: FormGroup;
 
-  staffList:    any[] = [];
-  vendorList:   any[] = [];
-  resourceList: any[] = [];
-  eventList:    any[] = [];
+  // Dropdowns for staff
+  staffList:  any[] = [];
+  vendorList: any[] = [];
+  eventList:  any[] = [];
 
+  // ── Staging state (independent of the main form) ─────────────────
+  stagingVendorId:    any    = '';
+  stagingResourceId:  any    = '';
+  stagingQuantity:    number = 1;
+  stagingMaxAvailable = 0;
+  stagingResourceList: any[] = [];
+  stagingError = '';
+
+  // Final list of resources to allocate after event creation
+  stagedResources: StagedResource[] = [];
+
+  // Prefill state
   prefillRequestId: number | null = null;
   isPrefilled = false;
 
@@ -34,16 +56,14 @@ export class CreateEventComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService
   ) {
+    // Core event form — no resource fields here anymore
     this.itemForm = this.formBuilder.group({
       title:       ['', Validators.required],
       description: ['', Validators.required],
       dateTime:    ['', Validators.required],
       location:    ['', Validators.required],
       status:      ['', Validators.required],
-      staffId:     ['', Validators.required],
-      vendorId:    ['', Validators.required],
-      resourceId:  ['', Validators.required],
-      quantity:    ['', [Validators.required, Validators.min(1)]]
+      staffId:     ['', Validators.required]
     });
   }
 
@@ -61,15 +81,6 @@ export class CreateEventComponent implements OnInit {
       }
     });
 
-    // Watch vendorId → reload resources for that vendor
-    this.itemForm.get('vendorId')!.valueChanges.subscribe(vendorId => {
-      this.itemForm.patchValue({ resourceId: '', quantity: '' });
-      this.resourceList = [];
-      if (vendorId) {
-        this.loadVendorResources(+vendorId);
-      }
-    });
-
     // Check if navigated from a client request (auto-fill)
     this.route.queryParams.subscribe(params => {
       const requestId = params['requestId'];
@@ -80,6 +91,7 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
+  // ── Staff ─────────────────────────────────────────────────────────
   loadAvailableStaff(dateTime: string): void {
     this.httpService.getAvailableStaff(dateTime).subscribe({
       next: (res: any) => {
@@ -99,9 +111,10 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
+  // ── Vendors ───────────────────────────────────────────────────────
   loadVendors(): void {
     this.httpService.getVendorUsers().subscribe({
-      next: (res: any) => { this.vendorList = res; },
+      next:  (res: any) => { this.vendorList = res; },
       error: () => {
         this.showError    = true;
         this.errorMessage = 'Failed to load vendors.';
@@ -109,36 +122,112 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
-  loadVendorResources(vendorId: number): void {
-    this.httpService.getResourcesByVendor(vendorId).subscribe({
+  // ── Staging: vendor changed → load its resources ──────────────────
+  onStagingVendorChange(): void {
+    this.stagingResourceId   = '';
+    this.stagingResourceList = [];
+    this.stagingMaxAvailable = 0;
+    this.stagingError        = '';
+
+    if (!this.stagingVendorId) return;
+
+    this.httpService.getResourcesByVendor(+this.stagingVendorId).subscribe({
       next: (res: any) => {
-        this.resourceList = res.filter((r: any) => r.totalQuantity - r.allocatedQuantity > 0);
-        if (this.resourceList.length === 0) {
-          this.showError    = true;
-          this.errorMessage = 'This vendor has no available resources.';
-        } else {
-          this.showError    = false;
-          this.errorMessage = '';
+        // Only show resources that still have available stock
+        this.stagingResourceList = res.filter(
+          (r: any) => r.totalQuantity - r.allocatedQuantity > 0
+        );
+        if (this.stagingResourceList.length === 0) {
+          this.stagingError = 'This vendor has no available resources.';
         }
       },
-      error: () => {
-        this.showError    = true;
-        this.errorMessage = 'Failed to load vendor resources.';
-      }
+      error: () => { this.stagingError = 'Failed to load vendor resources.'; }
     });
   }
 
+  // ── Staging: resource changed → update max available ─────────────
+  onStagingResourceChange(): void {
+    this.stagingQuantity     = 1;
+    this.stagingMaxAvailable = 0;
+    this.stagingError        = '';
+
+    if (!this.stagingResourceId) return;
+
+    const found = this.stagingResourceList.find(
+      (r: any) => r.resourceID === +this.stagingResourceId
+    );
+    if (found) {
+      this.stagingMaxAvailable = found.totalQuantity - found.allocatedQuantity;
+    }
+  }
+
+  // ── Staging: add current selection to the staged list ────────────
+  addToStaged(): void {
+    this.stagingError = '';
+
+    if (!this.stagingVendorId || !this.stagingResourceId || !this.stagingQuantity) return;
+
+    const qty = +this.stagingQuantity;
+
+    if (qty < 1) {
+      this.stagingError = 'Quantity must be at least 1.';
+      return;
+    }
+    if (qty > this.stagingMaxAvailable) {
+      this.stagingError = `Only ${this.stagingMaxAvailable} units available for this resource.`;
+      return;
+    }
+
+    // Prevent duplicate resource entries
+    const alreadyAdded = this.stagedResources.find(
+      s => s.resourceId === +this.stagingResourceId
+    );
+    if (alreadyAdded) {
+      this.stagingError = `"${alreadyAdded.resourceName}" is already in your list. Remove it first to change quantity.`;
+      return;
+    }
+
+    const vendor   = this.vendorList.find((v: any) => v.id === +this.stagingVendorId);
+    const resource = this.stagingResourceList.find(
+      (r: any) => r.resourceID === +this.stagingResourceId
+    );
+
+    this.stagedResources.push({
+      vendorId:     +this.stagingVendorId,
+      vendorName:   vendor?.username   || 'Unknown Vendor',
+      resourceId:   +this.stagingResourceId,
+      resourceName: resource?.name     || 'Unknown Resource',
+      resourceType: resource?.type     || '',
+      quantity:     qty,
+      maxAvailable: this.stagingMaxAvailable
+    });
+
+    // Reset staging row
+    this.stagingVendorId     = '';
+    this.stagingResourceId   = '';
+    this.stagingQuantity     = 1;
+    this.stagingMaxAvailable = 0;
+    this.stagingResourceList = [];
+  }
+
+  // ── Staging: remove an entry ──────────────────────────────────────
+  removeFromStaged(index: number): void {
+    this.stagedResources.splice(index, 1);
+  }
+
+  // ── Events table ──────────────────────────────────────────────────
   getEvent(): void {
     this.httpService.GetAllevents().subscribe({
-      next: (res: any) => { this.eventList = res; },
+      next:  (res: any) => { this.eventList = res; },
       error: () => {}
     });
   }
 
+  // ── Prefill from client request ───────────────────────────────────
   loadRequestAndPrefill(requestId: number): void {
     this.httpService.getEventRequestById(requestId).subscribe({
       next: (req: any) => {
-        const dt = req.eventDate ? new Date(req.eventDate) : null;
+        const dt        = req.eventDate ? new Date(req.eventDate) : null;
         const formatted = dt ? dt.toISOString().slice(0, 16) : '';
 
         this.itemForm.patchValue({
@@ -157,57 +246,26 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
+  // ── Submit ────────────────────────────────────────────────────────
   onSubmit(): void {
     if (this.itemForm.invalid || this.isSubmitting) return;
+    if (this.stagedResources.length === 0) {
+      this.showError    = true;
+      this.errorMessage = 'Please add at least one resource before creating the event.';
+      return;
+    }
 
     this.isSubmitting = true;
     this.showError    = false;
     this.showMessage  = false;
 
-    const { staffId, vendorId, resourceId, quantity, ...eventData } = this.itemForm.value;
+    const { staffId, ...eventData } = this.itemForm.value;
 
     // Step 1: Create the event
     this.httpService.createEvent(eventData, staffId).subscribe({
       next: (createdEvent: any) => {
         const eventId = createdEvent.eventID;
-
-        // Step 2: Allocate the vendor resource to the event
-        this.httpService.allocateResourceToEvent(eventId, +resourceId, +quantity).subscribe({
-          next: () => {
-            // Step 3: If this came from a client request, auto-approve it
-            if (this.prefillRequestId) {
-              this.httpService.approveEventRequest(this.prefillRequestId, { eventId }).subscribe({
-                next: () => {
-                  this.isSubmitting    = false;
-                  this.showMessage     = true;
-                  this.showError       = false;
-                  this.responseMessage = 'Event created, resource allocated and client request approved!';
-                  this.resetForm();
-                },
-                error: () => {
-                  // Event + allocation succeeded, only approval linking failed
-                  this.isSubmitting    = false;
-                  this.showMessage     = true;
-                  this.showError       = false;
-                  this.responseMessage = `Event created (ID: ${eventId}) and resource allocated. However, request approval linking failed — please approve manually from Client Requests.`;
-                  this.resetForm();
-                }
-              });
-            } else {
-              this.isSubmitting    = false;
-              this.showMessage     = true;
-              this.showError       = false;
-              this.responseMessage = 'Event created and resource allocated successfully!';
-              this.resetForm();
-            }
-          },
-          error: (err: any) => {
-            this.isSubmitting = false;
-            this.showError    = true;
-            this.errorMessage = `Event created (ID: ${eventId}) but resource allocation failed: ${err?.error?.message || 'unknown error'}. Please allocate manually.`;
-            this.getEvent();
-          }
-        });
+        this.allocateAllResources(eventId, 0);
       },
       error: () => {
         this.isSubmitting = false;
@@ -217,19 +275,79 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
-  private resetForm(): void {
-    this.itemForm.reset();
-    this.staffList        = [];
-    this.resourceList     = [];
-    this.isPrefilled      = false;
-    this.prefillRequestId = null;
-    this.getEvent();
+  // ── Allocate staged resources one by one (recursive) ─────────────
+  private allocateAllResources(eventId: number, index: number): void {
+    if (index >= this.stagedResources.length) {
+      // All allocations done
+      this.handlePostAllocation(eventId);
+      return;
+    }
+
+    const item = this.stagedResources[index];
+
+    this.httpService.allocateResourceToEvent(eventId, item.resourceId, item.quantity).subscribe({
+      next: () => {
+        // Move to next resource
+        this.allocateAllResources(eventId, index + 1);
+      },
+      error: (err: any) => {
+        // Partial failure — event was created, some resources may have been allocated
+        this.isSubmitting = false;
+        this.showError    = true;
+        this.errorMessage =
+          `Event created (ID: ${eventId}), but allocation failed for ` +
+          `"${item.resourceName}": ${err?.error?.message || 'unknown error'}. ` +
+          `Resources before this one were allocated. Please allocate the rest manually.`;
+        this.getEvent();
+      }
+    });
   }
 
-  getSelectedResourceAvailable(): number {
-    const resourceId = this.itemForm.get('resourceId')?.value;
-    if (!resourceId) return 0;
-    const res = this.resourceList.find(r => r.resourceID === +resourceId);
-    return res ? res.totalQuantity - res.allocatedQuantity : 0;
+  // ── After all allocations succeed ─────────────────────────────────
+  private handlePostAllocation(eventId: number): void {
+    if (this.prefillRequestId) {
+      this.httpService.approveEventRequest(this.prefillRequestId, { eventId }).subscribe({
+        next: () => {
+          this.isSubmitting    = false;
+          this.showMessage     = true;
+          this.showError       = false;
+          this.responseMessage =
+            `Event created, ${this.stagedResources.length} resource(s) allocated, and client request approved!`;
+          this.resetForm();
+        },
+        error: () => {
+          this.isSubmitting    = false;
+          this.showMessage     = true;
+          this.showError       = false;
+          this.responseMessage =
+            `Event created (ID: ${eventId}) and resources allocated. ` +
+            `However, request approval linking failed — please approve manually from Client Requests.`;
+          this.resetForm();
+        }
+      });
+    } else {
+      this.isSubmitting    = false;
+      this.showMessage     = true;
+      this.showError       = false;
+      this.responseMessage =
+        `Event created and ${this.stagedResources.length} resource(s) allocated successfully!`;
+      this.resetForm();
+    }
+  }
+
+  // ── Reset entire form after success ───────────────────────────────
+  private resetForm(): void {
+    this.itemForm.reset();
+    this.staffList           = [];
+    this.stagedResources     = [];
+    this.stagingVendorId     = '';
+    this.stagingResourceId   = '';
+    this.stagingQuantity     = 1;
+    this.stagingResourceList = [];
+    this.stagingMaxAvailable = 0;
+    this.stagingError        = '';
+    this.isPrefilled         = false;
+    this.prefillRequestId    = null;
+    this.getEvent();
   }
 }

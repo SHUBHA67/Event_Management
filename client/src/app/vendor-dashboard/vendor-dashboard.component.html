@@ -8,162 +8,220 @@
 
   <div class="page-container">
 
-    <!-- Add Resource Card -->
-    <div class="card">
-      <div class="card-header">
-        <h2><i class="bi bi-plus-circle"></i> Add New Resource</h2>
-      </div>
-
-      <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-      <div class="error-msg"   *ngIf="showError">{{ errorMessage }}</div>
-
-      <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Resource Name *</label>
-            <input type="text" formControlName="name" placeholder="e.g. Stage Lights" />
-            <div class="error-text" *ngIf="resourceForm.get('name')?.invalid && resourceForm.get('name')?.touched">
-              Name is required.
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Resource Type *</label>
-            <input type="text" formControlName="type" placeholder="e.g. Lighting, Audio, Furniture" />
-            <div class="error-text" *ngIf="resourceForm.get('type')?.invalid && resourceForm.get('type')?.touched">
-              Type is required.
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group half">
-          <label>Total Quantity *</label>
-          <input type="number" formControlName="totalQuantity" placeholder="e.g. 10" min="1" />
-          <small class="hint">How many units of this resource do you have?</small>
-          <div class="error-text" *ngIf="resourceForm.get('totalQuantity')?.invalid && resourceForm.get('totalQuantity')?.touched">
-            Quantity must be at least 1.
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary" [disabled]="resourceForm.invalid">
-          <i class="bi bi-plus-lg"></i> Add Resource
-        </button>
-      </form>
+    <!-- Tab Switcher -->
+    <div class="tab-bar">
+      <button [class.active]="activeTab === 'resources'" (click)="switchTab('resources')">
+        <i class="bi bi-boxes"></i> My Resources
+      </button>
+      <button [class.active]="activeTab === 'events'" (click)="switchTab('events')">
+        <i class="bi bi-calendar2-event"></i> Event Resources
+      </button>
     </div>
 
-    <!-- Resources List -->
-    <div class="card" *ngIf="resourceList.length > 0">
-      <div class="card-header">
-        <h3><i class="bi bi-boxes"></i> My Resources</h3>
-        <span class="count-badge">{{ resourceList.length }} total</span>
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- TAB 1: MY RESOURCES                                        -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <ng-container *ngIf="activeTab === 'resources'">
+
+      <!-- Add Resource Card -->
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="bi bi-plus-circle"></i> Add New Resource</h2>
+        </div>
+
+        <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
+        <div class="error-msg"   *ngIf="showError">{{ errorMessage }}</div>
+
+        <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Resource Name *</label>
+              <input type="text" formControlName="name" placeholder="e.g. Stage Lights" />
+              <div class="error-text" *ngIf="resourceForm.get('name')?.invalid && resourceForm.get('name')?.touched">
+                Name is required.
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Resource Type *</label>
+              <input type="text" formControlName="type" placeholder="e.g. Lighting, Audio, Furniture" />
+              <div class="error-text" *ngIf="resourceForm.get('type')?.invalid && resourceForm.get('type')?.touched">
+                Type is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group half">
+            <label>Total Quantity *</label>
+            <input type="number" formControlName="totalQuantity" placeholder="e.g. 10" min="1" />
+            <small class="hint">How many units of this resource do you have?</small>
+            <div class="error-text" *ngIf="resourceForm.get('totalQuantity')?.invalid && resourceForm.get('totalQuantity')?.touched">
+              Quantity must be at least 1.
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" [disabled]="resourceForm.invalid">
+            <i class="bi bi-plus-lg"></i> Add Resource
+          </button>
+        </form>
       </div>
 
-      <div class="resources-grid">
-        <div *ngFor="let res of resourceList" class="resource-card">
+      <!-- Resources List -->
+      <div class="card" *ngIf="resourceList.length > 0">
+        <div class="card-header">
+          <h3><i class="bi bi-boxes"></i> My Resources</h3>
+          <span class="count-badge">{{ resourceList.length }} total</span>
+        </div>
 
-          <div class="res-top">
-            <div class="res-info">
-              <h4>{{ res.name }}</h4>
-              <span class="res-type">{{ res.type }}</span>
-            </div>
-            <span [ngClass]="res.dispatchStatus === 'DISPATCHED' ? 'badge-orange' : 'badge-green'">
-              {{ res.dispatchStatus === 'DISPATCHED' ? 'Sent' : 'Not Sent' }}
-            </span>
-          </div>
+        <div class="resources-grid">
+          <div *ngFor="let res of resourceList" class="resource-card">
 
-          <div class="res-qty-row">
-            <div class="qty-block">
-              <span class="qty-label">Total</span>
-              <span class="qty-val">{{ res.totalQuantity }}</span>
-            </div>
-            <div class="qty-block">
-              <span class="qty-label">Allocated</span>
-              <span class="qty-val">{{ res.allocatedQuantity }}</span>
-            </div>
-            <div class="qty-block">
-              <span class="qty-label">Available</span>
-              <span class="qty-val avail">{{ res.totalQuantity - res.allocatedQuantity }}</span>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="res-actions" *ngIf="editingResourceId !== res.resourceID && deletingResourceId !== res.resourceID">
-            <button
-              [ngClass]="res.dispatchStatus === 'DISPATCHED' ? 'btn-mark-unsent' : 'btn-mark-sent'"
-              (click)="toggleSentStatus(res)">
-              <i [ngClass]="res.dispatchStatus === 'DISPATCHED' ? 'bi bi-x-circle' : 'bi bi-check-circle'"></i>
-              {{ res.dispatchStatus === 'DISPATCHED' ? 'Mark as Not Sent' : 'Mark as Sent' }}
-            </button>
-
-            <div class="res-secondary-actions">
-              <button class="btn-edit-res" (click)="openEditPanel(res)">
-                <i class="bi bi-pencil"></i> Edit
-              </button>
-              <button class="btn-delete-res" (click)="openDeleteConfirm(res)">
-                <i class="bi bi-trash"></i> Delete
-              </button>
-            </div>
-          </div>
-
-          <!-- Edit Panel -->
-          <div class="edit-panel" *ngIf="editingResourceId === res.resourceID">
-            <h5><i class="bi bi-pencil-square"></i> Edit Resource</h5>
-            <form [formGroup]="editForm">
-              <div class="form-group">
-                <label>Resource Name *</label>
-                <input type="text" formControlName="name" placeholder="Resource name" />
-                <div class="error-text" *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched">
-                  Name is required.
-                </div>
+            <div class="res-top">
+              <div class="res-info">
+                <h4>{{ res.name }}</h4>
+                <span class="res-type">{{ res.type }}</span>
               </div>
-              <div class="form-group">
-                <label>Resource Type *</label>
-                <input type="text" formControlName="type" placeholder="Resource type" />
-                <div class="error-text" *ngIf="editForm.get('type')?.invalid && editForm.get('type')?.touched">
-                  Type is required.
-                </div>
+            </div>
+
+            <div class="res-qty-row">
+              <div class="qty-block">
+                <span class="qty-label">Total</span>
+                <span class="qty-val">{{ res.totalQuantity }}</span>
               </div>
-              <div class="form-group">
-                <label>Total Quantity *</label>
-                <input type="number" formControlName="totalQuantity" placeholder="Total quantity" min="1" />
-                <small class="hint">Cannot be less than allocated quantity ({{ res.allocatedQuantity }}).</small>
-                <div class="error-text" *ngIf="editForm.get('totalQuantity')?.invalid && editForm.get('totalQuantity')?.touched">
-                  Quantity must be at least 1.
+              <div class="qty-block">
+                <span class="qty-label">Allocated</span>
+                <span class="qty-val">{{ res.allocatedQuantity }}</span>
+              </div>
+              <div class="qty-block">
+                <span class="qty-label">Available</span>
+                <span class="qty-val avail">{{ res.totalQuantity - res.allocatedQuantity }}</span>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="res-actions" *ngIf="editingResourceId !== res.resourceID && deletingResourceId !== res.resourceID">
+              <div class="res-secondary-actions">
+                <button class="btn-edit-res" (click)="openEditPanel(res)">
+                  <i class="bi bi-pencil"></i> Edit
+                </button>
+                <button class="btn-delete-res" (click)="openDeleteConfirm(res)">
+                  <i class="bi bi-trash"></i> Delete
+                </button>
+              </div>
+            </div>
+
+            <!-- Edit Panel -->
+            <div class="edit-panel" *ngIf="editingResourceId === res.resourceID">
+              <h5><i class="bi bi-pencil-square"></i> Edit Resource</h5>
+              <form [formGroup]="editForm">
+                <div class="form-group">
+                  <label>Resource Name *</label>
+                  <input type="text" formControlName="name" placeholder="Resource name" />
+                  <div class="error-text" *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched">
+                    Name is required.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Resource Type *</label>
+                  <input type="text" formControlName="type" placeholder="Resource type" />
+                  <div class="error-text" *ngIf="editForm.get('type')?.invalid && editForm.get('type')?.touched">
+                    Type is required.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Total Quantity *</label>
+                  <input type="number" formControlName="totalQuantity" placeholder="Total quantity" min="1" />
+                  <small class="hint">Cannot be less than allocated quantity ({{ res.allocatedQuantity }}).</small>
+                  <div class="error-text" *ngIf="editForm.get('totalQuantity')?.invalid && editForm.get('totalQuantity')?.touched">
+                    Quantity must be at least 1.
+                  </div>
+                </div>
+                <div class="panel-actions">
+                  <button class="btn-save-edit" (click)="submitEdit(res)" [disabled]="editForm.invalid">
+                    <i class="bi bi-check-lg"></i> Save Changes
+                  </button>
+                  <button class="btn-cancel-panel" (click)="cancelEdit()">Cancel</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Delete Confirmation Panel -->
+            <div class="delete-panel" *ngIf="deletingResourceId === res.resourceID">
+              <div class="delete-warning">
+                <i class="bi bi-exclamation-triangle"></i>
+                <div>
+                  <strong>Delete "{{ res.name }}"?</strong>
+                  <p>This action cannot be undone. Resources currently allocated to events cannot be deleted.</p>
                 </div>
               </div>
               <div class="panel-actions">
-                <button class="btn-save-edit" (click)="submitEdit(res)" [disabled]="editForm.invalid">
-                  <i class="bi bi-check-lg"></i> Save Changes
+                <button class="btn-confirm-delete" (click)="confirmDelete(res)">
+                  <i class="bi bi-trash"></i> Yes, Delete
                 </button>
-                <button class="btn-cancel-panel" (click)="cancelEdit()">Cancel</button>
-              </div>
-            </form>
-          </div>
-
-          <!-- Delete Confirmation Panel -->
-          <div class="delete-panel" *ngIf="deletingResourceId === res.resourceID">
-            <div class="delete-warning">
-              <i class="bi bi-exclamation-triangle"></i>
-              <div>
-                <strong>Delete "{{ res.name }}"?</strong>
-                <p>This action cannot be undone. Resources currently allocated to events cannot be deleted.</p>
+                <button class="btn-cancel-panel" (click)="cancelDelete()">Cancel</button>
               </div>
             </div>
-            <div class="panel-actions">
-              <button class="btn-confirm-delete" (click)="confirmDelete(res)">
-                <i class="bi bi-trash"></i> Yes, Delete
-              </button>
-              <button class="btn-cancel-panel" (click)="cancelDelete()">Cancel</button>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="resourceList.length === 0 && !showError">
+        <i class="bi bi-box2"></i>
+        <p>You haven't added any resources yet. Add your first resource above.</p>
+      </div>
+
+    </ng-container>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- TAB 2: EVENT RESOURCES                                     -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <ng-container *ngIf="activeTab === 'events'">
+
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="bi bi-calendar2-event"></i> Event Resources</h2>
+          <span class="count-badge">{{ eventAllocations.length }} event(s)</span>
+        </div>
+
+        <div class="empty-state" *ngIf="eventAllocations.length === 0">
+          <i class="bi bi-calendar-x"></i>
+          <p>None of your resources have been allocated to any events yet.</p>
+        </div>
+
+        <div *ngFor="let entry of eventAllocations" class="event-allocation-card">
+
+          <div class="ea-header">
+            <div class="ea-title-block">
+              <h4>{{ entry.event.title }}</h4>
+              <div class="ea-meta">
+                <span><i class="bi bi-geo-alt"></i> {{ entry.event.location }}</span>
+                <span><i class="bi bi-calendar3"></i> {{ entry.event.dateTime | date:'mediumDate' }}</span>
+                <span><i class="bi bi-person"></i> {{ entry.event.planner?.username || '—' }}</span>
+              </div>
+            </div>
+            <span [ngClass]="{
+              'badge-blue'  : entry.event.status === 'PLANNED',
+              'badge-orange': entry.event.status === 'ONGOING',
+              'badge-grey'  : entry.event.status === 'COMPLETED',
+              'badge-red'   : entry.event.status === 'CANCELLED'
+            }">{{ entry.event.status }}</span>
+          </div>
+
+          <div class="ea-resources">
+            <div *ngFor="let alloc of entry.allocations" class="ea-resource-chip">
+              <div class="chip-icon"><i class="bi bi-box-seam"></i></div>
+              <div class="chip-details">
+                <span class="chip-name">{{ alloc.resource?.name }}</span>
+                <span class="chip-type">{{ alloc.resource?.type }}</span>
+              </div>
+              <span class="chip-qty">&times;{{ alloc.quantity }}</span>
             </div>
           </div>
 
         </div>
       </div>
-    </div>
 
-    <div class="empty-state" *ngIf="resourceList.length === 0 && !showError">
-      <i class="bi bi-box2"></i>
-      <p>You haven't added any resources yet. Add your first resource above.</p>
-    </div>
+    </ng-container>
 
   </div>
 </div>

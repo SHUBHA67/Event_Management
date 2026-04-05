@@ -10,9 +10,13 @@ import com.edutech.eventmanagementsystem.repository.AllocationRepository;
 import com.edutech.eventmanagementsystem.repository.EventRepository;
 import com.edutech.eventmanagementsystem.repository.ResourceRepository;
 import com.edutech.eventmanagementsystem.repository.UserRepository;
+import com.edutech.eventmanagementsystem.dto.VendorEventDTO;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ResourceService {
@@ -54,6 +58,37 @@ public class ResourceService {
     // ── VENDOR: Get only their own resources ─────────────────────────
     public List<Resource> getVendorResources(String vendorUsername) {
         return resourceRepository.findByVendorUsername(vendorUsername);
+    }
+
+    // ── VENDOR: Get events where this vendor's resources are allocated ─
+    // Returns a list of VendorEventDTO — each containing the event and
+    // only the allocations that belong to this vendor
+    public List<VendorEventDTO> getEventsByVendor(String vendorUsername) {
+
+        // Fetch all allocations for this vendor's resources
+        List<Allocation> vendorAllocations =
+                allocationRepository.findByResourceVendorUsername(vendorUsername);
+
+        // Group allocations by event using a LinkedHashMap to preserve insertion order
+        Map<Long, VendorEventDTO> eventMap = new LinkedHashMap<>();
+
+        for (Allocation alloc : vendorAllocations) {
+            Event event = alloc.getEvent();
+            if (event == null) continue;
+
+            Long eventId = event.getEventID();
+
+            if (!eventMap.containsKey(eventId)) {
+                VendorEventDTO dto = new VendorEventDTO();
+                dto.setEvent(event);
+                dto.setAllocations(new ArrayList<>());
+                eventMap.put(eventId, dto);
+            }
+
+            eventMap.get(eventId).getAllocations().add(alloc);
+        }
+
+        return new ArrayList<>(eventMap.values());
     }
 
     // ── VENDOR: Update a resource (name, type, totalQuantity) ────────

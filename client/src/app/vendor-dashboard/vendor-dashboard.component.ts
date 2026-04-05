@@ -14,6 +14,13 @@ export class VendorDashboardComponent implements OnInit {
   editForm: FormGroup;
   resourceList: any[] = [];
 
+  // Tab state
+  activeTab: 'resources' | 'events' = 'resources';
+
+  // Event allocations tab data
+  // Each entry: { event: Event, allocations: Allocation[] }
+  eventAllocations: { event: any; allocations: any[] }[] = [];
+
   showMessage     = false;
   showError       = false;
   responseMessage = '';
@@ -45,6 +52,15 @@ export class VendorDashboardComponent implements OnInit {
 
   ngOnInit(): void { this.loadResources(); }
 
+  // ── Tab switching ────────────────────────────────────────────────
+  switchTab(tab: 'resources' | 'events'): void {
+    this.activeTab = tab;
+    if (tab === 'events') {
+      this.loadEventAllocations();
+    }
+  }
+
+  // ── Load vendor's own resources ──────────────────────────────────
   loadResources(): void {
     this.httpService.getMyVendorResources().subscribe({
       next: (res: any) => { this.resourceList = res; this.showError = false; },
@@ -52,6 +68,46 @@ export class VendorDashboardComponent implements OnInit {
     });
   }
 
+  // ── Load events that have this vendor's resources allocated ──────
+  loadEventAllocations(): void {
+    // Get own resource IDs first, then cross-reference with all events
+    this.httpService.getMyVendorResources().subscribe({
+      next: (myResources: any[]) => {
+        const myResourceIds = new Set(myResources.map((r: any) => r.resourceID));
+
+        this.httpService.GetAllevents().subscribe({
+          next: (events: any[]) => {
+            const result: { event: any; allocations: any[] }[] = [];
+
+            for (const event of events) {
+              if (!event.allocations || event.allocations.length === 0) continue;
+
+              // Filter allocations that belong to this vendor's resources
+              const myAllocs = event.allocations.filter((alloc: any) =>
+                alloc.resource && myResourceIds.has(alloc.resource.resourceID)
+              );
+
+              if (myAllocs.length > 0) {
+                result.push({ event, allocations: myAllocs });
+              }
+            }
+
+            this.eventAllocations = result;
+          },
+          error: () => {
+            this.showError    = true;
+            this.errorMessage = 'Failed to load event data.';
+          }
+        });
+      },
+      error: () => {
+        this.showError    = true;
+        this.errorMessage = 'Failed to load your resources.';
+      }
+    });
+  }
+
+  // ── Add resource ─────────────────────────────────────────────────
   onSubmit(): void {
     if (this.resourceForm.invalid) return;
 
@@ -138,40 +194,18 @@ export class VendorDashboardComponent implements OnInit {
   confirmDelete(res: any): void {
     this.httpService.deleteVendorResource(res.resourceID).subscribe({
       next: () => {
-        this.showMessage     = true;
-        this.showError       = false;
-        this.responseMessage = `${res.name} deleted successfully.`;
+        this.showMessage        = true;
+        this.showError          = false;
+        this.responseMessage    = `${res.name} deleted successfully.`;
         this.deletingResourceId = null;
         this.loadResources();
         setTimeout(() => this.showMessage = false, 3000);
       },
       error: (err: any) => {
-        this.showError    = true;
-        this.showMessage  = false;
-        this.errorMessage = err?.error?.message || 'Failed to delete resource.';
+        this.showError          = true;
+        this.showMessage        = false;
+        this.errorMessage       = err?.error?.message || 'Failed to delete resource.';
         this.deletingResourceId = null;
-      }
-    });
-  }
-
-  // ── Dispatch toggle ──────────────────────────────────────────────
-  toggleSentStatus(res: any): void {
-    const newStatus = res.dispatchStatus === 'DISPATCHED' ? 'AVAILABLE' : 'DISPATCHED';
-
-    this.httpService.markResourceSentStatus(res.resourceID, { dispatchStatus: newStatus }).subscribe({
-      next: () => {
-        this.showMessage     = true;
-        this.showError       = false;
-        this.responseMessage = newStatus === 'DISPATCHED'
-          ? `${res.name} marked as Sent.`
-          : `${res.name} marked as Not Sent.`;
-        this.loadResources();
-        setTimeout(() => this.showMessage = false, 3000);
-      },
-      error: (err: any) => {
-        this.showError    = true;
-        this.showMessage  = false;
-        this.errorMessage = err?.error?.message || 'Failed to update status.';
       }
     });
   }
