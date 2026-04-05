@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -21,6 +22,7 @@ import { ManageRequestsComponent } from './manage-requests/manage-requests.compo
 import { BrowseEventsComponent } from './browse-events/browse-events.component';
 import { AboutComponent } from './about-component/about.component';
 import { ContactComponent } from './contact/contact.component';
+import { LandingComponent } from './landing/landing.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { ContactComponent } from './contact/contact.component';
     ManageRequestsComponent,
     BrowseEventsComponent,
     AboutComponent,
-    ContactComponent
+    ContactComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,

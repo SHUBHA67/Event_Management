@@ -3,7 +3,7 @@
 
 <div class="landing-page">
 
-  <!-- Navigation -->
+
   <nav class="landing-nav">
 
     <div>
@@ -15,19 +15,19 @@
     <div class="nav-links">
       <a class="nav-link" (click)="scrollTo('services')">Services</a>
       <a class="nav-link" (click)="scrollTo('how-works')">How It Works</a>
-      <a class="nav-link" (click)="routeAbout()">About</a>
-      <a class="nav-link" (click)="routeContact()">Contact Us</a>
+      <a class="nav-link" (click)="scrollTo('aboutSection')">About</a>
+      <a class="nav-link" (click)="scrollTo('contactSection')">Contact Us</a>
     </div>
     <div class="nav-actions">
       <button class="btn-nav-outline" (click)="goToLogin()">Login</button>
-      <button class="btn-nav-solid" (click)="goToRegister()">Get Started</button>
+      <button class="btn-nav-solid" (click)="goToRegister()">Register</button>
     </div>
     <button class="nav-hamburger" (click)="toggleMenu()">
       <span></span><span></span><span></span>
     </button>
   </nav>
 
-  <!-- Mobile Menu -->
+
   <div class="mobile-menu" [class.open]="menuOpen">
     <a class="nav-link" (click)="scrollTo('services'); toggleMenu()">Services</a>
     <a class="nav-link" (click)="scrollTo('how-works'); toggleMenu()">How It Works</a>
@@ -37,7 +37,6 @@
     <button class="btn-nav-solid" (click)="goToRegister(); toggleMenu()">Get Started</button>
   </div>
 
-  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-orb hero-orb-1"></div>
     <div class="hero-orb hero-orb-2"></div>
@@ -78,7 +77,7 @@
     </div>
   </section>
 
-  <!-- Services Section -->
+  
   <section class="services" id="services">
     <div class="section-header">
       <h2>Our Services</h2>
@@ -116,7 +115,7 @@
     </div>
   </section>
 
-  <!-- How It Works -->
+
   <section class="how-works" id="how-works">
     <div class="section-header">
       <h2>How It Works</h2>
@@ -178,7 +177,54 @@
     </div>
   </section>
 
-  <!-- CTA Section -->
+
+  <section id="aboutSection">
+    <div class="about-hero">
+      <div class="about-hero-orb orb1"></div>
+      <div class="about-hero-orb orb2"></div>
+      <div class="about-hero-content">
+        <div class="about-tag">Who We Are</div>
+        <h1>Built for <span class="highlight">Modern</span> Event Teams</h1>
+        <p>Eventia was founded with one mission — eliminate the chaos from event planning and replace it with clarity,
+          control, and collaboration.</p>
+      </div>
+    </div>
+
+
+    <div class="about-mission">
+      <div class="about-mission-inner">
+        <div class="mission-text">
+          <div class="section-pill">Our Mission</div>
+          <h2>Empowering Every Role in the Event Ecosystem</h2>
+          <p>From the planner strategising the entire event, to the vendor supplying the chairs — every person in the
+            event workflow deserves a tool built for them. Eventia unifies planners, staff, clients and vendors under
+            one smart, real-time platform.</p>
+          <p>We believe great events happen when communication is effortless, resources are tracked with precision, and
+            every team member is aligned from kickoff to wrap-up.</p>
+        </div>
+        <div class="mission-stats">
+          <div class="mstat-card">
+            <div class="mstat-val">1,240+</div>
+            <div class="mstat-label">Events Executed</div>
+          </div>
+          <div class="mstat-card">
+            <div class="mstat-val">320+</div>
+            <div class="mstat-label">Happy Clients</div>
+          </div>
+          <div class="mstat-card">
+            <div class="mstat-val">5,800+</div>
+            <div class="mstat-label">Resources Tracked</div>
+          </div>
+          <div class="mstat-card">
+            <div class="mstat-val">4</div>
+            <div class="mstat-label">User Roles Supported</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <section class="cta-section">
     <div class="cta-inner">
       <h2>Ready to Plan Your Next Event?</h2>
@@ -190,9 +236,125 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <section id="contactSection">
+    <div class="contact-body">
+      <div class="contact-grid">
+
+        <div class="contact-info">
+          <h2>Contact Information</h2>
+          <p class="contact-info-sub">Reach us through any of the channels below and we'll respond within 24 hours.</p>
+
+          <div class="info-cards">
+            <div class="info-card ic-blue">
+              <div class="info-icon ii-blue" aria-hidden="true">&#9993;</div>
+              <div>
+                <div class="info-label">Email Us</div>
+                <div class="info-value">eventia555#gmail.com</div>
+              </div>
+            </div>
+
+            <div class="info-card ic-orange">
+              <div class="info-icon ii-orange" aria-hidden="true">📞</div>
+              <div>
+                <div class="info-label">Call Us</div>
+                <div class="info-value">9732456770</div>
+              </div>
+            </div>
+
+            <div class="info-card ic-teal">
+              <div class="info-icon ii-teal" aria-hidden="true">📍</div>
+              <div>
+                <div class="info-label">Visit Us</div>
+                <div class="info-value">Event Plaza, Suite 500<br>Baner street 411013</div>
+              </div>
+            </div>
+
+            <div class="info-card ic-yellow">
+              <div class="info-icon ii-yellow" aria-hidden="true">🕒</div>
+              <div>
+                <div class="info-label">Working Hours</div>
+                <div class="info-value">Mon – Fri, 9 AM – 6 PM PST</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+   
+        <div class="contact-form-card">
+          <h2>Send Us a Message</h2>
+          <p class="form-sub">Fill in the form and we'll get back to you shortly.</p>
+
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" formControlName="firstName" placeholder="Jane" />
+                <div class="error-text" *ngIf="contactForm.get('firstName')?.invalid && contactForm.get('firstName')?.touched">
+                  First name is required.
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" formControlName="lastName" placeholder="Smith" />
+                <div class="error-text" *ngIf="contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched">
+                  Last name is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" formControlName="email" placeholder="jane&#64;example.com" />
+              <div class="error-text" *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+                A valid email is required.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Subject</label>
+              <select formControlName="subject">
+                <option value="" disabled selected>Select a topic</option>
+                <option value="general">General Inquiry</option>
+                <option value="support">Technical Support</option>
+                <option value="billing">Billing & Pricing</option>
+                <option value="partnership">Partnership</option>
+                <option value="other">Other</option>
+              </select>
+              <div class="error-text" *ngIf="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched">
+                Please select a subject.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Message</label>
+              <textarea formControlName="message" rows="5" placeholder="Tell us how we can help you..."></textarea>
+              <div class="error-text" *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched">
+                Message is required.
+              </div>
+            </div>
+
+            <div class="success-alert" *ngIf="submitted">
+              &#10003; &nbsp; Thanks! Your message has been sent. We'll be in touch soon.
+            </div>
+
+            <button type="submit" class="btn-submit" [disabled]="contactForm.invalid">
+              Send Message &#10148;
+            </button>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
   <footer class="landing-footer">
-    <div class="footer-brand">Eventia</div>
+    <div>
+      <img src="assets/images/logo.png" alt="Eventia Logo"
+        style="width: 80px; height: 80px; object-fit: contain; margin-right: 8px; vertical-align: middle;" />
+    </div>
     <p>Smart Event Management Platform &mdash; Connecting Planners, Staff, Clients and Vendors</p>
   </footer>
 

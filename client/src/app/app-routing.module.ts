@@ -29,7 +29,6 @@ const routes: Routes = [
   { path: 'browse-events', component: BrowseEventsComponent },
   { path: 'manage-requests', component: ManageRequestsComponent },
   {path : 'about' , component : AboutComponent},
-  {path : 'contact' , component : ContactComponent},
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: '**', redirectTo: '/landing', pathMatch: 'full' },
 ];
