@@ -1,4 +1,4 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
 <div class="landing-page">
@@ -356,6 +356,520 @@
         style="width: 80px; height: 80px; object-fit: contain; margin-right: 8px; vertical-align: middle;" />
     </div>
     <p>Smart Event Management Platform &mdash; Connecting Planners, Staff, Clients and Vendors</p>
+  </footer>
+
+</div> -->
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="landing-page">
+
+  <!-- ══════════════ NAV ══════════════ -->
+  <nav class="landing-nav" [class.scrolled]="isScrolled">
+    <div class="nav-logo">
+      <img src="assets/images/logo.png" alt="Eventia Logo" class="nav-logo-img" />
+    </div>
+
+    <div class="nav-links">
+      <a class="nav-link" (click)="scrollTo('services')">Services</a>
+      <a class="nav-link" (click)="scrollTo('how-works')">How It Works</a>
+      <a class="nav-link" (click)="scrollTo('aboutSection')">About</a>
+      <a class="nav-link" (click)="scrollTo('contactSection')">Contact Us</a>
+    </div>
+
+    <div class="nav-actions">
+      <button class="btn-nav-ghost" (click)="goToLogin()">Login</button>
+      <button class="btn-nav-primary" (click)="goToRegister()">
+        <span>Register</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <button class="nav-hamburger" (click)="toggleMenu()" [class.open]="menuOpen">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" [class.open]="menuOpen">
+    <a class="nav-link" (click)="scrollTo('services'); toggleMenu()">Services</a>
+    <a class="nav-link" (click)="scrollTo('how-works'); toggleMenu()">How It Works</a>
+    <a class="nav-link" (click)="scrollTo('aboutSection'); toggleMenu()">About</a>
+    <a class="nav-link" (click)="scrollTo('contactSection'); toggleMenu()">Contact Us</a>
+    <div class="mobile-menu-actions">
+      <button class="btn-nav-ghost" (click)="goToLogin(); toggleMenu()">Login</button>
+      <button class="btn-nav-primary" (click)="goToRegister(); toggleMenu()">Register</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
+      <div class="hero-mesh"></div>
+      <div class="hero-noise"></div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-pulse"></span>
+          Smart Event Management
+        </div>
+
+        <h1 class="hero-heading">
+          <span class="line line-1">Plan, Manage</span>
+          <span class="line line-2">&amp; Execute Events</span>
+          <span class="line line-3">with <em class="brand-word">Eventia</em></span>
+        </h1>
+
+        <p class="hero-sub">
+          A unified platform connecting planners, staff and clients for seamless event coordination from start to finish.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn-primary-hero" (click)="goToRegister()">
+            Get Started Free
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="btn-ghost-hero" (click)="goToLogin()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M6 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Login to Dashboard
+          </button>
+        </div>
+
+        <div class="hero-trust">
+          <div class="trust-avatars">
+            <div class="avatar av1"></div>
+            <div class="avatar av2"></div>
+            <div class="avatar av3"></div>
+            <div class="avatar av4"></div>
+          </div>
+          <p>Trusted by <strong>320+</strong> event teams worldwide</p>
+        </div>
+      </div>
+
+      <!-- Stats Panel -->
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-icon si-purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-value">1,240<span>+</span></div>
+            <div class="stat-label">Events Planned</div>
+          </div>
+          <div class="stat-shimmer"></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon si-violet">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-value">5,800<span>+</span></div>
+            <div class="stat-label">Resources Managed</div>
+          </div>
+          <div class="stat-shimmer"></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon si-indigo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-value">320<span>+</span></div>
+            <div class="stat-label">Happy Clients</div>
+          </div>
+          <div class="stat-shimmer"></div>
+        </div>
+
+        <div class="stats-decoration">
+          <div class="deco-ring"></div>
+          <div class="deco-dot d1"></div>
+          <div class="deco-dot d2"></div>
+          <div class="deco-dot d3"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <!-- ══════════════ SERVICES ══════════════ -->
+  <section class="services" id="services">
+    <div class="section-eyebrow">
+      <span class="eyebrow-line"></span>
+      What We Offer
+      <span class="eyebrow-line"></span>
+    </div>
+    <div class="section-header reveal">
+      <h2>Our Services</h2>
+      <p>Everything you need to plan and execute perfect events</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card sc-1 reveal">
+        <div class="sc-number">01</div>
+        <div class="sc-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Event Planning</h3>
+        <p>Create, schedule and manage events with full control over every detail — date, location, status and staff assignments.</p>
+        <div class="sc-tag">For Planners</div>
+        <div class="sc-arrow">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="sc-bg-glow"></div>
+      </div>
+
+      <div class="service-card sc-2 reveal">
+        <div class="sc-number">02</div>
+        <div class="sc-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="1.8"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke="currentColor" stroke-width="1.8"/></svg>
+        </div>
+        <h3>Resource Management</h3>
+        <p>Add and track resources like furniture, AV equipment and more. Allocate them to events with live quantity tracking.</p>
+        <div class="sc-tag">For Planners</div>
+        <div class="sc-arrow">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="sc-bg-glow"></div>
+      </div>
+
+      <div class="service-card sc-3 reveal">
+        <div class="sc-number">03</div>
+        <div class="sc-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Client Requests</h3>
+        <p>Clients submit customised event requests. Planners review, approve with event links or reject with clear feedback.</p>
+        <div class="sc-tag">For Clients</div>
+        <div class="sc-arrow">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="sc-bg-glow"></div>
+      </div>
+
+      <div class="service-card sc-4 reveal">
+        <div class="sc-number">04</div>
+        <div class="sc-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Team Coordination</h3>
+        <p>Assign staff to events, track real-time status updates and keep every team member aligned throughout execution.</p>
+        <div class="sc-tag">For Staff</div>
+        <div class="sc-arrow">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="sc-bg-glow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ HOW IT WORKS ══════════════ -->
+  <section class="how-works" id="how-works">
+    <div class="how-bg">
+      <div class="how-orb hb1"></div>
+      <div class="how-orb hb2"></div>
+    </div>
+
+    <div class="section-eyebrow">
+      <span class="eyebrow-line"></span>
+      The Process
+      <span class="eyebrow-line"></span>
+    </div>
+    <div class="section-header reveal">
+      <h2>How It Works</h2>
+      <p>Four roles, one platform — seamless collaboration</p>
+    </div>
+
+    <div class="roles-grid">
+      <div class="role-card r-1 reveal">
+        <div class="role-top">
+          <div class="role-num">01</div>
+          <div class="role-badge rb-1">Planner</div>
+        </div>
+        <div class="role-icon ri-1">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <ul class="role-list">
+          <li>Create and manage events with all details</li>
+          <li>Add resources and set quantities</li>
+          <li>Allocate resources to specific events</li>
+          <li>Review and respond to client requests</li>
+          <li>Assign staff members to events</li>
+        </ul>
+        <div class="role-connector"></div>
+      </div>
+
+      <div class="role-card r-2 reveal">
+        <div class="role-top">
+          <div class="role-num">02</div>
+          <div class="role-badge rb-2">Staff</div>
+        </div>
+        <div class="role-icon ri-2">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <ul class="role-list">
+          <li>View events assigned by planners</li>
+          <li>Update event status in real-time</li>
+          <li>Monitor allocated resources</li>
+          <li>Coordinate with the planner team</li>
+          <li>Mark events as completed or ongoing</li>
+        </ul>
+        <div class="role-connector"></div>
+      </div>
+
+      <div class="role-card r-3 reveal">
+        <div class="role-top">
+          <div class="role-num">03</div>
+          <div class="role-badge rb-3">Client</div>
+        </div>
+        <div class="role-icon ri-3">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <ul class="role-list">
+          <li>Browse all upcoming events on the platform</li>
+          <li>Submit custom event requests</li>
+          <li>Track request status updates</li>
+          <li>View booking details when approved</li>
+          <li>See allocated resources for your event</li>
+        </ul>
+        <div class="role-connector"></div>
+      </div>
+
+      <div class="role-card r-4 reveal">
+        <div class="role-top">
+          <div class="role-num">04</div>
+          <div class="role-badge rb-4">Vendor</div>
+        </div>
+        <div class="role-icon ri-4">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <ul class="role-list">
+          <li>Register as a verified resource supplier</li>
+          <li>List available inventory and equipment</li>
+          <li>Receive resource allocation requests</li>
+          <li>Confirm supply availability for events</li>
+          <li>Track delivery and pickup schedules</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ ABOUT ══════════════ -->
+  <section id="aboutSection" class="about-section">
+    <div class="about-hero-block">
+      <div class="about-visual">
+        <div class="av-ring r1"></div>
+        <div class="av-ring r2"></div>
+        <div class="av-ring r3"></div>
+        <div class="av-center">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <div class="about-hero-text reveal">
+        <div class="section-eyebrow left-align">
+          <span class="eyebrow-dot"></span>
+          Who We Are
+        </div>
+        <h1>Built for <span class="highlight-word">Modern</span> Event Teams</h1>
+        <p>Eventia was founded with one mission — eliminate the chaos from event planning and replace it with clarity, control, and collaboration.</p>
+      </div>
+    </div>
+
+    <!-- Mission -->
+    <div class="about-mission">
+      <div class="mission-text reveal">
+        <div class="section-eyebrow left-align">
+          <span class="eyebrow-dot"></span>
+          Our Mission
+        </div>
+        <h2>Empowering Every Role in the Event Ecosystem</h2>
+        <p>From the planner strategising the entire event, to the vendor supplying the chairs — every person in the event workflow deserves a tool built for them. Eventia unifies planners, staff, clients and vendors under one smart, real-time platform.</p>
+        <p>We believe great events happen when communication is effortless, resources are tracked with precision, and every team member is aligned from kickoff to wrap-up.</p>
+      </div>
+
+      <div class="mission-stats reveal">
+        <div class="mstat-card ms-1">
+          <div class="mstat-val">1,240+</div>
+          <div class="mstat-label">Events Executed</div>
+        </div>
+        <div class="mstat-card ms-2">
+          <div class="mstat-val">320+</div>
+          <div class="mstat-label">Happy Clients</div>
+        </div>
+        <div class="mstat-card ms-3">
+          <div class="mstat-val">5,800+</div>
+          <div class="mstat-label">Resources Tracked</div>
+        </div>
+        <div class="mstat-card ms-4">
+          <div class="mstat-val">4</div>
+          <div class="mstat-label">User Roles Supported</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ CTA ══════════════ -->
+  <section class="cta-section">
+    <div class="cta-bg">
+      <div class="cta-orb co1"></div>
+      <div class="cta-orb co2"></div>
+    </div>
+    <div class="cta-card reveal">
+      <div class="cta-sparkle sp1">✦</div>
+      <div class="cta-sparkle sp2">✦</div>
+      <div class="cta-sparkle sp3">✦</div>
+      <h2>Ready to Plan Your Next Event?</h2>
+      <p>Join Eventia today and experience seamless event management for your entire team.</p>
+      <div class="cta-actions">
+        <button class="btn-cta-primary" (click)="goToRegister()">
+          Create Free Account
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn-cta-outline" (click)="goToLogin()">Sign In Instead</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ CONTACT ══════════════ -->
+  <section id="contactSection" class="contact-section">
+    <div class="section-eyebrow">
+      <span class="eyebrow-line"></span>
+      Get In Touch
+      <span class="eyebrow-line"></span>
+    </div>
+    <div class="section-header reveal">
+      <h2>Contact Us</h2>
+      <p>We'd love to hear from you</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>Contact Information</h3>
+        <p class="contact-info-sub">Reach us through any of the channels below and we'll respond within 24 hours.</p>
+
+        <div class="info-cards">
+          <div class="info-card ic-1">
+            <div class="ic-icon">✉</div>
+            <div class="ic-body">
+              <div class="ic-label">Email Us</div>
+              <div class="ic-value">eventia555&#64;gmail.com</div>
+            </div>
+          </div>
+          <div class="info-card ic-2">
+            <div class="ic-icon">📞</div>
+            <div class="ic-body">
+              <div class="ic-label">Call Us</div>
+              <div class="ic-value">9732456770</div>
+            </div>
+          </div>
+          <div class="info-card ic-3">
+            <div class="ic-icon">📍</div>
+            <div class="ic-body">
+              <div class="ic-label">Visit Us</div>
+              <div class="ic-value">Event Plaza, Suite 500<br>Baner street 411013</div>
+            </div>
+          </div>
+          <div class="info-card ic-4">
+            <div class="ic-icon">🕒</div>
+            <div class="ic-body">
+              <div class="ic-label">Working Hours</div>
+              <div class="ic-value">Mon – Fri, 9 AM – 6 PM PST</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-card reveal">
+        <h3>Send Us a Message</h3>
+        <p class="form-sub">Fill in the form and we'll get back to you shortly.</p>
+
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" formControlName="firstName" placeholder="Jane" />
+              <div class="error-text" *ngIf="contactForm.get('firstName')?.invalid && contactForm.get('firstName')?.touched">
+                First name is required.
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" formControlName="lastName" placeholder="Smith" />
+              <div class="error-text" *ngIf="contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched">
+                Last name is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" formControlName="email" placeholder="jane&#64;example.com" />
+            <div class="error-text" *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+              A valid email is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Subject</label>
+            <select formControlName="subject">
+              <option value="" disabled selected>Select a topic</option>
+              <option value="general">General Inquiry</option>
+              <option value="support">Technical Support</option>
+              <option value="billing">Billing &amp; Pricing</option>
+              <option value="partnership">Partnership</option>
+              <option value="other">Other</option>
+            </select>
+            <div class="error-text" *ngIf="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched">
+              Please select a subject.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Message</label>
+            <textarea formControlName="message" rows="5" placeholder="Tell us how we can help you..."></textarea>
+            <div class="error-text" *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched">
+              Message is required.
+            </div>
+          </div>
+
+          <div class="success-alert" *ngIf="submitted">
+            ✓ &nbsp; Thanks! Your message has been sent. We'll be in touch soon.
+          </div>
+
+          <button type="submit" class="btn-submit" [disabled]="contactForm.invalid">
+            Send Message
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer class="landing-footer">
+    <div class="footer-glow"></div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/images/logo.png" alt="Eventia Logo" class="footer-logo" />
+      </div>
+      <p class="footer-tag">Smart Event Management Platform &mdash; Connecting Planners, Staff, Clients and Vendors</p>
+      <div class="footer-divider"></div>
+      <p class="footer-copy">&copy; 2025 Eventia. All rights reserved.</p>
+    </div>
   </footer>
 
 </div>

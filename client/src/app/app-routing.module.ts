@@ -12,13 +12,11 @@ import { SubmitRequestComponent } from './submit-request/submit-request.componen
 import { ManageRequestsComponent } from './manage-requests/manage-requests.component';
 import { BrowseEventsComponent } from './browse-events/browse-events.component';
 import { LandingComponent } from './landing/landing.component';
-import { AboutComponent } from './about-component/about.component';
-import { ContactComponent } from './contact/contact.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'registration', component: RegistrationComponent },
+  { path: 'register', component: RegistrationComponent },
   { path: 'dashboard', component: DashbaordComponent },
   { path: 'create-event', component: CreateEventComponent },
   { path: 'add-resource', component: AddResourceComponent },
@@ -28,7 +26,6 @@ const routes: Routes = [
   { path: 'submit-request', component: SubmitRequestComponent },
   { path: 'browse-events', component: BrowseEventsComponent },
   { path: 'manage-requests', component: ManageRequestsComponent },
-  {path : 'about' , component : AboutComponent},
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: '**', redirectTo: '/landing', pathMatch: 'full' },
 ];
