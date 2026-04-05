@@ -1,139 +1,204 @@
-$blue: #77BEF0;
-$yellow: #FFCB61;
-$orange: #FF894F;
-$red: #EA5B6F;
-$dark: #1E2235;
-$white: white;
+// ═══════════════════════════════════════════════
+// EVENTIA — LAVENDER MIST — APP NAVBAR
+// ═══════════════════════════════════════════════
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 .eventia-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 32px;
-  height: 60px;
-  background: $dark;
-  position: relative;
+  padding: 0 36px;
+  height: 64px;
+  background: rgba(30, 10, 64, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  position: sticky;
+  top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(155, 121, 208, 0.18);
+  box-shadow: 0 2px 32px rgba(30, 10, 64, 0.35);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(155, 121, 208, 0.6) 30%,
+        rgba(124, 92, 191, 0.8) 50%,
+        rgba(155, 121, 208, 0.6) 70%,
+        transparent 100%);
+  }
 }
 
 .nav-brand {
-  font-family: 'Nunito', 'Segoe UI', sans-serif;
-  font-size: 22px;
-  font-weight: 900;
-  color: $blue;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 24px;
+  font-weight: 700;
+  font-style: italic;
+  color: #fff;
   cursor: pointer;
-  letter-spacing: -0.5px;
-  transition: color 0.2s;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  position: relative;
+
+  background: linear-gradient(135deg, #fff 0%, rgba(155, 121, 208, 0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 
   &:hover {
-    color: $yellow;
+    opacity: 0.85;
+    transform: translateY(-1px);
   }
 }
 
 .nav-links {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   align-items: center;
 
   a {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
-    font-family: 'Nunito', 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 8px;
-    transition: 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 7px 15px;
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    position: relative;
+    letter-spacing: 0.01em;
 
     &:hover {
-      background: rgba($blue, 0.18);
-      color: $white;
+      background: rgba(155, 121, 208, 0.15);
+      color: rgba(255, 255, 255, 0.95);
     }
 
     &.active {
-      background: rgba($blue, 0.22);
-      color: $blue;
+      background: rgba(155, 121, 208, 0.2);
+      color: #C4A8F0;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, #9B79D0, #7C5CBF);
+      }
     }
   }
 }
 
 .btn-logout {
-  margin-left: 8px;
-  padding: 7px 16px;
-  background: rgba($red, 0.15);
-  color: $red;
-  border: 1px solid rgba($red, 0.35);
-  border-radius: 8px;
+  margin-left: 12px;
+  padding: 8px 20px;
+  background: rgba(155, 121, 208, 0.12);
+  color: rgba(196, 168, 240, 0.9);
+  border: 1px solid rgba(155, 121, 208, 0.3);
+  border-radius: 10px;
   cursor: pointer;
-  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 13px;
-  font-weight: 700;
-  transition: 0.2s;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  letter-spacing: 0.02em;
 
   &:hover {
-    background: $red;
-    color: $white;
+    background: rgba(155, 121, 208, 0.25);
+    color: #fff;
+    border-color: rgba(155, 121, 208, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(155, 121, 208, 0.25);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 
-/* ====== HAMBURGER ====== */
+// ── Hamburger ──────────────────────────────────
 .hamburger {
   display: none;
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
-  width: 26px;
+  width: 28px;
+  padding: 4px;
 
   span {
     display: block;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 3px;
-    transition: 0.3s ease;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 2px;
+    transition: all 0.3s ease;
   }
 
   &.open {
     span:nth-child(1) {
-      transform: translateY(8px) rotate(45deg);
+      transform: translateY(7px) rotate(45deg);
+      background: #C4A8F0;
     }
 
     span:nth-child(2) {
       opacity: 0;
+      transform: scaleX(0);
     }
 
     span:nth-child(3) {
-      transform: translateY(-8px) rotate(-45deg);
+      transform: translateY(-7px) rotate(-45deg);
+      background: #C4A8F0;
     }
   }
 }
 
-/* ====== MOBILE ====== */
+// ── Mobile ─────────────────────────────────────
 @media (max-width: 768px) {
+  .eventia-navbar {
+    padding: 0 20px;
+  }
+
   .hamburger {
     display: flex;
   }
 
   .nav-links {
     position: absolute;
-    top: 60px;
+    top: 64px;
     right: 0;
-    background: $dark;
+    background: rgba(20, 6, 54, 0.98);
+    backdrop-filter: blur(24px);
     flex-direction: column;
     align-items: flex-start;
-    width: 230px;
-    padding: 20px;
-    gap: 6px;
+    width: 250px;
+    padding: 16px;
+    gap: 4px;
     transform: translateX(100%);
-    transition: 0.3s ease;
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
+    border-left: 1px solid rgba(155, 121, 208, 0.2);
 
     a {
       width: 100%;
+      padding: 10px 14px;
     }
 
     &.open {
-      transform: translateX(0%);
+      transform: translateX(0);
     }
   }
 

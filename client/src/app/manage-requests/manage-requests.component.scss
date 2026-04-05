@@ -1,161 +1,224 @@
-$blue:   #77BEF0;
-$yellow: #FFCB61;
-$orange: #FF894F;
-$red:    #EA5B6F;
-$page-bg:
-  radial-gradient(circle at 12% 18%, rgba(119, 190, 240, 0.35) 0%, transparent 70%),
-  radial-gradient(circle at 88% 22%, rgba(255, 203, 97, 0.22) 0%, transparent 72%),
-  radial-gradient(circle at 78% 92%, rgba(234, 91, 111, 0.22) 0%, transparent 72%),
-  radial-gradient(circle at 18% 88%, rgba(255, 137, 79, 0.20) 0%, transparent 72%),
-  linear-gradient(135deg, #F8FAFC 0%, #EEF2F7 55%, #E9EFFA 100%);
-$font: 'DM Sans', 'Segoe UI', sans-serif;
+// ═══════════════════════════════════════════════
+// EVENTIA — LAVENDER MIST — MANAGE REQUESTS
+// ═══════════════════════════════════════════════
 
-.page-wrapper {
-  background: $page-bg;
-  min-height: 100vh;
-  padding: 24px;
-  font-family: $font;
-}
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+
+$bg:        #F5F0FF;
+$primary:   #9B79D0;
+$secondary: #7C5CBF;
+$dark:      #1E0A40;
+$dark-60:   rgba(30, 10, 64, 0.6);
+$red:       #C05B78;
+$green:     #3D9E6E;
+$amber:     #A07020;
+$font-body: 'DM Sans', system-ui, sans-serif;
+$font-display: 'Cormorant Garamond', Georgia, serif;
+
+$page-bg:
+  radial-gradient(ellipse at 15% 20%, rgba(155, 121, 208, 0.18) 0%, transparent 55%),
+  radial-gradient(ellipse at 85% 80%, rgba(124, 92, 191, 0.14) 0%, transparent 55%),
+  linear-gradient(160deg, #F5F0FF 0%, #EDE5FF 50%, #E8DCFF 100%);
+
+.page-wrapper { background: $page-bg; min-height: 100vh; padding: 32px; font-family: $font-body; }
 
 .back-btn {
-  display: inline-flex; align-items: center; gap: 6px; background: #fff;
-  border: 1px solid #e2e8f0; color: #475569; padding: 8px 16px; border-radius: 8px;
-  font-size: 13px; font-weight: 500; cursor: pointer; margin-bottom: 20px;
-  font-family: $font; transition: all 0.2s;
-  &:hover { background: $blue; color: #fff; border-color: $blue; }
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px);
+  border: 1px solid rgba(155, 121, 208, 0.25); color: $dark-60;
+  padding: 9px 18px; border-radius: 12px; font-size: 13.5px; font-weight: 500;
+  cursor: pointer; margin-bottom: 28px; font-family: $font-body; transition: all 0.25s ease;
+
+  &:hover {
+    background: rgba(155, 121, 208, 0.12); color: $dark;
+    border-color: rgba(155, 121, 208, 0.45); transform: translateX(-3px);
+  }
 }
 
-.page-container { max-width: 860px; margin: 0 auto; }
+.page-container { max-width: 880px; margin: 0 auto; }
 
 .card {
-  background: #fff; border-radius: 14px; padding: 28px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06); border-top: 4px solid $red;
+  background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px; padding: 32px;
+  box-shadow: 0 2px 28px rgba(30, 10, 64, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  border-top: 3px solid $primary;
+  animation: slideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .card-header {
-  margin-bottom: 24px;
-  h2 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; }
+  margin-bottom: 24px; padding-bottom: 20px;
+  border-bottom: 1px solid rgba(155, 121, 208, 0.12);
+  h2 { font-family: $font-display; font-size: 22px; font-weight: 700; color: $dark; margin: 0; }
 }
 
 .filter-tabs {
-  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px;
+
   button {
-    padding: 7px 16px; border: 1.5px solid #e2e8f0; border-radius: 20px;
-    background: #f8fafc; color: #64748b; cursor: pointer;
-    font-size: 13px; font-family: $font; font-weight: 500; transition: all 0.2s;
-    &.active { background: $blue; color: #fff; border-color: $blue; }
-    &:hover:not(.active) { background: #e2e8f0; }
+    padding: 7px 16px; border: 1.5px solid rgba(155, 121, 208, 0.2); border-radius: 20px;
+    background: rgba(255, 255, 255, 0.5); color: $dark-60; cursor: pointer;
+    font-size: 13px; font-family: $font-body; font-weight: 500; transition: all 0.25s ease;
+    backdrop-filter: blur(8px);
+
+    &.active {
+      background: linear-gradient(135deg, $primary, $secondary);
+      color: #fff; border-color: $primary;
+      box-shadow: 0 3px 14px rgba(155, 121, 208, 0.38);
+    }
+    &:hover:not(.active) {
+      background: rgba(155, 121, 208, 0.1);
+      border-color: rgba(155, 121, 208, 0.35); color: $dark;
+    }
   }
 }
 
-.empty-state {
-  color: #94a3b8; text-align: center; padding: 48px 0; font-size: 15px;
-}
+.empty-state { color: $dark-60; text-align: center; padding: 56px 0; font-size: 15px; }
 
 .request-card {
-  border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px;
+  border: 1.5px solid rgba(155, 121, 208, 0.15); border-radius: 16px;
+  padding: 22px; margin-bottom: 20px; background: rgba(255, 255, 255, 0.4);
+  transition: all 0.25s ease;
+
+  &:hover { box-shadow: 0 6px 24px rgba(30, 10, 64, 0.08); border-color: rgba(155, 121, 208, 0.25); }
 }
 
 .request-header {
-  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;
-  h3 { margin: 0; color: #1e293b; font-size: 17px; font-weight: 700; }
-  .client-name { color: #94a3b8; font-size: 13px; }
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;
+  h3 { margin: 0; color: $dark; font-family: $font-display; font-size: 17px; font-weight: 700; }
+  .client-name { color: rgba(30, 10, 64, 0.45); font-size: 13px; margin-top: 3px; }
 }
 
-.req-desc {
-  color: #64748b; font-size: 14px; margin-bottom: 10px; line-height: 1.6;
-}
+.req-desc { color: $dark-60; font-size: 14px; margin-bottom: 12px; line-height: 1.65; }
 
 .req-meta {
-  display: flex; flex-wrap: wrap; gap: 14px; color: #94a3b8; font-size: 13px; margin-bottom: 10px;
-  i { margin-right: 4px; }
+  display: flex; flex-wrap: wrap; gap: 14px;
+  color: rgba(30, 10, 64, 0.45); font-size: 13px; margin-bottom: 12px;
+  i { margin-right: 4px; color: $primary; }
 }
 
 .req-resources {
-  background: #f8fafc; padding: 10px 14px; border-radius: 8px;
-  font-size: 13px; color: #475569; margin-bottom: 12px;
+  background: rgba(155, 121, 208, 0.07); padding: 11px 14px; border-radius: 10px;
+  font-size: 13.5px; color: $dark-60; margin-bottom: 13px;
+  border: 1px solid rgba(155, 121, 208, 0.12);
 }
 
 .cancellation-note {
-  background: rgba(148,163,184,0.1); border: 1px solid rgba(148,163,184,0.3);
-  border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #475569; margin-bottom: 12px;
+  background: rgba(155, 121, 208, 0.05); border: 1px solid rgba(155, 121, 208, 0.15);
+  border-radius: 10px; padding: 10px 14px; font-size: 13px; color: $dark-60; margin-bottom: 12px;
 }
 
 .linked-event-info {
-  background: rgba(119,190,240,0.1); border: 1px solid rgba(119,190,240,0.3);
-  border-radius: 8px; padding: 10px 14px; font-size: 13px;
-  color: darken($blue, 25%); margin-bottom: 12px;
+  background: rgba(155, 121, 208, 0.08); border: 1px solid rgba(155, 121, 208, 0.2);
+  border-radius: 10px; padding: 10px 14px; font-size: 13px; color: $secondary; margin-bottom: 12px;
 }
 
 .rejection-reason {
-  background: rgba(234,91,111,0.08); border: 1px solid rgba(234,91,111,0.25);
-  border-radius: 8px; padding: 10px 14px; font-size: 13px;
-  color: darken($red, 10%); margin-bottom: 12px;
+  background: rgba(192, 91, 120, 0.07); border: 1px solid rgba(192, 91, 120, 0.2);
+  border-radius: 10px; padding: 10px 14px; font-size: 13px; color: $red; margin-bottom: 12px;
 }
 
-.action-row {
-  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px;
-}
+.action-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
 
 .reject-panel {
-  background: #f8fafc; border-radius: 10px; padding: 18px; margin-top: 14px;
-  h4 { color: #1e293b; font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+  background: rgba(192, 91, 120, 0.05); border: 1.5px solid rgba(192, 91, 120, 0.2);
+  border-radius: 14px; padding: 20px; margin-top: 14px;
+
+  h4 { color: $dark; font-family: $font-display; font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+
   textarea {
-    width: 100%; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
-    font-size: 14px; font-family: $font; box-sizing: border-box; resize: vertical; color: #1e293b;
-    &:focus { outline: none; border-color: $red; }
+    width: 100%; padding: 12px 16px; border: 1.5px solid rgba(155, 121, 208, 0.25);
+    border-radius: 12px; font-size: 14px; font-family: $font-body; box-sizing: border-box;
+    resize: vertical; color: $dark; background: rgba(255,255,255,0.7); outline: none;
+    transition: all 0.25s;
+
+    &:focus { border-color: $primary; box-shadow: 0 0 0 4px rgba(155,121,208,0.12); }
   }
 }
 
-.panel-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.panel-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
 
-// Badges
-.badge-yellow { padding: 3px 10px; border-radius: 20px; background: rgba(255,203,97,0.2);   color: darken($yellow,30%); font-size: 12px; font-weight: 600; }
-.badge-blue   { padding: 3px 10px; border-radius: 20px; background: rgba(119,190,240,0.15); color: darken($blue,20%);   font-size: 12px; font-weight: 600; }
-.badge-green  { padding: 3px 10px; border-radius: 20px; background: rgba(119,190,240,0.15); color: darken($blue,20%);   font-size: 12px; font-weight: 600; }
-.badge-red    { padding: 3px 10px; border-radius: 20px; background: rgba(234,91,111,0.12);  color: darken($red,8%);     font-size: 12px; font-weight: 600; }
-.badge-grey   { padding: 3px 10px; border-radius: 20px; background: #f1f5f9;                color: #94a3b8;             font-size: 12px; font-weight: 600; }
+// ── Badges ───────────────────────────────────────
+.badge-yellow {
+  padding: 4px 12px; border-radius: 20px;
+  background: rgba(160, 112, 32, 0.1); color: $amber;
+  font-size: 11.5px; font-weight: 700;
+}
+.badge-blue {
+  padding: 4px 12px; border-radius: 20px;
+  background: rgba(155, 121, 208, 0.12); color: $secondary;
+  font-size: 11.5px; font-weight: 700;
+}
+.badge-green {
+  padding: 4px 12px; border-radius: 20px;
+  background: rgba(61, 158, 110, 0.1); color: $green;
+  font-size: 11.5px; font-weight: 700;
+}
+.badge-red {
+  padding: 4px 12px; border-radius: 20px;
+  background: rgba(192, 91, 120, 0.1); color: $red;
+  font-size: 11.5px; font-weight: 700;
+}
+.badge-grey {
+  padding: 4px 12px; border-radius: 20px;
+  background: rgba(155, 121, 208, 0.07); color: rgba(30, 10, 64, 0.4);
+  font-size: 11.5px; font-weight: 700;
+}
 
 .success-msg {
-  background: rgba(119,190,240,0.12); color: darken($blue,20%);
-  border: 1px solid rgba(119,190,240,0.4); padding: 10px 14px;
-  border-radius: 8px; margin-bottom: 16px; font-size: 14px;
+  background: rgba(155, 121, 208, 0.1); color: $secondary;
+  border: 1px solid rgba(155, 121, 208, 0.3);
+  padding: 12px 16px; border-radius: 12px; margin-bottom: 20px; font-size: 14px;
 }
 .error-msg {
-  background: rgba(234,91,111,0.1); color: darken($red,10%);
-  border: 1px solid rgba(234,91,111,0.3); padding: 10px 14px;
-  border-radius: 8px; margin-bottom: 16px; font-size: 14px;
+  background: rgba(192, 91, 120, 0.08); color: $red;
+  border: 1px solid rgba(192, 91, 120, 0.25);
+  padding: 12px 16px; border-radius: 12px; margin-bottom: 20px; font-size: 14px;
 }
 
+// ── Action Buttons ────────────────────────────────
 .btn-review {
-  padding: 8px 18px; background: $yellow; color: #1e293b; border: none;
-  border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;
-  font-family: $font; transition: opacity 0.2s;
-  &:hover { opacity: 0.88; }
+  padding: 9px 18px; background: rgba(160, 112, 32, 0.1); color: $amber;
+  border: 1.5px solid rgba(160, 112, 32, 0.25); border-radius: 10px;
+  font-size: 13px; font-weight: 700; cursor: pointer; font-family: $font-body; transition: all 0.25s;
+  &:hover { background: rgba(160, 112, 32, 0.2); transform: translateY(-1px); }
 }
+
 .btn-approve {
-  padding: 8px 18px; background: $blue; color: #fff; border: none;
-  border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
-  font-family: $font; transition: opacity 0.2s;
+  padding: 9px 18px; background: rgba(155, 121, 208, 0.12); color: $secondary;
+  border: 1.5px solid rgba(155, 121, 208, 0.3); border-radius: 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer; font-family: $font-body; transition: all 0.25s;
   display: inline-flex; align-items: center; gap: 6px;
-  &:hover { opacity: 0.88; }
+
+  &:hover {
+    background: $primary; color: #fff; border-color: $primary;
+    transform: translateY(-1px); box-shadow: 0 4px 16px rgba(155,121,208,0.38);
+  }
 }
+
 .btn-reject {
-  padding: 8px 18px; background: $red; color: #fff; border: none;
-  border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
-  font-family: $font; transition: opacity 0.2s;
-  &:disabled { background: #cbd5e1; cursor: not-allowed; }
-  &:hover:not(:disabled) { opacity: 0.88; }
+  padding: 9px 18px; background: rgba(192, 91, 120, 0.1); color: $red;
+  border: 1.5px solid rgba(192, 91, 120, 0.25); border-radius: 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer; font-family: $font-body; transition: all 0.25s;
+
+  &:disabled { opacity: 0.45; cursor: not-allowed; }
+  &:hover:not(:disabled) { background: $red; color: #fff; border-color: $red; transform: translateY(-1px); }
 }
+
 .btn-cancel {
-  padding: 8px 18px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
-  border-radius: 8px; font-size: 13px; cursor: pointer; font-family: $font;
-  &:hover { background: #e2e8f0; }
+  padding: 9px 18px; background: rgba(255,255,255,0.6); color: $dark-60;
+  border: 1px solid rgba(155, 121, 208, 0.2); border-radius: 10px;
+  font-size: 13px; cursor: pointer; font-family: $font-body; transition: all 0.2s;
+  &:hover { background: rgba(155, 121, 208, 0.1); color: $dark; }
 }
 
 @media (max-width: 600px) {
   .request-header { flex-direction: column; gap: 8px; }
   .action-row, .panel-actions { flex-direction: column; }
-  .btn-review, .btn-approve, .btn-reject, .btn-cancel { width: 100%; text-align: center; }
-  .page-wrapper { padding: 16px; }
+  .btn-review, .btn-approve, .btn-reject, .btn-cancel { width: 100%; text-align: center; justify-content: center; }
+  .page-wrapper { padding: 20px; }
 }
