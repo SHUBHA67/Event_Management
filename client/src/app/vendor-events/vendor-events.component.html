@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="page-wrapper">
+
+  <button class="back-btn" (click)="router.navigate(['/dashboard'])">
+    <i class="bi bi-arrow-left"></i> Back to Dashboard
+  </button>
+
+  <div class="page-container">
+    <div class="card">
+      <div class="card-header">
+        <h2><i class="bi bi-calendar2-event"></i> Event Resources</h2>
+        <span class="count-badge">{{ vendorEvents.length }} event(s)</span>
+      </div>
+
+      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
+
+      <div class="empty-state" *ngIf="vendorEvents.length === 0 && !showError">
+        <i class="bi bi-calendar-x"></i>
+        <p>None of your resources have been allocated to any events yet.</p>
+      </div>
+
+      <div *ngFor="let entry of vendorEvents" class="event-allocation-card">
+
+        <div class="ea-header">
+          <div class="ea-title-block">
+            <h4>{{ entry.event.title }}</h4>
+            <div class="ea-meta">
+              <span><i class="bi bi-geo-alt"></i> {{ entry.event.location }}</span>
+              <span><i class="bi bi-calendar3"></i> {{ entry.event.dateTime | date:'mediumDate' }}</span>
+              <span><i class="bi bi-person"></i> {{ entry.event.planner?.username || '—' }}</span>
+            </div>
+          </div>
+          <span [ngClass]="{
+            'badge-blue'  : entry.event.status === 'PLANNED',
+            'badge-orange': entry.event.status === 'ONGOING',
+            'badge-grey'  : entry.event.status === 'COMPLETED',
+            'badge-red'   : entry.event.status === 'CANCELLED'
+          }">{{ entry.event.status }}</span>
+        </div>
+
+        <div class="ea-resources">
+          <div *ngFor="let alloc of entry.allocations" class="ea-resource-chip">
+            <div class="chip-icon"><i class="bi bi-box-seam"></i></div>
+            <div class="chip-details">
+              <span class="chip-name">{{ alloc.resource?.name }}</span>
+              <span class="chip-type">{{ alloc.resource?.type }}</span>
+            </div>
+            <span class="chip-qty">&times;{{ alloc.quantity }}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

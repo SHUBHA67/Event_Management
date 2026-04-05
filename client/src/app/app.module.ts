@@ -17,8 +17,7 @@ import { ManageRequestsComponent } from './manage-requests/manage-requests.compo
 import { BrowseEventsComponent } from './browse-events/browse-events.component';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 import { PlannerEventsComponent } from './planner-events/planner-events.component';
-
-// Keep these imported but they are no longer linked in routing/nav
+import { VendorEventsComponent } from './vendor-events/vendor-events.component';
 import { AddResourceComponent } from './add-resource/add-resource.component';
 import { ResourceAllocateComponent } from './resource-allocate/resource-allocate.component';
 
@@ -38,6 +37,7 @@ import { ResourceAllocateComponent } from './resource-allocate/resource-allocate
     BrowseEventsComponent,
     VendorDashboardComponent,
     PlannerEventsComponent,
+    VendorEventsComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,22 +12,24 @@ import { BrowseEventsComponent } from './browse-events/browse-events.component';
 import { LandingComponent } from './landing/landing.component';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 import { PlannerEventsComponent } from './planner-events/planner-events.component';
+import { VendorEventsComponent } from './vendor-events/vendor-events.component';
 
 const routes: Routes = [
-  { path: 'landing',           component: LandingComponent },
-  { path: 'login',             component: LoginComponent },
-  { path: 'registration',      component: RegistrationComponent },
-  { path: 'dashboard',         component: DashbaordComponent },
-  { path: 'create-event',      component: CreateEventComponent },
-  { path: 'view-events',       component: ViewEventsComponent },
-  { path: 'booking-details',   component: BookingDetailsComponent },
-  { path: 'submit-request',    component: SubmitRequestComponent },
-  { path: 'browse-events',     component: BrowseEventsComponent },
-  { path: 'manage-requests',   component: ManageRequestsComponent },
-  { path: 'vendor-dashboard',  component: VendorDashboardComponent },
-  { path: 'planner-events',    component: PlannerEventsComponent },
-  { path: '',                  redirectTo: '/landing', pathMatch: 'full' },
-  { path: '**',                redirectTo: '/landing', pathMatch: 'full' },
+  { path: 'landing',          component: LandingComponent },
+  { path: 'login',            component: LoginComponent },
+  { path: 'registration',     component: RegistrationComponent },
+  { path: 'dashboard',        component: DashbaordComponent },
+  { path: 'create-event',     component: CreateEventComponent },
+  { path: 'view-events',      component: ViewEventsComponent },
+  { path: 'booking-details',  component: BookingDetailsComponent },
+  { path: 'submit-request',   component: SubmitRequestComponent },
+  { path: 'browse-events',    component: BrowseEventsComponent },
+  { path: 'manage-requests',  component: ManageRequestsComponent },
+  { path: 'vendor-dashboard', component: VendorDashboardComponent },
+  { path: 'planner-events',   component: PlannerEventsComponent },
+  { path: 'vendor-events',    component: VendorEventsComponent },
+  { path: '',                 redirectTo: '/landing', pathMatch: 'full' },
+  { path: '**',               redirectTo: '/landing', pathMatch: 'full' },
 ];
 
 @NgModule({

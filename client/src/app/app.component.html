@@ -17,6 +17,7 @@
 
     <ng-container *ngIf="roleName === 'VENDOR'">
       <a routerLink="/vendor-dashboard" routerLinkActive="active" (click)="closeMenu()">My Resources</a>
+      <a routerLink="/vendor-events"    routerLinkActive="active" (click)="closeMenu()">Event Resources</a>
     </ng-container>
 
     <ng-container *ngIf="roleName === 'STAFF'">

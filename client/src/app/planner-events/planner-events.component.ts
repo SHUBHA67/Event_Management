@@ -20,6 +20,8 @@ export class PlannerEventsComponent implements OnInit {
   showError    = false;
   errorMessage = '';
 
+  
+
   constructor(public router: Router, private httpService: HttpService) {}
 
   ngOnInit(): void { this.loadEvents(); }

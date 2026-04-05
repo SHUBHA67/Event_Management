@@ -159,6 +159,9 @@ public updateVendorResource(resourceId: number, payload: any): Observable<any> {
 public deleteVendorResource(resourceId: number): Observable<any> {
   return this.http.delete(`${this.serverName}/api/vendor/resource/${resourceId}`, { headers: this.getHeaders() });
 }
+public getVendorEvents(): Observable<any> {
+  return this.http.get(`${this.serverName}/api/vendor/my-events`, { headers: this.getHeaders() });
+}
 
 
 

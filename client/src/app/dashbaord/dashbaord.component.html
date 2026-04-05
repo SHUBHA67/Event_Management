@@ -44,7 +44,12 @@
         <button class="nav-item" (click)="navigateTo('/vendor-dashboard')">
           <i class="bi bi-box-seam nav-icon"></i> My Resources
         </button>
+        <button class="nav-item" (click)="navigateTo('/vendor-events')">
+          <i class="bi bi-calendar2-event nav-icon"></i> Event Resources
+        </button>
       </ng-container>
+
+
 
       <!-- STAFF -->
       <ng-container *ngIf="roleName === 'STAFF'">
@@ -114,7 +119,15 @@
         <p>Add your resources, manage quantities and dispatch them to planners.</p>
         <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
+      <div class="card card-accent-blue" (click)="navigateTo('/vendor-events')">
+        <div class="card-icon-wrap icon-blue"><i class="bi bi-calendar2-event"></i></div>
+        <h3>Event Resources</h3>
+        <p>View all events where your resources have been allocated by planners.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
+      </div>
     </div>
+
+   
 
     <!-- STAFF Cards -->
     <div class="cards-grid" *ngIf="roleName === 'STAFF'">
