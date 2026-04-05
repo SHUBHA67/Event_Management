@@ -44,7 +44,7 @@
           </div>
           <div class="meta-item">
             <span class="meta-label">Assigned Staff</span>
-            {{ booking.linkedEvent.assignedStaff?.username || '—' }}
+            {{ booking.linkedEvent.assignedStaff?.username || booking.linkedEvent.completedByStaff ||'—' }}
           </div>
           <div class="meta-item">
             <span class="meta-label">Your Attendees</span>

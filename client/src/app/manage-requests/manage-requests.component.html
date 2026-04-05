@@ -59,7 +59,7 @@
         <div *ngIf="req.status === 'APPROVED' && req.linkedEvent" class="linked-event-info">
           <strong>Linked Event:</strong> {{ req.linkedEvent.title }} —
           {{ req.linkedEvent.dateTime | date:'mediumDate' }} |
-          Staff: {{ req.linkedEvent.assignedStaff?.username || 'Not assigned' }}
+          Staff: {{ req.linkedEvent.assignedStaff?.username || req.linkedEvent.completedByStaff || 'Not assigned' }}
         </div>
 
         <div *ngIf="req.rejectionReason" class="rejection-reason">

@@ -22,6 +22,7 @@ private String description;
 private Date dateTime;
 private String location;
 private String status;
+private String completedByStaff;
 
 // ── Planner who created this event (auto-captured from logged-in user) ──
 @ManyToOne
@@ -59,6 +60,11 @@ public void setStatus(String status) { this.status = status; }
 
 public User getPlanner() { return planner; }
 public void setPlanner(User planner) { this.planner = planner; }
+
+public String getCompletedByStaff() { return completedByStaff; }
+public String setCompletedByStaff(String completedByStaff){
+    return this.completedByStaff = completedByStaff;
+}
 
 public User getAssignedStaff() { return assignedStaff; }
 public void setAssignedStaff(User assignedStaff) { this.assignedStaff = assignedStaff; }

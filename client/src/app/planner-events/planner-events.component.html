@@ -55,7 +55,7 @@
           <div class="event-meta">
             <span><i class="bi bi-calendar3"></i> {{ event.dateTime | date:'mediumDate' }}</span>
             <span><i class="bi bi-clock"></i> {{ event.dateTime | date:'shortTime' }}</span>
-            <span><i class="bi bi-person"></i> {{ event.assignedStaff?.username || 'No staff' }}</span>
+            <span><i class="bi bi-person"></i> {{ event.assignedStaff?.username || event.completedByStaff ||'No staff' }}</span>
           </div>
           <div class="view-hint"><i class="bi bi-eye"></i> Click to view details</div>
         </div>
@@ -96,7 +96,7 @@
       </div>
       <div class="detail-item">
         <span class="detail-label">Assigned Staff</span>
-        <span>{{ selectedEvent.assignedStaff?.username || '—' }}</span>
+        <span>{{ selectedEvent.assignedStaff?.username || selectedEvent.completedByStaff }}</span>
       </div>
     </div>
 

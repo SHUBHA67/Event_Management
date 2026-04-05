@@ -72,7 +72,12 @@ public class EventService {
 
             // Unlink staff when COMPLETED or CANCELLED
             if ("COMPLETED".equals(newStatus) || "CANCELLED".equals(newStatus)) {
+                
+                if(existing.getAssignedStaff()!=null){
+                    existing.setCompletedByStaff(existing.getAssignedStaff().getUsername());
+                }
                 existing.setAssignedStaff(null);
+
             }
 
             existing.setStatus(newStatus);

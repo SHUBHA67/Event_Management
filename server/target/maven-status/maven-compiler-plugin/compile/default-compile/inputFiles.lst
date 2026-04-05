@@ -1,3 +1,4 @@
+/home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/dto/VendorEventDTO.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/EventManagementSystemApplication.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/repository/ResourceRepository.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/service/EventRequestService.java
