@@ -20,6 +20,7 @@ import { PlannerEventsComponent } from './planner-events/planner-events.componen
 import { VendorEventsComponent } from './vendor-events/vendor-events.component';
 import { AddResourceComponent } from './add-resource/add-resource.component';
 import { ResourceAllocateComponent } from './resource-allocate/resource-allocate.component';
+import { LandingComponent } from './landing/landing.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ResourceAllocateComponent } from './resource-allocate/resource-allocate
     VendorDashboardComponent,
     PlannerEventsComponent,
     VendorEventsComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,
