@@ -109,6 +109,13 @@
         <p>Review, approve or reject incoming event requests from clients.</p>
         <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
+
+      <div class="card card-accent-blue" (click)="navigateTo('/event-insights')">
+        <div class="card-icon-wrap icon-blue"><i class="bi bi-pie-chart"></i></div>
+        <h3>Event Insights</h3>
+        <p>Visual breakdown of all events by status with detailed analytics.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
+      </div>
     </div>
 
     <!-- VENDOR Cards -->
@@ -127,7 +134,7 @@
       </div>
     </div>
 
-   
+
 
     <!-- STAFF Cards -->
     <div class="cards-grid" *ngIf="roleName === 'STAFF'">
