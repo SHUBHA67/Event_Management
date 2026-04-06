@@ -4,8 +4,11 @@
 <div class="auth-page">
 
   <div class="auth-sidebar reg-sidebar">
-    <div class="sidebar-brand">Eventia</div>
-    <div class="sidebar-content">
+    <!-- <div class="sidebar-brand">Eventia</div> -->
+    <div style="text-align: center; margin-top: 50px; margin-right: 20px;">
+      <img src="assets/images/light_logo.png" alt="Eventia Logo" style="width: 180px;" />
+    </div>
+    <div class="sidebar-content" style="margin-top: 60px;">
       <h2>Join Eventia</h2>
       <p>Create an account to start planning, staffing, supplying or booking events on our platform.</p>
       <div class="role-pills">
@@ -37,9 +40,20 @@
           <label>Username</label>
           <input type="text" formControlName="username" placeholder="Choose a username" />
           <div *ngIf="itemForm.controls['username'].touched && itemForm.controls['username'].errors">
-            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['required']">Username is required</span>
-            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['minlength']">Minimum 6 characters required</span>
-            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['startsWithNumber']">Username should not start with a number</span>
+            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['required']">Username is
+              required</span>
+            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['minlength']">Minimum 6 characters
+              required</span>
+            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['startsWithNumber']">Username should
+              not start with a number</span>
+
+            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['startsWithSpecialChar']">
+              Username should not start with a special character
+            </span>
+
+            <span class="error-text" *ngIf="itemForm.controls['username'].errors?.['hasSpace']">
+              Username should not contain spaces
+            </span>
           </div>
         </div>
 
@@ -54,13 +68,18 @@
         <div class="form-group">
           <label>Password</label>
           <div class="password-wrap">
-            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Create a strong password" />
-            <button type="button" class="pw-toggle" (click)="togglePassword()">{{ showPassword ? 'Hide' : 'Show' }}</button>
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
+              placeholder="Create a strong password" />
+            <button type="button" class="pw-toggle" (click)="togglePassword()">{{ showPassword ? 'Hide' : 'Show'
+              }}</button>
           </div>
           <div *ngIf="itemForm.controls['password'].touched && itemForm.controls['password'].errors">
-            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['required']">Password is required</span>
-            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['minlength']">Password must be at least 8 characters</span>
-            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['passwordStrength']">Must contain 1 uppercase, 1 alphabet, 1 number and 1 special character</span>
+            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['required']">Password is
+              required</span>
+            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['minlength']">Password must be at
+              least 8 characters</span>
+            <span class="error-text" *ngIf="itemForm.controls['password'].errors?.['passwordStrength']">Must contain 1
+              uppercase, 1 alphabet, 1 number and 1 special character</span>
           </div>
         </div>
 

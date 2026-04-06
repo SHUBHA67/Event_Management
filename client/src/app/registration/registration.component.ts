@@ -46,11 +46,28 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  usernameValidator(control: AbstractControl): ValidationErrors | null {
-    const value: string = control.value;
-    if (!value) return null;
-    return /^[0-9]/.test(value) ? { startsWithNumber: true } : null;
+usernameValidator(control: AbstractControl): ValidationErrors | null {
+  const value: string = control.value;
+
+  if (!value) return null;
+
+  
+  if (/\s/.test(value)) {
+    return { hasSpace: true };
   }
+
+ 
+  if (/^[0-9]/.test(value)) {
+    return { startsWithNumber: true };
+  }
+
+
+  if (/^[^a-zA-Z]/.test(value)) {
+    return { startsWithSpecialChar: true };
+  }
+
+  return null;
+}
 
   togglePassword(): void {
     this.showPassword = !this.showPassword;

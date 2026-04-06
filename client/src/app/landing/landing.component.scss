@@ -1,5 +1,4 @@
 
-
 // ═══════════════════════════════════════════════
 // EVENTIA — LAVENDER MIST DESIGN SYSTEM
 // ═══════════════════════════════════════════════
@@ -630,7 +629,7 @@
   font-family: var(--font-display);
   font-size: 3rem;
   font-weight: 700;
-  color: rgba(155,121,208,0.12);
+  color: rgba(99, 70, 144, 0.651);
   line-height: 1;
   margin-bottom: -8px;
 }
@@ -749,7 +748,7 @@
   font-family: var(--font-display);
   font-size: 2.2rem;
   font-weight: 700;
-  color: rgba(155,121,208,0.15);
+  color: rgba(99, 70, 144, 0.651);
   line-height: 1;
 }
 .role-badge {
@@ -759,11 +758,12 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  &.rb-1 { background: rgba(155,121,208,0.15); color: var(--primary); }
-  &.rb-2 { background: rgba(124,92,191,0.12); color: var(--secondary); }
-  &.rb-3 { background: rgba(30,10,64,0.08); color: var(--dark); }
+  &.rb-1 { background: rgba(155,121,208,0.1); color: var(--secondary);}
+  &.rb-2 { background: rgba(155,121,208,0.1); color: var(--secondary);}
+  &.rb-3 { background: rgba(155,121,208,0.1); color: var(--secondary); }
   &.rb-4 { background: rgba(155,121,208,0.1); color: var(--secondary); }
 }
+//just changed by sahil
 .role-icon {
   width: 56px; height: 56px;
   border-radius: var(--radius-md);
@@ -771,7 +771,7 @@
   margin-bottom: 20px;
   &.ri-1 { background: linear-gradient(135deg, rgba(155,121,208,0.2), rgba(155,121,208,0.05)); color: var(--primary); }
   &.ri-2 { background: linear-gradient(135deg, rgba(124,92,191,0.2), rgba(124,92,191,0.05)); color: var(--secondary); }
-  &.ri-3 { background: linear-gradient(135deg, rgba(30,10,64,0.1), rgba(30,10,64,0.03)); color: var(--dark); }
+  &.ri-3 { background: linear-gradient(135deg, rgba(124,92,191,0.2), rgba(124,92,191,0.05)); color: var(--secondary);}
   &.ri-4 { background: linear-gradient(135deg, rgba(155,121,208,0.15), rgba(155,121,208,0.03)); color: var(--primary); }
 }
 .role-list {
