@@ -34,13 +34,18 @@ $page-bg:
   }
 }
 
-.page-container { max-width: 1020px; margin: 0 auto; }
+.page-container { 
+  max-width: 1020px;
+   margin: 0 auto;
+
+  }
 
 .card {
   background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-radius: 20px; padding: 32px;
   box-shadow: 0 2px 28px rgba(30, 10, 64, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
   border-top: 3px solid $primary;
+  max-width: 900px;
   animation: slideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 

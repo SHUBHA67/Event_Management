@@ -16,7 +16,9 @@
 
   <!-- Sidebar -->
   <div class="sidebar" [class.sidebar-open]="sidebarOpen">
-    <div class="brand"><span class="brand-name">Eventia</span></div>
+    <div style="text-align: center; ">
+      <img src="assets/images/light_logo.png" alt="Eventia Logo" style="width: 100px;" />
+    </div>
 
     <div class="user-info">
       <div class="avatar">{{ username?.charAt(0)?.toUpperCase() }}</div>
@@ -107,6 +109,12 @@
         <div class="card-icon-wrap icon-red"><i class="bi bi-envelope-open"></i></div>
         <h3>Client Requests</h3>
         <p>Review, approve or reject incoming event requests from clients.</p>
+        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
+      </div>
+      <div class="card card-accent-blue" (click)="navigateTo('/event-insights')">
+        <div class="card-icon-wrap icon-blue"><i class="bi bi-pie-chart"></i></div>
+        <h3>Event Insights</h3>
+        <p>Visual breakdown of all events by status with detailed analytics.</p>
         <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
       </div>
     </div>

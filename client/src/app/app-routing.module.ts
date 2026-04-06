@@ -13,6 +13,7 @@ import { LandingComponent } from './landing/landing.component';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 import { PlannerEventsComponent } from './planner-events/planner-events.component';
 import { VendorEventsComponent } from './vendor-events/vendor-events.component';
+import { EventInsightsComponent } from './event-insights/event-insights.component';
 
 const routes: Routes = [
   { path: 'landing',          component: LandingComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'vendor-dashboard', component: VendorDashboardComponent },
   { path: 'planner-events',   component: PlannerEventsComponent },
   { path: 'vendor-events',    component: VendorEventsComponent },
+  {path: 'event-insights' , component : EventInsightsComponent},
   { path: '',                 redirectTo: '/landing', pathMatch: 'full' },
   { path: '**',               redirectTo: '/landing', pathMatch: 'full' },
 ];
