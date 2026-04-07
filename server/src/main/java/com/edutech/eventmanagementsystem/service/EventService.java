@@ -60,7 +60,7 @@ public class EventService {
             Event existing = existingOpt.get();
 
             // Release resources when COMPLETED
-            if ("COMPLETED".equals(newStatus) && !"COMPLETED".equals(existing.getStatus())) {
+            if ("COMPLETED".equals(newStatus) && !"COMPLETED".equals(existing.getStatus())|| "CANCELLED".equals(newStatus) && !"CANCELLED".equals(existing.getStatus())) {
                 for (Allocation allocation : existing.getAllocations()) {
                     Resource resource = allocation.getResource();
                     int newAllocated = resource.getAllocatedQuantity() - allocation.getQuantity();
