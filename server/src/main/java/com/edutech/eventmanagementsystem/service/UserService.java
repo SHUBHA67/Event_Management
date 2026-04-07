@@ -44,9 +44,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findAvailableStaff(dateTime);
     }
     
-    public List<User> getStaffUsers() {
-        return userRepository.findByRole("STAFF");
-    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

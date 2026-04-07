@@ -20,7 +20,7 @@
 
         <div class="booking-header">
           <h3>{{ booking.eventTitle }}</h3>
-          <span class="badge-approved">APPROVED</span>
+          <span class="badge-approved">{{booking.linkedEvent.status}}</span>
         </div>
 
         <p class="description">{{ booking.eventDescription }}</p>

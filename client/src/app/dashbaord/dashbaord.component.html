@@ -65,9 +65,6 @@
 
       <!-- CLIENT -->
       <ng-container *ngIf="roleName === 'CLIENT'">
-        <button class="nav-item" (click)="navigateTo('/browse-events')">
-          <i class="bi bi-calendar2-event nav-icon"></i> Browse Events
-        </button>
         <button class="nav-item" (click)="navigateTo('/submit-request')">
           <i class="bi bi-send nav-icon"></i> Submit Request
         </button>
@@ -152,12 +149,6 @@
 
     <!-- CLIENT Cards -->
     <div class="cards-grid" *ngIf="roleName === 'CLIENT'">
-      <div class="card card-accent-blue" (click)="navigateTo('/browse-events')">
-        <div class="card-icon-wrap icon-blue"><i class="bi bi-calendar2-event"></i></div>
-        <h3>Browse Events</h3>
-        <p>Explore all upcoming events available on the platform.</p>
-        <span class="card-arrow"><i class="bi bi-arrow-right"></i></span>
-      </div>
       <div class="card card-accent-yellow" (click)="navigateTo('/submit-request')">
         <div class="card-icon-wrap icon-yellow"><i class="bi bi-send"></i></div>
         <h3>Submit Request</h3>

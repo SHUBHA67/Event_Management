@@ -143,43 +143,8 @@ public class ResourceService {
     }
 
     // ── VENDOR: Dispatch a resource ──────────────────────────────────
-    public Resource dispatchResource(Long resourceId, int quantity, String vendorUsername) {
-        Resource resource = resourceRepository.findById(resourceId)
-                .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
-
-        if (resource.getVendor() == null ||
-                !resource.getVendor().getUsername().equals(vendorUsername)) {
-            throw new RuntimeException("Unauthorized: this resource does not belong to you");
-        }
-
-        if (resource.getAvailableQuantity() < quantity) {
-            throw new RuntimeException("Not enough available quantity to dispatch. " +
-                    "Available: " + resource.getAvailableQuantity() + ", Requested: " + quantity);
-        }
-
-        resource.setAllocatedQuantity(resource.getAllocatedQuantity() + quantity);
-        resource.setDispatchStatus("DISPATCHED");
-        resource.recalculateAvailability();
-        return resourceRepository.save(resource);
-    }
-
-    // ── VENDOR: Toggle sent status ────────────────────────────────────
-    public Resource markSentStatus(Long resourceId, String newStatus, String vendorUsername) {
-        Resource resource = resourceRepository.findById(resourceId)
-                .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
-
-        if (resource.getVendor() == null ||
-                !resource.getVendor().getUsername().equals(vendorUsername)) {
-            throw new RuntimeException("Unauthorized: this resource does not belong to you");
-        }
-
-        if (!"AVAILABLE".equals(newStatus) && !"DISPATCHED".equals(newStatus)) {
-            throw new RuntimeException("Invalid status. Must be AVAILABLE or DISPATCHED.");
-        }
-
-        resource.setDispatchStatus(newStatus);
-        return resourceRepository.save(resource);
-    }
+    
+   
 
     // ── PLANNER: Get all resources from a specific vendor ────────────
     public List<Resource> getResourcesByVendor(Long vendorId) {

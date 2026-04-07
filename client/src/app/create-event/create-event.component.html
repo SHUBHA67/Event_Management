@@ -14,7 +14,7 @@
       </div>
 
       <div class="success-msg" *ngIf="showMessage">{{ responseMessage }}</div>
-      <div class="error-msg"   *ngIf="showError">{{ errorMessage }}</div>
+      <div class="error-msg" *ngIf="showError">{{ errorMessage }}</div>
 
       <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
@@ -132,8 +132,7 @@
             <div class="form-group">
               <label>Select Resource</label>
               <select [(ngModel)]="stagingResourceId" [ngModelOptions]="{standalone: true}"
-                [attr.disabled]="!stagingVendorId ? true : null"
-                (change)="onStagingResourceChange()">
+                [attr.disabled]="!stagingVendorId ? true : null" (change)="onStagingResourceChange()">
                 <option value="">
                   {{ stagingVendorId ? '-- Select Resource --' : '-- Pick a vendor first --' }}
                 </option>
@@ -147,8 +146,8 @@
           <div class="resource-builder-bottom">
             <div class="form-group qty-group" *ngIf="stagingResourceId">
               <label>Quantity</label>
-              <input type="number" [(ngModel)]="stagingQuantity" [ngModelOptions]="{standalone: true}"
-                placeholder="Qty" min="1" [max]="stagingMaxAvailable" />
+              <input type="number" [(ngModel)]="stagingQuantity" [ngModelOptions]="{standalone: true}" placeholder="Qty"
+                min="1" [max]="stagingMaxAvailable" />
               <small class="hint">Max available: {{ stagingMaxAvailable }}</small>
             </div>
             <button type="button" class="btn-add-resource"
@@ -207,7 +206,15 @@
               </td>
               <td>{{ event.dateTime | date:'short' }}</td>
               <td>{{ event.planner?.username || '—' }}</td>
-              <td>{{ event.assignedStaff?.username || '—' }}</td>
+
+              <td>
+                {{
+                event.status === 'COMPLETED'
+                ? event.completedByStaff
+                : event.assignedStaff?.username || '—'
+                }}
+              </td>
+
             </tr>
           </tbody>
         </table>

@@ -8,7 +8,6 @@ import { ViewEventsComponent } from './view-events/view-events.component';
 import { BookingDetailsComponent } from './booking-details/booking-details.component';
 import { SubmitRequestComponent } from './submit-request/submit-request.component';
 import { ManageRequestsComponent } from './manage-requests/manage-requests.component';
-import { BrowseEventsComponent } from './browse-events/browse-events.component';
 import { LandingComponent } from './landing/landing.component';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 import { PlannerEventsComponent } from './planner-events/planner-events.component';
@@ -24,7 +23,6 @@ const routes: Routes = [
   { path: 'view-events',      component: ViewEventsComponent },
   { path: 'booking-details',  component: BookingDetailsComponent },
   { path: 'submit-request',   component: SubmitRequestComponent },
-  { path: 'browse-events',    component: BrowseEventsComponent },
   { path: 'manage-requests',  component: ManageRequestsComponent },
   { path: 'vendor-dashboard', component: VendorDashboardComponent },
   { path: 'planner-events',   component: PlannerEventsComponent },

@@ -122,14 +122,6 @@ export class HttpService {
   public addVendorResource(details: any): Observable<any> {
     return this.http.post(`${this.serverName}/api/vendor/resource`, details, { headers: this.getHeaders() });
   }
-
-  public dispatchResource(resourceId: number, payload: { quantity: number }): Observable<any> {
-    return this.http.put(`${this.serverName}/api/vendor/resource/${resourceId}/dispatch`, payload, { headers: this.getHeaders() });
-  }
-
-  public markResourceSentStatus(resourceId: number, payload: { dispatchStatus: string }): Observable<any> {
-  return this.http.put(`${this.serverName}/api/vendor/resource/${resourceId}/sent-status`, payload, { headers: this.getHeaders() });
-}
 public getEventRequestById(requestId: number): Observable<any> {
   return this.http.get(`${this.serverName}/api/planner/event-requests/${requestId}`, { headers: this.getHeaders() });
 }

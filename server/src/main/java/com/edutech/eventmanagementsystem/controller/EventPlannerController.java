@@ -38,11 +38,7 @@ public class EventPlannerController {
         this.userService = userService;
     }
 
-    // ── Get ALL staff users (for fallback) ──────────────────────────
-    @GetMapping("/api/planner/staff-users")
-    public ResponseEntity<List<User>> getStaffUsers() {
-        return ResponseEntity.ok(userService.getStaffUsers());
-    }
+
 
     // ── Get AVAILABLE staff for a given date (no collision) ─────────
     @GetMapping("/api/planner/available-staff")

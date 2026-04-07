@@ -109,35 +109,4 @@ public class VendorController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
         }
     }
-
-    // ── Dispatch a resource ──────────────────────────────────────────
-    @PutMapping("/resource/{resourceId}/dispatch")
-    public ResponseEntity<?> dispatchResource(@PathVariable Long resourceId,
-            @RequestBody VendorResourceDispatchDTO dto,
-            Principal principal) {
-        try {
-            Resource updated = resourceService.dispatchResource(resourceId, dto.getQuantity(), principal.getName());
-            return ResponseEntity.ok(updated);
-        } catch (Exception e) {
-            Map<String, String> err = new HashMap<>();
-            err.put("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
-        }
-    }
-
-    // ── Toggle sent status ───────────────────────────────────────────
-    @PutMapping("/resource/{resourceId}/sent-status")
-    public ResponseEntity<?> markSentStatus(@PathVariable Long resourceId,
-            @RequestBody Map<String, String> body,
-            Principal principal) {
-        try {
-            String newStatus = body.get("dispatchStatus");
-            Resource updated = resourceService.markSentStatus(resourceId, newStatus, principal.getName());
-            return ResponseEntity.ok(updated);
-        } catch (Exception e) {
-            Map<String, String> err = new HashMap<>();
-            err.put("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
-        }
-    }
 }

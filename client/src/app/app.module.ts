@@ -14,12 +14,9 @@ import { ViewEventsComponent } from './view-events/view-events.component';
 import { BookingDetailsComponent } from './booking-details/booking-details.component';
 import { SubmitRequestComponent } from './submit-request/submit-request.component';
 import { ManageRequestsComponent } from './manage-requests/manage-requests.component';
-import { BrowseEventsComponent } from './browse-events/browse-events.component';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 import { PlannerEventsComponent } from './planner-events/planner-events.component';
 import { VendorEventsComponent } from './vendor-events/vendor-events.component';
-import { AddResourceComponent } from './add-resource/add-resource.component';
-import { ResourceAllocateComponent } from './resource-allocate/resource-allocate.component';
 import { LandingComponent } from './landing/landing.component';
 import { EventInsightsComponent } from './event-insights/event-insights.component'
 
@@ -30,13 +27,10 @@ import { EventInsightsComponent } from './event-insights/event-insights.componen
     RegistrationComponent,
     DashbaordComponent,
     CreateEventComponent,
-    AddResourceComponent,
-    ResourceAllocateComponent,
     ViewEventsComponent,
     BookingDetailsComponent,
     SubmitRequestComponent,
     ManageRequestsComponent,
-    BrowseEventsComponent,
     VendorDashboardComponent,
     PlannerEventsComponent,
     VendorEventsComponent,

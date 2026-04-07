@@ -8,6 +8,5 @@ com/edutech/eventmanagementsystem/dto/VendorResourceDispatchDTO.class
 com/edutech/eventmanagementsystem/service/ResourceService.class
 com/edutech/eventmanagementsystem/repository/UserRepository.class
 com/edutech/eventmanagementsystem/controller/VendorController.class
-com/edutech/eventmanagementsystem/dto/StaffAvailabilityResponse.class
 com/edutech/eventmanagementsystem/service/EventService.class
 com/edutech/eventmanagementsystem/dto/VendorEventDTO.class

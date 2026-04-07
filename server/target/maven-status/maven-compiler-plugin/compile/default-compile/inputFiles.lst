@@ -26,7 +26,6 @@
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/controller/StaffController.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/service/UserService.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/dto/LoginRequest.java
-/home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/dto/StaffAvailabilityResponse.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/service/EventService.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/dto/CancelRequestDTO.java
 /home/coder/app/server/src/main/java/com/edutech/eventmanagementsystem/dto/VendorResourceDispatchDTO.java

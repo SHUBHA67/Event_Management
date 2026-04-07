@@ -234,7 +234,8 @@ export class CreateEventComponent implements OnInit {
           title:       req.eventTitle       || '',
           description: req.eventDescription || '',
           location:    req.eventLocation    || '',
-          dateTime:    formatted
+          dateTime:    formatted,
+          status: req.eventStatus || ''
         });
 
         this.isPrefilled = true;
